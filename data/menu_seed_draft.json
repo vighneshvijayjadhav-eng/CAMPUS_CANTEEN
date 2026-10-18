@@ -1,0 +1,2131 @@
+{
+  "notice": "DRAFT IMPORT. All items initially disabled until staff confirms prices, availability and station mapping. Excel source is authoritative for transcription.",
+  "menus": {
+    "ioit": [
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 3,
+        "category": "Beverages",
+        "name": "Cold Coffee",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 4,
+        "category": "Beverages",
+        "name": "Strong Cold Coffee",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 5,
+        "category": "Beverages",
+        "name": "Cold Coffee with Crush",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 6,
+        "category": "Beverages",
+        "name": "Black Coffee with Crush",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 3000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 7,
+        "category": "Beverages",
+        "name": "Thick Cold Coffee",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 5000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 8,
+        "category": "Beverages",
+        "name": "Thick Cold Coffee with Crush",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 5500,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 9,
+        "category": "Beverages",
+        "name": "Cold Bournvita",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 5000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 10,
+        "category": "Beverages",
+        "name": "Hot Bournvita",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 3000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 11,
+        "category": "Beverages",
+        "name": "Hot Coffee",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 2000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 12,
+        "category": "Beverages",
+        "name": "Strong Hot Coffee",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 2000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 13,
+        "category": "Beverages",
+        "name": "Hot Milk",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 2000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 14,
+        "category": "Beverages",
+        "name": "Tea",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 1000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 15,
+        "category": "Snacks",
+        "name": "Wada Pav",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 2000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 16,
+        "category": "Snacks",
+        "name": "Pohe",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 2500,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 17,
+        "category": "Snacks",
+        "name": "Upma",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 3000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 18,
+        "category": "Snacks",
+        "name": "Sabudana Khichadi",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 19,
+        "category": "Snacks",
+        "name": "Sabudana Vada",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 5000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 20,
+        "category": "Snacks",
+        "name": "Misal Pav",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 7000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 21,
+        "category": "Snacks",
+        "name": "Maggie",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 22,
+        "category": "Snacks",
+        "name": "Masala Maggie",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 5000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 23,
+        "category": "Snacks",
+        "name": "Cheese Masala Maggie",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 5500,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 24,
+        "category": "Snacks",
+        "name": "Butter Maggie",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 5500,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 25,
+        "category": "Durga Special",
+        "name": "Egg Bhurji - Double",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 7000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 26,
+        "category": "Durga Special",
+        "name": "Egg Omelette - Double",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 7000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 27,
+        "category": "Durga Special",
+        "name": "Omelette - Single",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 6000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 28,
+        "category": "South Indian",
+        "name": "Wada Sambhar",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 6000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 29,
+        "category": "South Indian",
+        "name": "Idli Sambhar",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 6000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 30,
+        "category": "South Indian",
+        "name": "Idli Wada Sambhar",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 6000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 31,
+        "category": "South Indian",
+        "name": "Plain Dosa",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 6000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 32,
+        "category": "South Indian",
+        "name": "Plain Cheese Dosa",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 6500,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 33,
+        "category": "South Indian",
+        "name": "Plain Butter Dosa",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 6500,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 34,
+        "category": "South Indian",
+        "name": "Masala Butter Dosa",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 7500,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 35,
+        "category": "South Indian",
+        "name": "Masala Dosa",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 7000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 36,
+        "category": "South Indian",
+        "name": "Masala Cheese Dosa",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 8000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 37,
+        "category": "South Indian",
+        "name": "Shezwan Masala Dosa",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 8000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 38,
+        "category": "South Indian",
+        "name": "Cut Dosa",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 8000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 39,
+        "category": "South Indian",
+        "name": "Cut Cheese Dosa",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": null,
+            "verified": false
+          }
+        ],
+        "needs_staff_verification": true,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 40,
+        "category": "South Indian",
+        "name": "Loni Spunj Dosa",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": null,
+            "verified": false
+          }
+        ],
+        "needs_staff_verification": true,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 41,
+        "category": "South Indian",
+        "name": "Onion Uttappa",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": null,
+            "verified": false
+          }
+        ],
+        "needs_staff_verification": true,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 42,
+        "category": "South Indian",
+        "name": "Onion Cheese Uttappa",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": null,
+            "verified": false
+          }
+        ],
+        "needs_staff_verification": true,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 43,
+        "category": "South Indian",
+        "name": "Tomato Uttappa",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 8000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 44,
+        "category": "South Indian",
+        "name": "Tomato Cheese Uttappa",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 7000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 45,
+        "category": "South Indian",
+        "name": "Onion Tomato Uttappa",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 8000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 46,
+        "category": "Pav Bhaji",
+        "name": "Pav Bhaji",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 7000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 47,
+        "category": "Pav Bhaji",
+        "name": "Extra Pav Jodi",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 1500,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 48,
+        "category": "Sandwich",
+        "name": "Veg Sandwich",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 5000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 49,
+        "category": "Sandwich",
+        "name": "Veg Cheese Sandwich",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": null,
+            "verified": false
+          }
+        ],
+        "needs_staff_verification": true,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 50,
+        "category": "Sandwich",
+        "name": "Club Cheese Sandwich",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 9000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 51,
+        "category": "Sandwich",
+        "name": "Cheese Jam Bread",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 5000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 52,
+        "category": "Sandwich",
+        "name": "Bread Butter",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 53,
+        "category": "Sandwich",
+        "name": "Bread Butter Jam",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 5000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 54,
+        "category": "Rice",
+        "name": "Plain Rice",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 55,
+        "category": "Rice",
+        "name": "Curd Rice",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 7000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 56,
+        "category": "Rice",
+        "name": "Dal Khichadi",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 8000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 57,
+        "category": "Rice",
+        "name": "Jeera Rice",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 9000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 58,
+        "category": "Rice",
+        "name": "Veg Pulao",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 10000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 59,
+        "category": "Rice",
+        "name": "Paneer Pulao",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 10000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 60,
+        "category": "Rice",
+        "name": "Rajma Rice",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 9000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 61,
+        "category": "Chinese Veg",
+        "name": "Veg Fried Rice",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 9000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 62,
+        "category": "Chinese Veg",
+        "name": "Veg Shezwan Noodles",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 9000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 63,
+        "category": "Chinese Veg",
+        "name": "Manchurian Fried Rice",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 10000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 64,
+        "category": "Chinese Veg",
+        "name": "Cheese Fried Rice",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 10000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 65,
+        "category": "Chinese Veg",
+        "name": "Veg Singapore Fried Rice",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 11000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 66,
+        "category": "Chinese Veg",
+        "name": "Triple Shezwan Fried Rice",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 10000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 67,
+        "category": "Chinese Veg",
+        "name": "Veg Dry Manchurian",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 11000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 68,
+        "category": "Chinese Veg",
+        "name": "Veg Manchurian Noodles",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 10000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 69,
+        "category": "Chinese Veg",
+        "name": "Veg Hakka Noodles",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 10000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 70,
+        "category": "Chinese Veg",
+        "name": "Manchurian Shezwan Fried Rice",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 9000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 71,
+        "category": "Chinese Veg",
+        "name": "Shezwan Noodles",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 11000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 72,
+        "category": "Chinese Veg",
+        "name": "Veg Manchurian Shezwan Noodles",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 11000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 73,
+        "category": "Thali",
+        "name": "Rice Plate",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 10000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 74,
+        "category": "Extras",
+        "name": "Cheese",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 1000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 75,
+        "category": "Extras",
+        "name": "Chapati",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 1000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 76,
+        "category": "Extras",
+        "name": "Dahi Wadi",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 3000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 77,
+        "category": "Extras",
+        "name": "Samosa",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 2000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 78,
+        "category": "Extras",
+        "name": "Cold Drink",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 3000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 79,
+        "category": "Extras",
+        "name": "Bread Pakoda",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 2000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 80,
+        "category": "Extras",
+        "name": "Mineral Water",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 2000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 81,
+        "category": "Extras",
+        "name": "Waffers",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 2000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 82,
+        "category": "Extras",
+        "name": "Rice Plate",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 10000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 83,
+        "category": "Extras",
+        "name": "Extra Bhaji",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 3000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 84,
+        "category": "Extras",
+        "name": "Taam",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 3000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 85,
+        "category": "Extras",
+        "name": "Lassi",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 86,
+        "category": "Extras",
+        "name": "Chicken Thali",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 12000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "IOIT Canteen",
+        "source_row": 87,
+        "category": "Extras",
+        "name": "Egg Thali",
+        "variants": [
+          {
+            "label": "Regular",
+            "price_paise": 11000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      }
+    ],
+    "coe": [
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 3,
+        "category": "Regular Menu",
+        "name": "Masala Dosa",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 7000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 4,
+        "category": "Regular Menu",
+        "name": "Fried Rice",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 9000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 5,
+        "category": "Regular Menu",
+        "name": "Schezwan Rice",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 10000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 6,
+        "category": "Regular Menu",
+        "name": "Pohe",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 2500,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 7,
+        "category": "Regular Menu",
+        "name": "Idli Wada",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 6000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 8,
+        "category": "Regular Menu",
+        "name": "Chapati Bhaji",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 6000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 9,
+        "category": "Regular Menu",
+        "name": "Plain Dosa",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 6000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 10,
+        "category": "Regular Menu",
+        "name": "Uttappa",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 7000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 11,
+        "category": "Regular Menu",
+        "name": "Coffee",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 2000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 12,
+        "category": "Regular Menu",
+        "name": "Chai",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 1000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 13,
+        "category": "Chaat",
+        "name": "Aloo Chaat",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 14,
+        "category": "Chaat",
+        "name": "Ragda Puri",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 15,
+        "category": "Chaat",
+        "name": "Papdi Chaat",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 16,
+        "category": "Chaat",
+        "name": "Bhel",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 17,
+        "category": "Juice & Beverages",
+        "name": "Pineapple Juice",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 5000,
+            "verified": true
+          },
+          {
+            "label": "Small",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 18,
+        "category": "Juice & Beverages",
+        "name": "Watermelon Juice",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 5000,
+            "verified": true
+          },
+          {
+            "label": "Small",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 19,
+        "category": "Juice & Beverages",
+        "name": "Grapes Juice",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 5000,
+            "verified": true
+          },
+          {
+            "label": "Small",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 20,
+        "category": "Juice & Beverages",
+        "name": "Cocktail Juice",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 5000,
+            "verified": true
+          },
+          {
+            "label": "Small",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 21,
+        "category": "Juice & Beverages",
+        "name": "Mosambi Juice",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 5000,
+            "verified": true
+          },
+          {
+            "label": "Small",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 22,
+        "category": "Juice & Beverages",
+        "name": "Orange Juice",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 5000,
+            "verified": true
+          },
+          {
+            "label": "Small",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 23,
+        "category": "Juice & Beverages",
+        "name": "Gangajamuna",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 5000,
+            "verified": true
+          },
+          {
+            "label": "Small",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 24,
+        "category": "Juice & Beverages",
+        "name": "Maramari",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 5000,
+            "verified": true
+          },
+          {
+            "label": "Small",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 25,
+        "category": "Juice & Beverages",
+        "name": "Annar (Pomegranate) Juice",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 7000,
+            "verified": true
+          },
+          {
+            "label": "Small",
+            "price_paise": 5000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 26,
+        "category": "Juice & Beverages",
+        "name": "Gajar (Carrot) Juice",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 6000,
+            "verified": true
+          },
+          {
+            "label": "Small",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 27,
+        "category": "Juice & Beverages",
+        "name": "Beet Juice",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 6000,
+            "verified": true
+          },
+          {
+            "label": "Small",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 28,
+        "category": "Juice & Beverages",
+        "name": "ABC Juice",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 6000,
+            "verified": true
+          },
+          {
+            "label": "Small",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 29,
+        "category": "Juice & Beverages",
+        "name": "Awala (Amla) Juice",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 7000,
+            "verified": true
+          },
+          {
+            "label": "Small",
+            "price_paise": 5000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 30,
+        "category": "Juice & Beverages",
+        "name": "Jeera Soda",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 4000,
+            "verified": true
+          },
+          {
+            "label": "Small",
+            "price_paise": 3000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 31,
+        "category": "Juice & Beverages",
+        "name": "Limbu Sarbat",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 3000,
+            "verified": true
+          },
+          {
+            "label": "Small",
+            "price_paise": 2000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 32,
+        "category": "Juice & Beverages",
+        "name": "Limbu Soda",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 4000,
+            "verified": true
+          },
+          {
+            "label": "Small",
+            "price_paise": 3000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 33,
+        "category": "Juice & Beverages",
+        "name": "Mocktail Mojito",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 5000,
+            "verified": true
+          },
+          {
+            "label": "Small",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 34,
+        "category": "Juice & Beverages",
+        "name": "Blue Lagoon Mojito",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 5000,
+            "verified": true
+          },
+          {
+            "label": "Small",
+            "price_paise": 4000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 35,
+        "category": "Fruit & Extras",
+        "name": "Fruit Plate",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 6000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 36,
+        "category": "Rolls & Sandwiches",
+        "name": "Paneer Roll",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 7500,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 37,
+        "category": "Rolls & Sandwiches",
+        "name": "Paneer Sandwich",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 8000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 38,
+        "category": "Rolls & Sandwiches",
+        "name": "Veg Cheese Grill Sandwich",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 6500,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 39,
+        "category": "Rolls & Sandwiches",
+        "name": "Anda Roll",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 7000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 40,
+        "category": "Rolls & Sandwiches",
+        "name": "Chicken Roll",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 8500,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 41,
+        "category": "Rolls & Sandwiches",
+        "name": "Chicken Sandwich",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 9000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 42,
+        "category": "Rolls & Sandwiches",
+        "name": "Club Sandwich",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 7500,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 43,
+        "category": "Rolls & Sandwiches",
+        "name": "Plain Sandwich",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 5000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      },
+      {
+        "source_sheet": "COE Canteen",
+        "source_row": 44,
+        "category": "Rolls & Sandwiches",
+        "name": "Veg Roll",
+        "variants": [
+          {
+            "label": "Jumbo / standard (confirm label)",
+            "price_paise": 6000,
+            "verified": true
+          }
+        ],
+        "needs_staff_verification": false,
+        "initially_orderable": false,
+        "station_assignment": null
+      }
+    ]
+  }
+}

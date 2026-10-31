@@ -1,0 +1,135 @@
+"""Real PostgreSQL race tests. Never substitute SQLite for these checks."""
+
+import os
+from concurrent.futures import ThreadPoolExecutor
+from datetime import UTC, datetime
+from threading import Barrier
+from uuid import uuid4
+
+import pytest
+from sqlalchemy import create_engine, select, text
+from sqlalchemy.orm import Session
+
+from app.core.db import Base
+from app.core.errors import DomainError
+from app.modules.menu.models import Canteen, Station
+from app.modules.orders.models import FulfillmentEvent, Order, OrderLine, PickupCredential
+from app.modules.orders.service import StaffScope, cancel_order, confirm_line
+
+pytestmark = pytest.mark.skipif(
+    not os.getenv("TEST_DATABASE_URL"),
+    reason="TEST_DATABASE_URL required for PostgreSQL race tests",
+)
+
+
+@pytest.fixture
+def pg():
+    url = os.environ["TEST_DATABASE_URL"]
+    if not url.startswith("postgresql+psycopg://"):
+        pytest.fail("Race tests require PostgreSQL")
+    schema = "test_" + uuid4().hex
+    admin = create_engine(url)
+    with admin.begin() as connection:
+        connection.execute(text(f'CREATE SCHEMA "{schema}"'))
+    engine = create_engine(url, connect_args={"options": f"-csearch_path={schema}"})
+    try:
+        Base.metadata.create_all(engine)
+        with Session(engine) as db, db.begin():
+            db.add(Canteen(id="coe", slug="coe", name="COE"))
+            db.flush()
+            db.add(Station(id="juice", canteen_id="coe", name="Juice"))
+            db.flush()
+            db.add(
+                Order(
+                    id="order",
+                    canteen_id="coe",
+                    student_id="student",
+                    total_paise=10000,
+                    state="PAID_ACTIVE",
+                    payment_verified_at=datetime.now(UTC),
+                )
+            )
+            db.flush()
+            db.add(
+                OrderLine(
+                    id="line",
+                    canteen_id="coe",
+                    order_id="order",
+                    station_id="juice",
+                    station_name="Juice",
+                    name="Juice",
+                    variant_label="Jumbo",
+                    unit_price_paise=5000,
+                    quantity=2,
+                )
+            )
+            db.add(PickupCredential(order_id="order", canteen_id="coe", digest="digest"))
+        yield engine
+    finally:
+        engine.dispose()
+        # Only the randomly named schema created by this test is removed.
+        with admin.begin() as connection:
+            connection.execute(text(f'DROP SCHEMA "{schema}" CASCADE'))
+        admin.dispose()
+
+
+def race(engine, left, right):
+    barrier = Barrier(2)
+
+    def run(action):
+        with Session(engine) as db:
+            barrier.wait(timeout=10)
+            try:
+                with db.begin():
+                    action(db)
+                return "ok"
+            except DomainError as error:
+                return error.code
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        futures = [pool.submit(run, action) for action in (left, right)]
+        return [future.result(timeout=20) for future in futures]
+
+
+def handover(db, request_id, quantity=1):
+    return confirm_line(
+        db,
+        StaffScope("staff", "device", "coe", "juice", "station"),
+        "order",
+        "line",
+        quantity,
+        0,
+        request_id,
+    )
+
+
+def test_two_devices_cannot_collect_same_units(pg):
+    results = race(
+        pg, lambda db: handover(db, "request-one"), lambda db: handover(db, "request-two")
+    )
+    assert sorted(results) == ["STALE_FULFILLMENT", "ok"]
+    with Session(pg) as db:
+        assert db.get(OrderLine, "line").fulfilled == 1
+        assert len(db.scalars(select(FulfillmentEvent)).all()) == 1
+
+
+def test_same_request_retry_is_idempotent_under_concurrency(pg):
+    assert race(pg, lambda db: handover(db, "same"), lambda db: handover(db, "same")) == [
+        "ok",
+        "ok",
+    ]
+    with Session(pg) as db:
+        assert db.get(OrderLine, "line").fulfilled == 1
+
+
+def test_cancel_racing_full_collection_has_one_winner(pg):
+    results = race(
+        pg, lambda db: handover(db, "collect", 2), lambda db: cancel_order(db, "student", "order")
+    )
+    assert results.count("ok") == 1
+    with Session(pg) as db:
+        order = db.get(Order, "order")
+        assert order.state in ("CANCELLED", "COLLECTED")
+        assert not db.get(PickupCredential, "order").active
+        assert db.get(OrderLine, "line").fulfilled == (2 if order.state == "COLLECTED" else 0)
+        assert order.refund_status == ("REQUESTED" if order.state == "CANCELLED" else None)

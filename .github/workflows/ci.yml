@@ -1,0 +1,52 @@
+name: Verify implementation
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  api:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test-only
+          POSTGRES_DB: canteen_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U test -d canteen_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql+psycopg://test:test-only@localhost:5432/canteen_test
+      TEST_DATABASE_URL: postgresql+psycopg://test:test-only@localhost:5432/canteen_test
+    defaults:
+      run:
+        working-directory: services/api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.14'
+      - run: uv sync --locked
+      - run: uv run ruff check app tests migrations
+      - run: uv run ruff format --check app tests migrations
+      - run: uv run alembic upgrade head
+      - run: uv run alembic check
+      - run: uv run pytest -q
+      - run: uv run python -m app.modules.menu.seed ../../data/AISSMS_Canteen_Menu.xlsx --compare-draft ../../data/menu_seed_draft.json
+      - run: uv run python -m app.modules.menu.seed ../../data/AISSMS_Canteen_Menu.xlsx --compare-draft ../../data/menu_seed_draft.json
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/canteen-web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: apps/canteen-web/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build

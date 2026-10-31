@@ -23,3 +23,14 @@ The requested target is production-grade software, **not** a proof-of-concept. T
 - `design-references/*.jpg`: provided visual references
 - `data/AISSMS_Canteen_Menu.xlsx`: original uploaded menu
 - `data/menu_seed_draft.json`: transcription aid; prices/mappings must be verified
+
+## Implementation added 18 October 2026
+
+The first backend and responsive staff dashboard are in `services/api` and
+`apps/canteen-web`. See [local setup](docs/deployment.md),
+[API contract](docs/api.md), [database](docs/database.md) and
+[actual progress and remaining gates](docs/implementation-progress.md).
+
+This is an incremental foundation, not a live payment system. The original handoff,
+specifications, workbook and Git history are preserved. No student Android application,
+Google login or gateway integration is claimed complete.

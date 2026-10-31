@@ -43,11 +43,26 @@ SQLite tests cover domain/API behavior only. PostgreSQL races run only when TEST
 is set; CI provisions PostgreSQL 18 and runs migrations, seed replay and concurrent transitions.
 Local Docker engine was unavailable. No local PostgreSQL race pass is claimed.
 
+## Student foundation — 31 October 2026
+
+Implemented an additive student identity/catalog/cart increment:
+- Approved institute-first discovery and COE/IOIT association during the idempotent workbook seed.
+- Google ID-token verification against a configured Android OAuth audience, with any verified
+  Google account accepted; persisted opaque, rotating/revocable student device sessions.
+- Optional remembered institute selection and a server-side, single-canteen cart. Cart updates
+  recheck approval, verified price, availability and active station; totals are server calculated.
+- A migration creates institutes, students, student sessions/preferences and carts without
+  changing historical fulfillment rows. Existing seed data receives an institute association on
+  the next seed run.
+
+This is not checkout or payment: the cart is mutable, no order/payment/pickup code is created,
+and no live Google or merchant credential is present in the repository.
+
 ## Remaining implementation gates
 
 1. Native Android project, emulator/device tests and release-signing configuration.
-2. Google token validation, student sessions/preferences and authenticated student order APIs.
-3. Server checkout/cart, operating schedules, immutable checkout/payment linkage and price checks.
+2. Native Android client, including secure token storage and actual Google Sign-In integration.
+3. Server checkout, operating schedules, immutable checkout/payment linkage and price checks.
 4. Merchant configurations, real gateway sandbox adapter, webhook verification, payment activation,
    encrypted recoverable code issuance, reconciliation and provider-confirmed refunds.
 5. Approved partial-refund/exception resolution policy and corresponding financial transitions.

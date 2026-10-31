@@ -32,5 +32,6 @@ The first backend and responsive staff dashboard are in `services/api` and
 [actual progress and remaining gates](docs/implementation-progress.md).
 
 This is an incremental foundation, not a live payment system. The original handoff,
-specifications, workbook and Git history are preserved. No student Android application,
-Google login or gateway integration is claimed complete.
+specifications, workbook and Git history are preserved. The backend now has a Google-token
+student-session and cart foundation, but no student Android application or gateway integration
+is claimed complete.

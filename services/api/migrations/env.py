@@ -4,6 +4,7 @@ from alembic import context
 from sqlalchemy import create_engine
 
 from app.core.db import Base
+from app.modules.carts import models as cart_models  # noqa: F401
 from app.modules.identity import models as identity_models  # noqa: F401
 from app.modules.menu import models as menu_models  # noqa: F401
 from app.modules.orders import models as order_models  # noqa: F401

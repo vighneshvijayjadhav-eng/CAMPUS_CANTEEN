@@ -23,9 +23,18 @@ class SeedSource(Base):
     sha256: Mapped[str] = mapped_column(String(64))
 
 
+class Institute(Base):
+    __tablename__ = "institutes"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=identifier)
+    slug: Mapped[str] = mapped_column(String(80), unique=True)
+    name: Mapped[str] = mapped_column(String(160))
+    approved: Mapped[bool] = mapped_column(Boolean, default=False)
+
+
 class Canteen(Base):
     __tablename__ = "canteens"
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=identifier)
+    institute_id: Mapped[str | None] = mapped_column(ForeignKey("institutes.id"), index=True)
     slug: Mapped[str] = mapped_column(String(80), unique=True)
     name: Mapped[str] = mapped_column(String(160))
     approved: Mapped[bool] = mapped_column(Boolean, default=False)

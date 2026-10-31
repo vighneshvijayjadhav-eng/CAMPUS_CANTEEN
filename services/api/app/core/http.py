@@ -6,7 +6,7 @@ from pydantic import BaseModel, ConfigDict
 from app.core.db import session_for
 from app.core.errors import DomainError
 from app.modules.identity.models import AuditEvent
-from app.modules.identity.service import authenticate
+from app.modules.identity.service import authenticate, authenticate_student
 from app.modules.orders.service import (
     server_now,
 )
@@ -42,6 +42,17 @@ def staff(request: Request, db: DB):
 
 
 STAFF = Annotated[object, Depends(staff)]
+
+
+def student(request: Request, db: DB):
+    authorization = request.headers.get("authorization", "")
+    prefix = "Bearer "
+    if not authorization.startswith(prefix) or not authorization[len(prefix) :]:
+        raise DomainError("AUTHENTICATION_REQUIRED", 401)
+    return authenticate_student(db, authorization[len(prefix) :])
+
+
+STUDENT = Annotated[object, Depends(student)]
 
 
 def admin(scope):

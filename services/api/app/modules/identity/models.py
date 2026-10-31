@@ -27,6 +27,35 @@ class StaffAccount(Base):
     active: Mapped[bool] = mapped_column(Boolean, default=True)
 
 
+class Student(Base):
+    __tablename__ = "students"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=identifier)
+    google_sub: Mapped[str] = mapped_column(String(255), unique=True)
+    email: Mapped[str] = mapped_column(String(320), unique=True)
+    display_name: Mapped[str] = mapped_column(String(160))
+    avatar_url: Mapped[str | None] = mapped_column(String(2000))
+
+
+class StudentSession(Base):
+    __tablename__ = "student_sessions"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=identifier)
+    student_id: Mapped[str] = mapped_column(ForeignKey("students.id"), index=True)
+    device_name: Mapped[str] = mapped_column(String(120))
+    access_digest: Mapped[str] = mapped_column(String(64), unique=True)
+    refresh_digest: Mapped[str] = mapped_column(String(64), unique=True)
+    access_until: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    refresh_until: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    absolute_until: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    authenticated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    revoked: Mapped[bool] = mapped_column(Boolean, default=False)
+
+
+class StudentPreference(Base):
+    __tablename__ = "student_preferences"
+    student_id: Mapped[str] = mapped_column(ForeignKey("students.id"), primary_key=True)
+    selected_institute_id: Mapped[str | None] = mapped_column(ForeignKey("institutes.id"))
+
+
 class DeviceSession(Base):
     __tablename__ = "device_sessions"
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=identifier)

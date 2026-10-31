@@ -6,7 +6,7 @@ from sqlalchemy import select
 
 from app.core.errors import DomainError
 from app.core.http import DB, STAFF, Input, admin
-from app.modules.menu.models import Canteen, MenuItem, MenuVariant, Station
+from app.modules.menu.models import Canteen, Institute, MenuItem, MenuVariant, Station
 
 
 class StationInput(Input):
@@ -41,7 +41,40 @@ def create_router(settings, engine):
                 "approved": c.approved,
                 "operating": c.operating,
             }
-            for c in db.scalars(select(Canteen).order_by(Canteen.slug))
+            for c in db.scalars(
+                select(Canteen)
+                .join(Institute, Canteen.institute_id == Institute.id)
+                .where(Canteen.approved.is_(True), Institute.approved.is_(True))
+                .order_by(Canteen.slug)
+            )
+        ]
+
+    @router.get("/api/v1/institutes")
+    def institutes(db: DB):
+        return [
+            {"id": institute.id, "slug": institute.slug, "name": institute.name}
+            for institute in db.scalars(
+                select(Institute).where(Institute.approved.is_(True)).order_by(Institute.slug)
+            )
+        ]
+
+    @router.get("/api/v1/institutes/{institute_id}/canteens")
+    def institute_canteens(institute_id: UUID, db: DB):
+        institute = db.get(Institute, str(institute_id))
+        if not institute or not institute.approved:
+            raise DomainError("INSTITUTE_NOT_FOUND", 404)
+        return [
+            {
+                "id": canteen.id,
+                "slug": canteen.slug,
+                "name": canteen.name,
+                "operating": canteen.operating,
+            }
+            for canteen in db.scalars(
+                select(Canteen)
+                .where(Canteen.institute_id == institute.id, Canteen.approved.is_(True))
+                .order_by(Canteen.slug)
+            )
         ]
 
     def menu_rows(db, canteen_id):
@@ -79,6 +112,10 @@ def create_router(settings, engine):
 
     @router.get("/api/v1/canteens/{canteen_id}/menu")
     def public_menu(canteen_id: UUID, db: DB):
+        canteen = db.get(Canteen, str(canteen_id))
+        institute = db.get(Institute, canteen.institute_id) if canteen else None
+        if not canteen or not canteen.approved or not institute or not institute.approved:
+            raise DomainError("CANTEEN_NOT_FOUND", 404)
         return [item for item in menu_rows(db, str(canteen_id)) if not item["archived"]]
 
     @router.get("/api/v1/staff/menu")

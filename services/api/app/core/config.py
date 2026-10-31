@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     database_url: str
     pickup_hmac_key: SecretStr
     web_origin: str = "http://localhost:5173"
+    google_oauth_client_id: str | None = None
     environment: Literal["local", "staging", "production"] = "local"
 
     @model_validator(mode="after")

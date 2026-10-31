@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, event, select
 from sqlalchemy.orm import Session
 
 from app.core.db import Base
-from app.modules.menu.models import Canteen, MenuItem, MenuVariant
+from app.modules.menu.models import Canteen, Institute, MenuItem, MenuVariant
 from app.modules.menu.seed import compare_draft, price_paise, read_menu, seed_menu
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -33,6 +33,8 @@ def test_seed_preserves_staff_edits(db):
     menus = read_menu(ROOT / "data/AISSMS_Canteen_Menu.xlsx")
     assert seed_menu(db, menus) == 127
     assert len(db.scalars(select(Canteen)).all()) == 2
+    assert len(db.scalars(select(Institute)).all()) == 2
+    assert all(canteen.institute_id for canteen in db.scalars(select(Canteen)))
     variants = db.scalars(select(MenuVariant)).all()
     assert len(variants) == 145
     assert all(not v.available and not v.verified and v.station_id is None for v in variants)

@@ -12,6 +12,7 @@ From repository root:
 ```powershell
 Copy-Item .env.example .env
 # Edit the local file: generate independent random password/key, never use placeholders.
+# Add GOOGLE_OAUTH_CLIENT_ID only after an Android OAuth client is provisioned.
 docker compose --env-file .env -f infra/compose.yml up -d db
 uv sync --project services/api --locked
 Set-Location services/api
@@ -57,7 +58,9 @@ Use docs/PRODUCTION_READINESS.md as controlling checklist. Required work include
 and gateway sandbox end-to-end verification, approved exception/refund policy, native APK,
 HTTPS reverse proxy, configured trusted Origin, rate-limit proxy/IP policy, encrypted
 credential issuance and secret rotation, security/load/accessibility testing and operational
-ownership. No public deployment is authorized by the local commands above.
+ownership. No public deployment is authorized by the local commands above. Without a configured
+Google OAuth client ID, student login correctly returns GOOGLE_AUTH_NOT_CONFIGURED rather than
+trusting an unverified ID token.
 
 Before staging data exists, define retention, backup RPO/RTO and ownership. A restoration
 drill must restore a pg_dump archive into a separate disposable PostgreSQL database and

@@ -12,7 +12,7 @@ from app.core.db import Base
 from app.main import create_app
 from app.modules.identity.models import DeviceSession, StaffAccount
 from app.modules.identity.service import hasher
-from app.modules.menu.models import Canteen, MenuItem, MenuVariant, Station
+from app.modules.menu.models import Canteen, Institute, MenuItem, MenuVariant, Station
 
 ORIGIN = "http://localhost:5173"
 PASSWORD = "test-only-long-password"
@@ -60,10 +60,24 @@ def setup(tmp_path):
     )
     event.listen(engine, "connect", lambda c, _: c.execute("PRAGMA foreign_keys=ON"))
     Base.metadata.create_all(engine)
-    ids = {k: str(uuid4()) for k in ["coe", "ioit", "juice", "snacks", "foreign", "item"]}
+    ids = {
+        key: str(uuid4())
+        for key in ["institute", "coe", "ioit", "juice", "snacks", "foreign", "item", "variant"]
+    }
     with Session(engine) as db, db.begin():
+        db.add(Institute(id=ids["institute"], slug="coe", name="COE", approved=True))
+        db.flush()
         for slug in ["coe", "ioit"]:
-            db.add(Canteen(id=ids[slug], slug=slug, name=slug))
+            db.add(
+                Canteen(
+                    id=ids[slug],
+                    institute_id=ids["institute"],
+                    slug=slug,
+                    name=slug,
+                    approved=True,
+                    operating=True,
+                )
+            )
         db.flush()
         for name in ["juice", "snacks", "foreign"]:
             db.add(
@@ -86,10 +100,33 @@ def setup(tmp_path):
                 )
             )
         db.add(MenuItem(id=ids["item"], canteen_id=ids["coe"], name="Coffee", category="Beverages"))
+        db.add(
+            MenuVariant(
+                id=ids["variant"],
+                canteen_id=ids["coe"],
+                item_id=ids["item"],
+                label="Regular",
+                price_paise=4000,
+                station_id=ids["juice"],
+                verified=True,
+                available=True,
+            )
+        )
     settings = SimpleNamespace(
         web_origin=ORIGIN, environment="local", pickup_hmac_key=SecretStr("test-only-key" * 4)
     )
-    client = LocalClient(create_app(settings, engine))
+    client = LocalClient(
+        create_app(
+            settings,
+            engine,
+            google_verifier=lambda _: {
+                "sub": "google-student",
+                "email": "student@gmail.com",
+                "name": "Student",
+                "picture": None,
+            },
+        )
+    )
     client.headers["Origin"] = ORIGIN
     yield client, engine, ids
     engine.dispose()
@@ -171,3 +208,37 @@ def test_disabled_station_revokes_effective_access(setup):
     with Session(engine) as db, db.begin():
         db.get(Station, ids["juice"]).active = False
     assert client.get("/api/v1/staff/me").status_code == 401
+
+
+def test_student_google_login_preferences_and_cart_use_bearer_auth(setup):
+    client, _, ids = setup
+    client.headers.pop("Origin")  # Native-app bearer writes have no browser Origin header.
+    login = client.post(
+        "/api/v1/auth/google",
+        json={"id_token": "a" * 20, "device_name": "Android phone"},
+    )
+    assert login.status_code == 200, login.text
+    token = login.json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+    assert client.get("/api/v1/student/me", headers=headers).json()["email"] == "student@gmail.com"
+    assert client.patch(
+        "/api/v1/student/preferences/institute",
+        headers=headers,
+        json={"institute_id": ids["institute"]},
+    ).json() == {"selected_institute_id": ids["institute"]}
+    cart = client.request(
+        "PUT",
+        f"/api/v1/student/cart/lines/{ids['variant']}",
+        headers=headers,
+        json={"quantity": 2},
+    )
+    assert cart.status_code == 200
+    assert cart.json()["total_paise"] == 8000
+    assert (
+        client.post(
+            "/api/v1/auth/google",
+            headers={"Origin": "https://evil.invalid"},
+            json={"id_token": "a" * 20, "device_name": "Android phone"},
+        ).status_code
+        == 403
+    )

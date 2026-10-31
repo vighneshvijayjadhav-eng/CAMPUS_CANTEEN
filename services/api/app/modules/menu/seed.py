@@ -11,7 +11,7 @@ from openpyxl import load_workbook
 from sqlalchemy import select
 
 from app.core.db import connect, session_for
-from app.modules.menu.models import Canteen, MenuItem, MenuVariant, SeedSource
+from app.modules.menu.models import Canteen, Institute, MenuItem, MenuVariant, SeedSource
 
 SHEETS = {"ioit": "IOIT Canteen", "coe": "COE Canteen"}
 
@@ -115,14 +115,24 @@ def seed_menu(db, menus):
         db.add(SeedSource(id="aissms-menu-v1", sha256=digest))
     inserted = 0
     for slug, rows in menus.items():
+        institute = db.scalar(select(Institute).where(Institute.slug == slug))
+        if institute is None:
+            institute = Institute(slug=slug, name=slug.upper())
+            db.add(institute)
+            db.flush()
         canteen = db.scalar(select(Canteen).where(Canteen.slug == slug))
         if canteen is None:
             canteen = Canteen(
                 slug=slug,
                 name=("IOIT Canteen (P.R. Enterprises)" if slug == "ioit" else "COE Canteen"),
+                institute_id=institute.id,
             )
             db.add(canteen)
             db.flush()
+        elif canteen.institute_id is None:
+            canteen.institute_id = institute.id
+        elif canteen.institute_id != institute.id:
+            raise ValueError(f"Canteen {slug} belongs to a different institute")
         for row in rows:
             existing = db.scalar(
                 select(MenuItem.id).where(

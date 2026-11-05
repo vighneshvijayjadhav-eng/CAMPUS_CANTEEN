@@ -71,7 +71,7 @@ Each phase ends with tests green, docs updated (`api.md`, `database.md`,
   restore/reject with audit. Deterministic rating aggregate on menu cards.
 - Admin moderation page in the web dashboard.
 
-### Phase 6: notifications, receipts, reports
+### Phase 6: notifications, receipts, reports — DONE 5 Nov 2026 (UI checks pending)
 - In-app notification table plus student inbox (payment, cancellation, refund, ready/partial). No OS push.
 - Receipt endpoint and screen from the order snapshot.
 - Admin reports: daily/weekly/monthly and date range, item-wise sales, gross/refunds/net. Web pages.

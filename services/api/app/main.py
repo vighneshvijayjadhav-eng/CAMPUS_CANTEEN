@@ -12,10 +12,12 @@ from app.modules.identity.routes import create_router as identity_router
 from app.modules.identity.service import verify_google_id_token
 from app.modules.identity.student_routes import create_router as student_router
 from app.modules.menu.routes import create_router as menu_router
+from app.modules.notifications.routes import create_router as notifications_router
 from app.modules.orders.routes import create_router as orders_router
 from app.modules.orders.student_routes import create_router as student_orders_router
 from app.modules.payments.razorpay import provider_factory
 from app.modules.payments.routes import create_router as payments_router
+from app.modules.reports.routes import create_router as reports_router
 from app.modules.reviews.media import LocalMediaStorage
 from app.modules.reviews.routes import create_router as reviews_router
 
@@ -84,4 +86,6 @@ def create_app(
     app.include_router(student_orders_router(settings, engine))
     app.include_router(payments_router(settings, engine))
     app.include_router(reviews_router(settings, engine))
+    app.include_router(notifications_router(settings, engine))
+    app.include_router(reports_router(settings, engine))
     return app

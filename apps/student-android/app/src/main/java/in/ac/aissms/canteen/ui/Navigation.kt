@@ -4,8 +4,11 @@ import android.net.Uri
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ReceiptLong
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -30,6 +33,9 @@ import `in`.ac.aissms.canteen.CanteenApplication
 import `in`.ac.aissms.canteen.data.CanteenRepository
 import `in`.ac.aissms.canteen.ui.screens.CartScreen
 import `in`.ac.aissms.canteen.ui.screens.HomeScreen
+import `in`.ac.aissms.canteen.ui.screens.InboxScreen
+import `in`.ac.aissms.canteen.ui.screens.InboxViewModel
+import `in`.ac.aissms.canteen.ui.screens.ReceiptScreen
 import `in`.ac.aissms.canteen.ui.screens.MenuScreen
 import `in`.ac.aissms.canteen.ui.screens.OrderScreen
 import `in`.ac.aissms.canteen.ui.screens.OrdersScreen
@@ -56,6 +62,8 @@ object Routes {
     const val ORDERS = "orders"
     const val PROFILE = "profile"
     const val CART = "cart"
+    const val INBOX = "inbox"
+    fun receipt(orderId: String) = "receipt/$orderId"
     fun menu(canteenId: String, name: String) = "menu/$canteenId/${Uri.encode(name)}"
     fun order(orderId: String) = "order/$orderId"
     fun reviews(itemId: String, name: String) = "reviews/$itemId/${Uri.encode(name)}"
@@ -66,6 +74,7 @@ object Routes {
 private val tabs = listOf(
     Triple(Routes.HOME, "Home", Icons.Filled.Home),
     Triple(Routes.ORDERS, "Orders", Icons.Filled.ReceiptLong),
+    Triple(Routes.INBOX, "Alerts", Icons.Filled.Notifications),
     Triple(Routes.PROFILE, "Profile", Icons.Filled.Person),
 )
 
@@ -77,6 +86,7 @@ fun CanteenApp() {
         SignInScreen()
         return
     }
+    val inbox = repoViewModel { InboxViewModel(it) }
     val nav = rememberNavController()
     val entry by nav.currentBackStackEntryAsState()
     val route = entry?.destination?.route
@@ -88,7 +98,15 @@ fun CanteenApp() {
                         NavigationBarItem(
                             selected = route == target,
                             onClick = { nav.switchTab(target) },
-                            icon = { Icon(icon, contentDescription = null) },
+                            icon = {
+                                if (target == Routes.INBOX && inbox.unread > 0) {
+                                    BadgedBox(badge = { Badge { Text(inbox.unread.coerceAtMost(99).toString()) } }) {
+                                        Icon(icon, contentDescription = "${inbox.unread} unread")
+                                    }
+                                } else {
+                                    Icon(icon, contentDescription = null)
+                                }
+                            },
                             label = { Text(label) },
                         )
                     }
@@ -122,7 +140,14 @@ fun CanteenApp() {
                     orderId = back.arguments?.getString("orderId").orEmpty(),
                     onBack = { if (!nav.popBackStack()) nav.switchTab(Routes.ORDERS) },
                     onReview = { line, review, name -> nav.navigate(Routes.writeReview(line, review, name)) },
+                    onReceipt = { nav.navigate(Routes.receipt(it)) },
                 )
+            }
+            composable("receipt/{orderId}") { back ->
+                ReceiptScreen(orderId = back.arguments?.getString("orderId").orEmpty(), onBack = { nav.popBackStack() })
+            }
+            composable(Routes.INBOX) {
+                InboxScreen(inbox, onOpenOrder = { nav.navigate(Routes.order(it)) })
             }
             composable("reviews/{itemId}/{name}") { back ->
                 ReviewsScreen(

@@ -63,6 +63,17 @@ Run `uvicorn app.main:create_app --factory` from services/api. OpenAPI is served
   review, never your own.
 - Review moderation: admin GET /api/v1/staff/reviews?status=HIDDEN|VISIBLE (with reports),
   POST /staff/reviews/{id}/restore and /staff/reviews/{id}/remove with optional `note`.
+- Student notifications (in-app only): GET /api/v1/student/notifications returns `unread` and
+  the latest 50 `items` (id, order_id, kind, title, body, created_at, read), newest first;
+  POST /student/notifications/read marks all read. Kinds: PAYMENT_CONFIRMED,
+  ORDER_PARTLY_COLLECTED, ORDER_COLLECTED, ORDER_CANCELLED, ORDER_CANCELLED_BY_CANTEEN,
+  CANCELLATION_REVIEW, EXTRA_PAYMENT_REFUND, REFUND_COMPLETED, REFUND_FAILED. Each is written in
+  the same transaction as the change it reports.
+- Sales report: admin GET /api/v1/staff/reports/sales?start=YYYY-MM-DD&end=YYYY-MM-DD&group=
+  day|week|month (India time, at most 366 days). Returns `periods` (orders, gross_paise,
+  refunds_paise, net_paise, other_refunds_paise), `totals` and item-wise `items`. Gross is money
+  Razorpay captured for orders; refunds are completed refunds of cancelled orders on their
+  completion day; other_refunds are duplicate or wrong-amount payments returned (never sales).
 - Merchant metadata: admin GET /api/v1/staff/merchant (key id, mode, active, webhook path; never
   secrets). Accounts are added by the owner CLI, not through the API.
 - Canteen settings: admin GET/PATCH /api/v1/staff/canteen. PATCH accepts `operating` (master

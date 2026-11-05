@@ -4,6 +4,7 @@ from datetime import UTC, datetime, timedelta
 from sqlalchemy import select, text
 
 from app.core.errors import DomainError
+from app.modules.notifications.service import notify as notify_student
 from app.modules.orders.models import (
     FulfillmentEvent,
     Order,
@@ -120,6 +121,7 @@ def confirm_line(db, scope, order_id, line_id, quantity, expected_fulfilled, req
             occurred_at=server_now(db),
         )
     )
+    previous = order.state
     order.state = (
         "COLLECTED"
         if all(row.fulfilled == row.quantity for row in lines)
@@ -127,6 +129,9 @@ def confirm_line(db, scope, order_id, line_id, quantity, expected_fulfilled, req
     )
     if order.state == "COLLECTED":
         deactivate(db, order_id)
+        notify_student(db, order, "ORDER_COLLECTED", server_now(db))
+    elif previous == "PAID_ACTIVE":
+        notify_student(db, order, "ORDER_PARTLY_COLLECTED", server_now(db))
     notify(db, order, lines, "FULFILLMENT_UPDATED")
     db.flush()
     return order
@@ -157,6 +162,8 @@ def cancel_order(db, student_id, order_id):
                     created_at=now,
                 )
             )
+        if order.exception_status != "STAFF_REVIEW_REQUIRED":
+            notify_student(db, order, "CANCELLATION_REVIEW", now)
         order.exception_status = "STAFF_REVIEW_REQUIRED"
         # No financial adjustment is allowed until the partial-refund policy is approved.
         notify(db, order, lines, "EXCEPTION_REQUESTED")
@@ -165,6 +172,7 @@ def cancel_order(db, student_id, order_id):
         order.refund_status = "REQUESTED"
         deactivate(db, order_id)
         notify(db, order, lines, "CANCELLED")
+        notify_student(db, order, "ORDER_CANCELLED", now)
     db.flush()
     return order
 
@@ -188,6 +196,7 @@ def staff_cancel_order(db, scope, order_id):
     order.refund_status = "REQUESTED"
     deactivate(db, order_id)
     notify(db, order, lines, "CANCELLED")
+    notify_student(db, order, "ORDER_CANCELLED_BY_CANTEEN", server_now(db))
     db.flush()
     return order
 

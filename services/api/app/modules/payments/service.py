@@ -10,6 +10,7 @@ from datetime import timedelta
 from sqlalchemy import select
 
 from app.core.errors import DomainError
+from app.modules.notifications.service import notify as notify_student
 from app.modules.orders.models import Order
 from app.modules.orders.pickup import issue_code
 from app.modules.orders.service import lines_for, locked_order, notify
@@ -112,6 +113,7 @@ def apply_capture(db, attempt, payment, now, pickup_key):
         order.payment_verified_at = now
         issue_code(db, order, pickup_key)
         notify(db, order, lines_for(db, order.id), "PAID")
+        notify_student(db, order, "PAYMENT_CONFIRMED", now)
     else:
         # Money arrived for an order that is already paid, cancelled or otherwise not payable.
         attempt.status = "CAPTURED_UNAPPLIED"
@@ -119,6 +121,7 @@ def apply_capture(db, attempt, payment, now, pickup_key):
     if attempt.status in ("AMOUNT_MISMATCH", "CAPTURED_UNAPPLIED"):
         # Queued here, sent to Razorpay by refund reconciliation.
         refund_for_mismatch(db, attempt, payment, now)
+        notify_student(db, order, "EXTRA_PAYMENT_REFUND", now, payment.amount_paise)
     return attempt.status
 
 

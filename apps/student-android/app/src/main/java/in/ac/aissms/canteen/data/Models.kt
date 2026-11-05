@@ -171,3 +171,17 @@ data class Review(
     val author: String? = null,
     val orderLineId: String? = null,
 )
+
+@Serializable
+data class Notification(
+    val id: Long,
+    val orderId: String? = null,
+    val kind: String,
+    val title: String,
+    val body: String,
+    val createdAt: String,
+    val read: Boolean = false,
+)
+
+@Serializable
+data class Inbox(val unread: Int = 0, val items: List<Notification> = emptyList())

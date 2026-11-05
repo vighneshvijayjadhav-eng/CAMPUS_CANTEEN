@@ -147,6 +147,7 @@ fun OrderScreen(
     orderId: String,
     onBack: () -> Unit,
     onReview: (lineId: String, reviewId: String?, itemName: String) -> Unit,
+    onReceipt: (String) -> Unit,
 ) {
     val vm = repoViewModel(key = "order-$orderId") { OrderViewModel(it, orderId) }
     val snackbar = remember { SnackbarHostState() }
@@ -165,7 +166,7 @@ fun OrderScreen(
         snackbarHost = { SnackbarHost(snackbar) },
     ) { padding ->
         Box(Modifier.padding(padding).fillMaxSize()) {
-            LoadContent(vm.state, onRetry = vm::load) { order -> OrderBody(order, vm, onReview) }
+            LoadContent(vm.state, onRetry = vm::load) { order -> OrderBody(order, vm, onReview, onReceipt) }
         }
     }
 }
@@ -175,6 +176,7 @@ private fun OrderBody(
     order: OrderDetail,
     vm: OrderViewModel,
     onReview: (String, String?, String) -> Unit,
+    onReceipt: (String) -> Unit,
 ) {
     val activity = LocalContext.current as Activity
     var confirmCancel by remember { mutableStateOf(false) }
@@ -263,6 +265,7 @@ private fun OrderBody(
                 }
                 order.payment?.takeIf { it.status == "CAPTURED" }?.let {
                     Text("Paid via Razorpay · ${it.providerPaymentId}", color = Muted, style = MaterialTheme.typography.bodySmall)
+                    TextButton(onClick = { onReceipt(order.id) }) { Text("View receipt") }
                 }
             }
         }

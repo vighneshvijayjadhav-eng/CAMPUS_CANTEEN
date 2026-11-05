@@ -13,6 +13,7 @@ from datetime import timedelta
 from sqlalchemy import select
 
 from app.core.errors import DomainError
+from app.modules.notifications.service import notify as notify_student
 from app.modules.orders.models import Order
 from app.modules.orders.service import cancel_order, staff_cancel_order
 from app.modules.payments.models import MerchantAccount, PaymentAttempt, Refund
@@ -115,6 +116,9 @@ def apply_provider_refund(db, refund, provider_refund, now):
         if status == "PROCESSED":
             refund.processed_at = now
         sync_order(db, refund)
+        if status in ("PROCESSED", "FAILED"):
+            kind = "REFUND_COMPLETED" if status == "PROCESSED" else "REFUND_FAILED"
+            notify_student(db, db.get(Order, refund.order_id), kind, now, refund.amount_paise)
     db.flush()
     return refund
 
@@ -160,6 +164,9 @@ def submit_refund(db, providers, refund_id, now):
         if error.code == "PAYMENT_PROVIDER_REJECTED":
             refund.status = "FAILED"
             sync_order(db, refund)
+            notify_student(
+                db, db.get(Order, refund.order_id), "REFUND_FAILED", now, refund.amount_paise
+            )
         db.flush()
         return refund
     refund.last_error = None

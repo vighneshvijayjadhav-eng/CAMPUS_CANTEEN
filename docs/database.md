@@ -1,6 +1,6 @@
 # Database baseline
 
-Alembic revisions `6ee6efb5339d`, `c4e95a58b9ea` and `2520dc960e74`, `a824997c8e58`, `f162cf38ee04`, `9e348ecd3027` add tables,
+Alembic revisions `6ee6efb5339d`, `c4e95a58b9ea` and `2520dc960e74`, `a824997c8e58`, `f162cf38ee04`, `9e348ecd3027`, `189437663676` add tables,
 nullable columns and defaulted columns only; no
 existing user table is dropped.
 Apply with DATABASE_URL configured: `uv run alembic upgrade head` from services/api.
@@ -64,6 +64,10 @@ is hidden when the reports filed since `reports_cleared_at` reach REVIEW_REPORT_
 (default 3, a provisional engineering default); restoring sets `reports_cleared_at`, so earlier
 reports stop counting. Removing a review deletes its photo files. Photo bytes live in MEDIA_DIR,
 not in the database: back up both together.
+
+Notifications: student_notifications is the in-app inbox (integer id so entries written in one
+transaction keep their order; read_at marks them read). Reports are computed from
+payment_attempts, refunds, orders and order_lines; no separate ledger table exists yet.
 
 Downgrade deliberately refuses destructive deletion. Before any deployed schema rollback,
 take a backup, verify restoration and obtain operational approval. For a failed additive

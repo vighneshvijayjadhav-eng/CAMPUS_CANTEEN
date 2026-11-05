@@ -148,6 +148,11 @@ class CanteenRepository(private val api: ApiClient) {
         )
     }
 
+    suspend fun notifications(): Inbox = api.get("/api/v1/student/notifications", Inbox.serializer())
+
+    suspend fun markNotificationsRead(): Inbox =
+        api.send("POST", "/api/v1/student/notifications/read", null, Inbox.serializer())
+
     /** Absolute URL for a server-relative media path such as /api/v1/media/reviews/x.jpg. */
     fun mediaUrl(path: String): String = api.absolute(path)
 }

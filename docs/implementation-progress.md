@@ -141,6 +141,21 @@ photo picker and on-device downscaling.
 Verification: backend 92 passed, 6 skipped (PostgreSQL); web typecheck, tests and build pass.
 Android: 12 unit tests and `assembleDebug` pass. Not checked on a device.
 
+## Notifications, receipts, reports and admin screens — 5 November 2026
+
+Implemented (Phase 6): in-app student notifications for payment, collection, cancellation and
+refund events (Android "Alerts" tab with unread badge, refreshed every 30 seconds); in-app receipt
+screen from the order snapshot; admin sales report by day/week/month in India time with gross,
+refunds, net, separately listed duplicate-payment refunds and item-wise sales. Web dashboard:
+Settings (ordering switch, weekly hours, read-only Razorpay account details), Refunds (status
+and retry of failed refunds) and Sales pages.
+
+Verification: backend 96 passed, 6 skipped (PostgreSQL); web typecheck, 4 tests and build pass;
+Android: 12 unit tests and `assembleDebug` pass. Not checked on a device or in a browser.
+
+Not included: CSV export (optional per decisions), staff cancel button in the web orders queue
+(API exists), merchant change requests through the UI (owner CLI only).
+
 ## Remaining implementation gates
 
 1. Native Android project, emulator/device tests and release-signing configuration.

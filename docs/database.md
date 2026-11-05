@@ -1,6 +1,6 @@
 # Database baseline
 
-Alembic revisions `6ee6efb5339d`, `c4e95a58b9ea` and `2520dc960e74`, `a824997c8e58` add tables,
+Alembic revisions `6ee6efb5339d`, `c4e95a58b9ea` and `2520dc960e74`, `a824997c8e58`, `f162cf38ee04` add tables,
 nullable columns and defaulted columns only; no
 existing user table is dropped.
 Apply with DATABASE_URL configured: `uv run alembic upgrade head` from services/api.
@@ -47,7 +47,14 @@ lookup, and an AES-GCM copy (key derived from PICKUP_HMAC_KEY via HKDF, order id
 data) lets the student app show it again. No expiry field or job exists. Full collection or
 cancellation deactivates the credential and clears the ciphertext.
 
-Refund request intent is not a confirmed refund; provider refunds are Phase 3.
+Refunds: one row per full refund of a payment attempt (REQUESTED -> PENDING -> PROCESSED, or
+FAILED), with reason (student/staff cancellation, duplicate payment, amount mismatch), who asked,
+an optional staff note and Razorpay's refund id. A partial unique index allows only one
+non-failed refund per payment attempt. The row id is sent to Razorpay as the refund `receipt`, so
+reconciliation adopts a refund Razorpay already made instead of creating a second one.
+orders.refund_status mirrors cancellation refunds (REQUESTED, PENDING, REFUNDED, FAILED); refunds
+of duplicate or wrong-amount captures do not change the order. Partial refunds are not supported
+until the partial-handover refund policy is approved.
 
 Downgrade deliberately refuses destructive deletion. Before any deployed schema rollback,
 take a backup, verify restoration and obtain operational approval. For a failed additive

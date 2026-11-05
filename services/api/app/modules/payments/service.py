@@ -15,6 +15,7 @@ from app.modules.orders.pickup import issue_code
 from app.modules.orders.service import lines_for, locked_order, notify
 from app.modules.payments.models import MerchantAccount, PaymentAttempt, PaymentWebhookEvent
 from app.modules.payments.razorpay import payment_from
+from app.modules.payments.refunds import handle_refund_event, refund_for_mismatch
 
 
 def active_merchant(db, canteen_id):
@@ -112,9 +113,12 @@ def apply_capture(db, attempt, payment, now, pickup_key):
         issue_code(db, order, pickup_key)
         notify(db, order, lines_for(db, order.id), "PAID")
     else:
-        # Money arrived for an order that is already paid or no longer payable: refund later.
+        # Money arrived for an order that is already paid, cancelled or otherwise not payable.
         attempt.status = "CAPTURED_UNAPPLIED"
     db.flush()
+    if attempt.status in ("AMOUNT_MISMATCH", "CAPTURED_UNAPPLIED"):
+        # Queued here, sent to Razorpay by refund reconciliation.
+        refund_for_mismatch(db, attempt, payment, now)
     return attempt.status
 
 
@@ -164,6 +168,11 @@ def handle_webhook(db, providers, merchant_account_id, body, header_signature, e
         )
     )
     db.flush()
+    if event_type in ("refund.created", "refund.processed", "refund.failed"):
+        refund_entity = payload.get("payload", {}).get("refund", {}).get("entity")
+        if not refund_entity:
+            return "IGNORED"
+        return handle_refund_event(db, account, event_type, refund_entity, now)
     entity = payload.get("payload", {}).get("payment", {}).get("entity")
     if event_type not in ("payment.captured", "payment.failed", "order.paid") or not entity:
         return "IGNORED"

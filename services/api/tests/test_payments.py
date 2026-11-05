@@ -12,12 +12,14 @@ import pytest
 from pydantic import SecretStr, ValidationError
 from sqlalchemy import create_engine, event, select
 from sqlalchemy.orm import Session
-from test_api import ORIGIN, LocalClient
+from test_api import ORIGIN, PASSWORD, LocalClient
 
 from app.core.config import RazorpayCredential, Settings
 from app.core.db import Base
 from app.core.errors import DomainError
 from app.main import create_app
+from app.modules.identity.models import StaffAccount
+from app.modules.identity.service import hasher
 from app.modules.menu.models import Canteen, Institute, MenuItem, MenuVariant, Station
 from app.modules.orders.models import Order, PickupCredential, QueueEvent
 from app.modules.orders.pickup import lookup
@@ -36,7 +38,8 @@ class FakeRazorpay:
     """Minimal stand-in for the Razorpay Orders/Payments REST endpoints."""
 
     def __init__(self):
-        self.orders, self.payments, self.ids = {}, {}, count(1)
+        self.orders, self.payments, self.refunds, self.ids = {}, {}, {}, count(1)
+        self.refund_mode = "pending"  # pending | processed | reject | down
 
     def handle(self, request):
         if request.headers.get("authorization") != httpx.BasicAuth(KEY_ID, KEY_SECRET)._auth_header:
@@ -47,6 +50,35 @@ class FakeRazorpay:
             order_id = f"order_Fake{next(self.ids)}"
             self.orders[order_id] = {"id": order_id, "amount": body["amount"], "currency": "INR"}
             return httpx.Response(200, json=self.orders[order_id])
+        if request.method == "POST" and path.endswith("/refund"):
+            if self.refund_mode == "down":
+                return httpx.Response(503)
+            if self.refund_mode == "reject":
+                return httpx.Response(400, json={"error": {"code": "BAD_REQUEST_ERROR"}})
+            body = json.loads(request.content)
+            payment_id = path.split("/")[2]
+            refunded = sum(
+                r["amount"] for r in self.refunds.values() if r["payment_id"] == payment_id
+            )
+            if refunded + body["amount"] > self.payments[payment_id]["amount"]:
+                return httpx.Response(400, json={"error": {"code": "BAD_REQUEST_ERROR"}})
+            refund_id = f"rfnd_Fake{next(self.ids)}"
+            self.refunds[refund_id] = {
+                "id": refund_id,
+                "entity": "refund",
+                "payment_id": payment_id,
+                "amount": body["amount"],
+                "receipt": body.get("receipt"),
+                "status": "processed" if self.refund_mode == "processed" else "pending",
+            }
+            return httpx.Response(200, json=self.refunds[refund_id])
+        if path.startswith("/refunds/"):
+            refund = self.refunds.get(path.removeprefix("/refunds/"))
+            return httpx.Response(200, json=refund) if refund else httpx.Response(404)
+        if path.startswith("/payments/") and path.endswith("/refunds"):
+            payment_id = path.split("/")[2]
+            items = [r for r in self.refunds.values() if r["payment_id"] == payment_id]
+            return httpx.Response(200, json={"items": items})
         if path.startswith("/payments/"):
             payment = self.payments.get(path.removeprefix("/payments/"))
             return httpx.Response(200, json=payment) if payment else httpx.Response(404)
@@ -67,6 +99,16 @@ class FakeRazorpay:
             "error_description": "Bank declined" if status == "failed" else None,
         }
         return payment_id
+
+    def refund_webhook(self, event_name, refund_id):
+        body = json.dumps(
+            {
+                "entity": "event",
+                "event": event_name,
+                "payload": {"refund": {"entity": self.refunds[refund_id]}},
+            }
+        ).encode()
+        return body, signature(WEBHOOK_SECRET, body)
 
     def checkout_signature(self, provider_order_id, payment_id):
         return signature(KEY_SECRET, f"{provider_order_id}|{payment_id}".encode())
@@ -121,6 +163,16 @@ def pay_setup(tmp_path):
                 available=True,
             )
         )
+        for username, role, station in [("admin", "admin", None), ("juice", "station", "juice")]:
+            db.add(
+                StaffAccount(
+                    username=username,
+                    password_hash=hasher.hash(PASSWORD),
+                    canteen_id=ids["coe"],
+                    role=role,
+                    station_id=ids[station] if station else None,
+                )
+            )
         db.add(
             MerchantAccount(
                 id=ids["merchant"],

@@ -586,7 +586,7 @@
         "variants": [
           {
             "label": "Regular",
-            "price_paise": null,
+            "price_paise": 7000,
             "verified": false
           }
         ],
@@ -602,7 +602,7 @@
         "variants": [
           {
             "label": "Regular",
-            "price_paise": null,
+            "price_paise": 7200,
             "verified": false
           }
         ],
@@ -618,7 +618,7 @@
         "variants": [
           {
             "label": "Regular",
-            "price_paise": null,
+            "price_paise": 6000,
             "verified": false
           }
         ],
@@ -634,7 +634,7 @@
         "variants": [
           {
             "label": "Regular",
-            "price_paise": null,
+            "price_paise": 7500,
             "verified": false
           }
         ],
@@ -746,7 +746,7 @@
         "variants": [
           {
             "label": "Regular",
-            "price_paise": null,
+            "price_paise": 6600,
             "verified": false
           }
         ],

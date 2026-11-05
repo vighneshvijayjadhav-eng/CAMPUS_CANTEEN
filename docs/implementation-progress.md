@@ -18,7 +18,7 @@ Implemented:
 - PostgreSQL schema migration with canteen/station composite foreign keys, positive prices,
   bounded fulfilled quantities and unique active pickup digests.
 - Workbook reader and insert-only seed: 85 IOIT items, 42 COE items, 145 variants total.
-  Five IOIT prices remain unknown. All variants start unverified/unavailable/unmapped and
+  Five IOIT prices were unknown (owner filled them on 5 Nov 2026). All variants start unverified/unavailable/unmapped and
   both canteens unapproved/non-operating. Re-running preserves staff edits. A changed source
   workbook requires explicit source-ID review instead of silently matching shifted rows.
 - Provisioned admin/station accounts, Argon2id, hashed opaque access/refresh tokens,
@@ -88,6 +88,21 @@ with a PAID queue event. Live keys are blocked outside an explicitly approved pr
 Verification: `pytest` 76 passed, 6 skipped locally. Payment tests run the real adapter against
 a fake Razorpay API (no network); the new PostgreSQL callback/webhook race test runs in CI only.
 Not yet exercised against the real Razorpay sandbox: that needs test keys and a public webhook URL.
+
+## Cancellation and refunds — 5 November 2026
+
+Implemented (Phase 3): student cancellation endpoint (five-minute rule; unpaid orders can be
+abandoned), admin cancellation with a required note for paid orders with nothing handed over,
+full Razorpay refunds with receipt-based de-duplication, refund webhooks and polling, automatic
+refunds of duplicate and wrong-amount captures, admin refund list and retry of failed refunds.
+Partly collected orders still go to staff review; partial refunds wait for policy approval.
+
+Verification: refund/payment tests run the real adapter against a fake Razorpay API. Full suite
+locally: 84 passed, 6 skipped (PostgreSQL). The owner filled the five previously unknown IOIT
+prices in the workbook and draft on 5 Nov (Cut Cheese Dosa 70, Loni Spunj Dosa 72, Onion Uttappa
+60, Onion Cheese Uttappa 75, Veg Cheese Sandwich 66 rupees). A database already seeded from the
+old workbook refuses to re-seed by design until source IDs are reviewed; set the prices there in
+the dashboard instead.
 
 ## Remaining implementation gates
 

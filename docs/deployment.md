@@ -95,9 +95,12 @@ uv run python -m app.modules.payments.admin add-merchant coe rzp_test_xxx "COE C
 ```
 
 4. In Dashboard > Webhooks add `https://<api-host>/api/v1/payments/razorpay/webhooks/<id printed
-   above>` with the same secret and events `payment.captured`, `payment.failed`, `order.paid`.
+   above>` with the same secret and events `payment.captured`, `payment.failed`, `order.paid`,
+   `refund.created`, `refund.processed`, `refund.failed`.
    Razorpay needs a public HTTPS URL; for local tests use a tunnel you control.
-5. Schedule reconciliation every few minutes to recover missed webhooks:
+5. Schedule reconciliation every few minutes. It recovers missed payment webhooks, sends queued
+   refunds (duplicate/wrong-amount payments, refunds that hit a Razorpay outage) and polls
+   pending refunds:
 
 ```bash
 uv run python -m app.modules.payments.admin reconcile

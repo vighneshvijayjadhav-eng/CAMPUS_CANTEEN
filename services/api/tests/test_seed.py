@@ -9,6 +9,13 @@ from app.modules.menu.models import Canteen, Institute, MenuItem, MenuVariant
 from app.modules.menu.seed import compare_draft, price_paise, read_menu, seed_menu
 
 ROOT = Path(__file__).resolve().parents[3]
+FILLED_PRICES = {
+    "Cut Cheese Dosa": 7000,
+    "Loni Spunj Dosa": 7200,
+    "Onion Uttappa": 6000,
+    "Onion Cheese Uttappa": 7500,
+    "Veg Cheese Sandwich": 6600,
+}
 
 
 @pytest.fixture
@@ -26,7 +33,11 @@ def test_workbook_and_draft():
     assert {key: len(rows) for key, rows in menus.items()} == {"ioit": 85, "coe": 42}
     assert sum(len(r["variants"]) for r in menus["coe"]) == 60
     unknown = [r["name"] for r in menus["ioit"] if r["variants"][0]["price_paise"] is None]
-    assert len(unknown) == 5
+    assert unknown == []
+    # Filled in by the owner on 5 Nov 2026 (previously "Verify"); still unverified until staff
+    # confirm them in the dashboard.
+    prices = {r["name"]: r["variants"][0]["price_paise"] for r in menus["ioit"]}
+    assert {name: prices[name] for name in FILLED_PRICES} == FILLED_PRICES
 
 
 def test_seed_preserves_staff_edits(db):

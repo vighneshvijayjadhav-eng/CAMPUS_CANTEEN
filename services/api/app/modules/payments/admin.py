@@ -16,6 +16,7 @@ from app.modules.menu.models import Canteen
 from app.modules.orders.service import server_now
 from app.modules.payments.models import MerchantAccount, PaymentAttempt
 from app.modules.payments.razorpay import provider_factory
+from app.modules.payments.refunds import reconcile_refunds
 from app.modules.payments.service import reconcile_attempt, stale_attempts
 
 
@@ -73,6 +74,11 @@ def reconcile(settings, _args):
                 status = f"error {error.code}"
         print(f"{attempt_id}: {status}")
     print(f"Checked {len(ids)} open payment attempts")
+    with session_for(engine) as db, db.begin():
+        results = reconcile_refunds(db, providers, server_now(db))
+    for refund_id, status in results.items():
+        print(f"refund {refund_id}: {status}")
+    print(f"Checked {len(results)} open refunds")
 
 
 def main(argv=None):

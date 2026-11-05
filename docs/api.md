@@ -33,8 +33,20 @@ Run `uvicorn app.main:create_app --factory` from services/api. OpenAPI is served
   PAYMENTS_NOT_CONFIGURED (503), PAYMENT_SIGNATURE_INVALID (400), PAYMENT_PROVIDER_* (502/503).
 - Razorpay webhook: POST /api/v1/payments/razorpay/webhooks/{merchant_account_id}, verified with
   that account's webhook secret over the raw body (`X-Razorpay-Signature`). Handles
-  payment.captured, order.paid and payment.failed; replays (same `X-Razorpay-Event-Id`, or same
+  payment.captured, order.paid, payment.failed and refund.created/processed/failed; replays (same `X-Razorpay-Event-Id`, or same
   body) return DUPLICATE. Other events are recorded and IGNORED.
+- Student cancellation: POST /api/v1/student/orders/{id}/cancel. Unpaid orders are simply
+  cancelled. Paid orders within five minutes of payment with nothing handed over are cancelled,
+  the pickup code is withdrawn and a full Razorpay refund is requested; the response is the order
+  detail including `refund_status` (REQUESTED, PENDING, REFUNDED, FAILED) and `refunds`. If any
+  item was handed over it becomes a staff exception instead (no refund). Errors:
+  CANCELLATION_WINDOW_CLOSED, ORDER_NOT_CANCELLABLE. Repeating the call is harmless.
+- Staff cancellation: admin POST /api/v1/staff/orders/{id}/cancel with `note` (why, e.g. closing
+  time after contacting the student). Only for paid orders with nothing handed over; otherwise
+  PARTIAL_REFUND_POLICY_REQUIRED. Refunds the full amount.
+- Refunds: admin GET /api/v1/staff/refunds (own canteen, newest 200) and POST
+  /staff/refunds/{id}/retry for a FAILED refund (creates a new refund row; the failed one stays).
+  REFUNDED/PROCESSED is set only from Razorpay's own refund state.
 - Merchant metadata: admin GET /api/v1/staff/merchant (key id, mode, active, webhook path; never
   secrets). Accounts are added by the owner CLI, not through the API.
 - Canteen settings: admin GET/PATCH /api/v1/staff/canteen. PATCH accepts `operating` (master

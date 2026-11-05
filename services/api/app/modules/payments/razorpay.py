@@ -25,6 +25,25 @@ class ProviderPayment:
     error: str | None = None
 
 
+@dataclass(frozen=True)
+class ProviderRefund:
+    id: str
+    payment_id: str
+    amount_paise: int
+    status: str  # pending | processed | failed
+    receipt: str | None = None
+
+
+def refund_from(entity):
+    return ProviderRefund(
+        id=entity["id"],
+        payment_id=entity["payment_id"],
+        amount_paise=int(entity["amount"]),
+        status=entity["status"],
+        receipt=entity.get("receipt"),
+    )
+
+
 def signature(secret, message):
     return hmac.new(secret.encode(), message, hashlib.sha256).hexdigest()
 
@@ -81,6 +100,17 @@ class RazorpayProvider:
     def order_payments(self, provider_order_id):
         data = self._request("GET", f"/orders/{provider_order_id}/payments")
         return [payment_from(item) for item in data.get("items", [])]
+
+    def create_refund(self, payment_id, amount_paise, receipt, notes):
+        body = {"amount": amount_paise, "speed": "normal", "receipt": receipt, "notes": notes}
+        return refund_from(self._request("POST", f"/payments/{payment_id}/refund", json=body))
+
+    def fetch_refund(self, refund_id):
+        return refund_from(self._request("GET", f"/refunds/{refund_id}"))
+
+    def payment_refunds(self, payment_id):
+        data = self._request("GET", f"/payments/{payment_id}/refunds")
+        return [refund_from(item) for item in data.get("items", [])]
 
     def verify_checkout_signature(self, provider_order_id, payment_id, value):
         expected = signature(self._key_secret, f"{provider_order_id}|{payment_id}".encode())

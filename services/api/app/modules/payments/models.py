@@ -97,3 +97,54 @@ class PaymentWebhookEvent(Base):
     event_type: Mapped[str] = mapped_column(String(80))
     body_sha256: Mapped[str] = mapped_column(String(64))
     received_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+
+
+REFUND_REASONS = ("STUDENT_CANCELLED", "STAFF_CANCELLED", "DUPLICATE_PAYMENT", "AMOUNT_MISMATCH")
+
+
+class Refund(Base):
+    """A full refund of one captured payment. REFUNDED/PROCESSED is only set from Razorpay's
+    own refund state (signed webhook or server-side fetch). A FAILED row is kept for audit;
+    a retry is a new row. At most one non-failed refund exists per payment attempt."""
+
+    __tablename__ = "refunds"
+    __table_args__ = (
+        ForeignKeyConstraint(["canteen_id", "order_id"], ["orders.canteen_id", "orders.id"]),
+        ForeignKeyConstraint(
+            ["canteen_id", "merchant_account_id"],
+            ["merchant_accounts.canteen_id", "merchant_accounts.id"],
+        ),
+        UniqueConstraint("merchant_account_id", "provider_refund_id"),
+        CheckConstraint("amount_paise > 0"),
+        CheckConstraint("status IN ('REQUESTED','PENDING','PROCESSED','FAILED')"),
+        CheckConstraint(
+            "reason IN ('STUDENT_CANCELLED','STAFF_CANCELLED','DUPLICATE_PAYMENT',"
+            "'AMOUNT_MISMATCH')"
+        ),
+        CheckConstraint("requested_by_kind IN ('student','staff','system')"),
+        Index(
+            "uq_open_refund_per_attempt",
+            "payment_attempt_id",
+            unique=True,
+            postgresql_where=text("status <> 'FAILED'"),
+            sqlite_where=text("status <> 'FAILED'"),
+        ),
+        Index("ix_refunds_canteen_status", "canteen_id", "status", "created_at"),
+    )
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=identifier)
+    canteen_id: Mapped[str] = mapped_column(String(36))
+    order_id: Mapped[str] = mapped_column(String(36))
+    payment_attempt_id: Mapped[str] = mapped_column(ForeignKey("payment_attempts.id"))
+    merchant_account_id: Mapped[str] = mapped_column(String(36))
+    amount_paise: Mapped[int]
+    reason: Mapped[str] = mapped_column(String(24))
+    note: Mapped[str | None] = mapped_column(String(500))
+    status: Mapped[str] = mapped_column(String(12), default="REQUESTED")
+    provider_refund_id: Mapped[str | None] = mapped_column(String(80))
+    requested_by_kind: Mapped[str] = mapped_column(String(8))
+    requested_by: Mapped[str] = mapped_column(String(128))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    submitted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    processed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    submit_attempts: Mapped[int] = mapped_column(default=0)
+    last_error: Mapped[str | None] = mapped_column(String(160))

@@ -136,6 +136,11 @@ def cancel_order(db, student_id, order_id):
     order = locked_order(db, order_id, student_id=student_id)
     if order.state == "CANCELLED":
         return order
+    if order.state == "PAYMENT_PENDING":
+        # Abandoned before payment: nothing to refund. A capture arriving later is refunded.
+        order.state = "CANCELLED"
+        db.flush()
+        return order
     if order.state not in ("PAID_ACTIVE", "PARTIALLY_COLLECTED") or not order.payment_verified_at:
         raise DomainError("ORDER_NOT_CANCELLABLE")
     now = server_now(db)
@@ -160,6 +165,29 @@ def cancel_order(db, student_id, order_id):
         order.refund_status = "REQUESTED"
         deactivate(db, order_id)
         notify(db, order, lines, "CANCELLED")
+    db.flush()
+    return order
+
+
+def staff_cancel_order(db, scope, order_id):
+    """Admin cancellation of a paid order with nothing handed over (e.g. at closing time after
+    contacting the student). Partly collected orders stay in the exception workflow."""
+    if scope.role != "admin":
+        raise DomainError("ADMIN_REQUIRED", 403)
+    order = locked_order(db, order_id, canteen_id=scope.canteen_id)
+    if order.state == "CANCELLED":
+        return order
+    if order.state == "PARTIALLY_COLLECTED":
+        raise DomainError("PARTIAL_REFUND_POLICY_REQUIRED")
+    if order.state != "PAID_ACTIVE" or not order.payment_verified_at:
+        raise DomainError("ORDER_NOT_CANCELLABLE")
+    lines = lines_for(db, order_id)
+    if any(line.fulfilled for line in lines):
+        raise DomainError("PARTIAL_REFUND_POLICY_REQUIRED")
+    order.state = "CANCELLED"
+    order.refund_status = "REQUESTED"
+    deactivate(db, order_id)
+    notify(db, order, lines, "CANCELLED")
     db.flush()
     return order
 

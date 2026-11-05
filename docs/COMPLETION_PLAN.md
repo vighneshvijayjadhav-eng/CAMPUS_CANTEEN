@@ -48,7 +48,7 @@ Each phase ends with tests green, docs updated (`api.md`, `database.md`,
 - Reconciliation job for orders stuck in `PENDING_PAYMENT`.
 - Tests: webhook replay, bad signature, amount mismatch, late webhook after cancel.
 
-### Phase 3: cancellation and refunds
+### Phase 3: cancellation and refunds — DONE 5 Nov 2026 (partial refunds await policy)
 - Connect the existing five-minute cancellation service to the student API.
 - Refund through the provider; status changes to `REFUNDED` only on gateway confirmation (webhook or poll).
 - Admin-initiated refund for its own canteen only. Partial handover stays in the exception workflow;
@@ -86,7 +86,7 @@ Each phase ends with tests green, docs updated (`api.md`, `database.md`,
 ## External blockers (need you, not code)
 - Gateway choice, sandbox keys; later, merchant accounts and KYC for COE and IOIT.
 - Google Cloud OAuth client (Android SHA-1 + web client ID) for real sign-in.
-- Verified prices for the 5 unknown IOIT items and the station mapping for every item (staff do this in the dashboard).
+- ~~Prices for the 5 unknown IOIT items~~ (filled 5 Nov; staff still mark them verified) and the station mapping for every item (staff do this in the dashboard).
 - Partial-refund policy approval. College/canteen authorization before any live money.
 - Staging host choice (any paid hosting needs your approval).
 

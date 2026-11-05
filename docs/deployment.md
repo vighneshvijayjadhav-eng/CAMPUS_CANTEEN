@@ -66,3 +66,18 @@ Before staging data exists, define retention, backup RPO/RTO and ownership. A re
 drill must restore a pg_dump archive into a separate disposable PostgreSQL database and
 verify migrations, order totals and fulfillment counts before any production go-live.
 Do not test restore over a live database. No restore drill has been performed yet.
+
+## Student Android app (local build)
+
+Requires JDK 17+ and the Android SDK (platform 35, build-tools 34). Keep the Gradle cache on a
+drive with several GB free: the default `%USERPROFILE%\.gradle` is fine, but do not point
+`GRADLE_USER_HOME` at a small drive.
+
+```bash
+cd apps/student-android
+echo "sdk.dir=C:/Users/<you>/AppData/Local/Android/Sdk" > local.properties   # forward slashes
+./gradlew assembleDebug                      # APK: app/build/outputs/apk/debug/app-debug.apk
+./gradlew assembleDebug -PapiBaseUrl=http://192.168.x.x:8000   # physical device on LAN
+```
+
+The emulator default `API_BASE_URL` is `http://10.0.2.2:8000` (host machine's port 8000).

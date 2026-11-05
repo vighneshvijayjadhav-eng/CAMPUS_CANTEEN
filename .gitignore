@@ -9,6 +9,10 @@ __pycache__/
 node_modules/
 dist/
 .gradle/
+.gradle-tooling/
+.gradle-tooling.zip
+build-verification.log
+build-verification.err
 local.properties
 *.jks
 *.keystore
@@ -16,4 +20,5 @@ build/
 uploads/
 .coverage
 .test-tmp/
+.test-*-run-*/
 *.tsbuildinfo

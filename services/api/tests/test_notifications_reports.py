@@ -60,6 +60,7 @@ def test_cancellation_and_refund_notifications(pay_setup):
 
     staff_order, *_ = paid_order(s)
     s.fake.refund_mode = "reject"
+    s.fake.reject_message = "The refund amount provided is greater than amount captured"
     staff_login(s)
     s.client.post(
         f"/api/v1/staff/orders/{staff_order}/cancel",

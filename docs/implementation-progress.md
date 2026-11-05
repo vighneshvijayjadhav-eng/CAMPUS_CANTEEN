@@ -201,8 +201,15 @@ retry of the first refund failed again with the stored provider message (balance
 
 Operational consequence: a refund fails whenever the canteen's Razorpay balance cannot cover it
 (e.g. the day's first payment cancelled before settlement). Canteens need a reserve balance;
-full refunds cost the merchant the gateway fee. Follow-up: retry balance-related rejections
-automatically for a while instead of marking them FAILED at once.
+full refunds cost the merchant the gateway fee.
+
+Auto-retry (added the same day, migration `9014a5236447`): a refused refund now stays REQUESTED
+and is retried by reconciliation after 5 min, 15 min, 1 h, then every 3 h, for up to 4 days
+(settlement plus a weekend). Only messages that can never succeed (amount above captured, already
+refunded, not captured, unknown payment) fail at once. After the window it becomes FAILED and the
+student is notified. Admins see "Retrying automatically" with the next try and deadline, and can
+"Retry now". Checked live: retrying the refused ₹20 refund against real Razorpay left it
+REQUESTED with the next try 5 minutes later. Backend 110 passed including PostgreSQL tests.
 
 ## Remaining implementation gates
 

@@ -159,7 +159,10 @@ uv run python -m app.modules.payments.admin add-merchant coe rzp_test_xxx "COE C
    above>` with the same secret and events `payment.captured`, `payment.failed`, `order.paid`,
    `refund.created`, `refund.processed`, `refund.failed`.
    Razorpay needs a public HTTPS URL; for local tests use a tunnel you control.
-5. Schedule reconciliation every few minutes. It recovers missed payment webhooks, sends queued
+5. Keep a reserve balance in each canteen's Razorpay account: Razorpay refuses refunds the
+   balance cannot cover (it keeps its fee, and same-day payments are unsettled). Such refunds
+   are retried automatically for 4 days.
+6. Schedule reconciliation every few minutes. It recovers missed payment webhooks, sends queued
    refunds (duplicate/wrong-amount payments, refunds that hit a Razorpay outage) and polls
    pending refunds:
 

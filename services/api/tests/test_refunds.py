@@ -130,34 +130,92 @@ def test_reconciliation_adopts_a_refund_razorpay_already_made(pay_setup):
     assert refunds(s)[0].provider_refund_id == "rfnd_Lost"
 
 
-def test_rejected_refund_fails_visibly_and_admin_can_retry(pay_setup):
+def at(when):
+    return datetime.now(UTC) + when
+
+
+def reconcile_at(s, moment):
+    with Session(s.engine) as db, db.begin():
+        return reconcile_refunds(db, s.providers, moment)
+
+
+def test_temporary_rejection_is_retried_until_it_succeeds(pay_setup):
+    """Seen in the Razorpay sandbox: refunds above the merchant balance are refused with
+    "invalid request sent". They must wait and retry, not fail."""
     s = pay_setup
     order_id, *_ = paid_order(s)
     s.fake.refund_mode = "reject"
     detail = cancel(s, order_id).json()
-    assert detail["refund_status"] == "FAILED"
-    failed_id = detail["refunds"][0]["id"]
-    # Razorpay's own explanation is kept for the admin (seen in the 5 Nov sandbox run).
-    assert detail["refunds"][0]["last_error"] == (
-        "PAYMENT_PROVIDER_REJECTED: BAD_REQUEST_ERROR: invalid request sent"
+    [refund] = detail["refunds"]
+    assert detail["state"] == "CANCELLED" and detail["refund_status"] == "REQUESTED"
+    assert refund["retrying"] is True and refund["next_attempt_at"]
+    assert (
+        refund["last_error"] == "PAYMENT_PROVIDER_REJECTED: BAD_REQUEST_ERROR: invalid request sent"
     )
+    assert "REFUND_FAILED" not in [
+        n["kind"] for n in s.client.get("/api/v1/student/notifications").json()["items"]
+    ]
+    # Not due yet: nothing is sent before the backoff time.
+    assert reconcile_at(s, at(timedelta(minutes=1))) == {}
+    # Still refused at the first retry: rescheduled further out, still REQUESTED.
+    assert reconcile_at(s, at(timedelta(minutes=6))) == {refund["id"]: "REQUESTED"}
+    with Session(s.engine) as db:
+        row = db.get(Refund, refund["id"])
+        assert row.submit_attempts == 2 and row.next_attempt_at is not None
+    # Balance arrives (settlement): the next due retry succeeds on the same row.
+    s.fake.refund_mode = "pending"
+    assert reconcile_at(s, at(timedelta(hours=1))) == {refund["id"]: "PENDING"}
+    assert len(s.fake.refunds) == 1
+    final = s.client.get(f"/api/v1/student/orders/{order_id}").json()
+    assert final["refund_status"] == "PENDING" and final["refunds"][0]["retrying"] is False
+
+
+def test_admin_can_retry_a_waiting_refund_now(pay_setup):
+    s = pay_setup
+    order_id, *_ = paid_order(s)
+    s.fake.refund_mode = "reject"
+    refund_id = cancel(s, order_id).json()["refunds"][0]["id"]
     s.fake.refund_mode = "pending"
     staff_login(s, "juice")
-    denied = s.client.post(f"/api/v1/staff/refunds/{failed_id}/retry", headers={"Origin": ORIGIN})
+    denied = s.client.post(f"/api/v1/staff/refunds/{refund_id}/retry", headers={"Origin": ORIGIN})
     assert denied.status_code == 403
     staff_login(s)
     listing = s.client.get("/api/v1/staff/refunds").json()
-    assert [row["status"] for row in listing] == ["FAILED"]
-    retried = s.client.post(f"/api/v1/staff/refunds/{failed_id}/retry", headers={"Origin": ORIGIN})
+    assert listing[0]["retrying"] is True and listing[0]["retry_until"]
+    retried = s.client.post(f"/api/v1/staff/refunds/{refund_id}/retry", headers={"Origin": ORIGIN})
     assert retried.status_code == 200, retried.text
-    assert retried.json()["status"] == "PENDING"
-    assert [r.status for r in refunds(s, order_id)] == ["FAILED", "PENDING"]
+    assert retried.json()["id"] == refund_id and retried.json()["status"] == "PENDING"
+    assert [r.status for r in refunds(s, order_id)] == ["PENDING"]
+
+
+def test_refund_still_refused_after_the_window_fails_and_notifies(pay_setup):
+    s = pay_setup
+    order_id, *_ = paid_order(s)
+    s.fake.refund_mode = "reject"
+    refund_id = cancel(s, order_id).json()["refunds"][0]["id"]
+    assert reconcile_at(s, at(timedelta(days=5))) == {refund_id: "FAILED"}
+    detail = s.client.get(f"/api/v1/student/orders/{order_id}").json()
+    assert detail["refund_status"] == "FAILED"
+    kinds = [n["kind"] for n in s.client.get("/api/v1/student/notifications").json()["items"]]
+    assert kinds.count("REFUND_FAILED") == 1
+    # A failed refund can still be retried by an admin as a new row; the old row is kept.
+    s.fake.refund_mode = "pending"
     with Session(s.engine) as db, db.begin():
         scope = StaffScope("admin", "session", s.ids["coe"], None, "admin")
-        try:
-            retry_refund(db, s.providers, scope, failed_id, datetime.now(UTC))
-        except Exception as error:  # the open refund blocks a second retry
-            assert getattr(error, "code", None) == "REFUND_NOT_RETRYABLE"
+        assert (
+            retry_refund(db, s.providers, scope, refund_id, datetime.now(UTC)).status == "PENDING"
+        )
+    assert [r.status for r in refunds(s, order_id)] == ["FAILED", "PENDING"]
+
+
+def test_permanent_rejection_fails_at_once(pay_setup):
+    s = pay_setup
+    order_id, *_ = paid_order(s)
+    s.fake.refund_mode = "reject"
+    s.fake.reject_message = "The refund amount provided is greater than amount captured"
+    [refund] = cancel(s, order_id).json()["refunds"]
+    assert refund["status"] == "FAILED" and refund["retrying"] is False
+    assert refund["next_attempt_at"] is None
 
 
 def test_abandoned_order_paid_late_is_refunded(pay_setup):

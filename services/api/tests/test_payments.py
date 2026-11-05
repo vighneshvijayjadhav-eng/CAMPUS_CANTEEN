@@ -41,6 +41,8 @@ class FakeRazorpay:
     def __init__(self):
         self.orders, self.payments, self.refunds, self.ids = {}, {}, {}, count(1)
         self.refund_mode = "pending"  # pending | processed | reject | down
+        # Razorpay reports an uncovered balance only as this generic message.
+        self.reject_message = "invalid request sent"
 
     def handle(self, request):
         if request.headers.get("authorization") != httpx.BasicAuth(KEY_ID, KEY_SECRET)._auth_header:
@@ -60,7 +62,7 @@ class FakeRazorpay:
                     json={
                         "error": {
                             "code": "BAD_REQUEST_ERROR",
-                            "description": "invalid request sent",
+                            "description": self.reject_message,
                         }
                     },
                 )

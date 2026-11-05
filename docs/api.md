@@ -45,7 +45,11 @@ Run `uvicorn app.main:create_app --factory` from services/api. OpenAPI is served
   time after contacting the student). Only for paid orders with nothing handed over; otherwise
   PARTIAL_REFUND_POLICY_REQUIRED. Refunds the full amount.
 - Refunds: admin GET /api/v1/staff/refunds (own canteen, newest 200) and POST
-  /staff/refunds/{id}/retry for a FAILED refund (creates a new refund row; the failed one stays).
+  /staff/refunds/{id}/retry: for a refund still being retried it sends it again now (same row);
+  for a FAILED one it creates a new refund row and keeps the failed one. Refund views include
+  `retrying`, `next_attempt_at` and `retry_until`. A refused refund is retried automatically
+  (5 min, 15 min, 1 h, then every 3 h) for 4 days before it becomes FAILED, unless Razorpay's
+  message shows it can never succeed.
   REFUNDED/PROCESSED is set only from Razorpay's own refund state.
 - Reviews (public): GET /api/v1/menu-items/{item_id}/reviews (visible reviews, newest first,
   author first name only). The public canteen menu adds `rating_average` and `rating_count` per

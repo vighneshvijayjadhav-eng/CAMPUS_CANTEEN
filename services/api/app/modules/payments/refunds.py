@@ -3,14 +3,19 @@
 
 A refund row is written in the same transaction as the decision (cancellation, duplicate
 capture). Submission to Razorpay is best-effort in that request and retried by reconciliation.
+
+Razorpay refuses refunds the merchant balance cannot cover (it keeps its fee, and same-day
+payments are unsettled) and reports that only as "invalid request sent". So a rejection is
+treated as temporary and retried with backoff for RETRY_WINDOW, unless the message shows it can
+never succeed. Only then does the refund become FAILED and the student is told.
 Each submission sends the refund row id as Razorpay `receipt`, and reconciliation adopts an
 existing Razorpay refund with that receipt before creating another, so retries never refund
 twice. Razorpay also rejects refunds above the captured amount.
 """
 
-from datetime import timedelta
+from datetime import UTC, timedelta
 
-from sqlalchemy import select
+from sqlalchemy import and_, or_, select
 
 from app.core.errors import DomainError
 from app.modules.notifications.service import notify as notify_student
@@ -27,6 +32,34 @@ ORDER_REFUND_STATUS = {
     "FAILED": "FAILED",
 }
 PROVIDER_STATUS = {"pending": "PENDING", "created": "PENDING", "processed": "PROCESSED"}
+
+RETRY_WINDOW = timedelta(days=4)  # covers T+2 settlement plus a weekend
+BACKOFF = [timedelta(minutes=5), timedelta(minutes=15), timedelta(hours=1), timedelta(hours=3)]
+# Razorpay messages that no amount of waiting will fix.
+PERMANENT_REJECTIONS = (
+    "greater than amount captured",
+    "fully refunded",
+    "not captured",
+    "does not exist",
+)
+
+
+def instant_utc(value):
+    return value.replace(tzinfo=UTC) if value.tzinfo is None else value
+
+
+def permanent(detail):
+    text = (detail or "").lower()
+    return any(phrase in text for phrase in PERMANENT_REJECTIONS)
+
+
+def retry_deadline(refund):
+    return instant_utc(refund.created_at) + RETRY_WINDOW
+
+
+def schedule_retry(refund, now):
+    delay = BACKOFF[min(refund.submit_attempts - 1, len(BACKOFF) - 1)]
+    refund.next_attempt_at = now + delay
 
 
 def captured_attempt(db, order_id):
@@ -136,8 +169,9 @@ def locked_refund(db, refund_id):
 
 
 def submit_refund(db, providers, refund_id, now):
-    """Send a REQUESTED refund to Razorpay. Provider outages leave it REQUESTED for retry;
-    a provider rejection marks it FAILED for an admin to review."""
+    """Send a REQUESTED refund to Razorpay. Outages and temporary rejections leave it
+    REQUESTED with a backoff time; a permanent rejection, or one still failing after
+    RETRY_WINDOW, marks it FAILED for an admin to review."""
     refund = locked_refund(db, refund_id)
     if refund.status != "REQUESTED":
         return refund
@@ -161,15 +195,20 @@ def submit_refund(db, providers, refund_id, now):
         )
     except DomainError as error:
         refund.last_error = f"{error.code}: {error.detail}"[:160] if error.detail else error.code
-        if error.code == "PAYMENT_PROVIDER_REJECTED":
+        rejected = error.code == "PAYMENT_PROVIDER_REJECTED"
+        if rejected and (permanent(error.detail) or now >= retry_deadline(refund)):
             refund.status = "FAILED"
+            refund.next_attempt_at = None
             sync_order(db, refund)
             notify_student(
                 db, db.get(Order, refund.order_id), "REFUND_FAILED", now, refund.amount_paise
             )
+        else:
+            schedule_retry(refund, now)
         db.flush()
         return refund
     refund.last_error = None
+    refund.next_attempt_at = None
     refund.submitted_at = now
     return apply_provider_refund(db, refund, provider_refund, now)
 
@@ -194,13 +233,22 @@ def handle_refund_event(db, account, event_type, entity, now):
 
 
 def reconcile_refunds(db, providers, now, older_than=timedelta(minutes=2), limit=100):
-    """Retry unsubmitted refunds and poll accepted ones. Caller commits."""
+    """Retry unsubmitted refunds that are due and poll accepted ones. Caller commits."""
     results = {}
+    settled = Refund.created_at <= now - older_than
     rows = db.scalars(
         select(Refund)
         .where(
-            Refund.status.in_(["REQUESTED", "PENDING"]),
-            Refund.created_at <= now - older_than,
+            or_(
+                and_(
+                    Refund.status == "REQUESTED",
+                    or_(
+                        and_(Refund.next_attempt_at.is_(None), settled),
+                        Refund.next_attempt_at <= now,
+                    ),
+                ),
+                and_(Refund.status == "PENDING", settled),
+            )
         )
         .order_by(Refund.created_at)
         .limit(limit)
@@ -234,6 +282,10 @@ def refund_view(refund):
         "created_at": refund.created_at,
         "processed_at": refund.processed_at,
         "last_error": refund.last_error,
+        # True while a rejected or unsent refund is being retried automatically.
+        "retrying": refund.status == "REQUESTED" and refund.last_error is not None,
+        "next_attempt_at": refund.next_attempt_at,
+        "retry_until": retry_deadline(refund) if refund.status == "REQUESTED" else None,
     }
 
 
@@ -247,7 +299,8 @@ def order_refunds(db, order_id):
 
 
 def retry_refund(db, providers, scope, refund_id, now):
-    """Admin retry of a FAILED refund for their own canteen: a new row, the old one kept."""
+    """Admin retry for their own canteen. A refund still being retried is sent again now
+    (same row); a FAILED one gets a new row and the old one is kept for audit."""
     if scope.role != "admin":
         raise DomainError("ADMIN_REQUIRED", 403)
     failed = db.scalar(
@@ -255,6 +308,8 @@ def retry_refund(db, providers, scope, refund_id, now):
     )
     if failed is None:
         raise DomainError("REFUND_NOT_FOUND", 404)
+    if failed.status == "REQUESTED":
+        return submit_refund(db, providers, failed.id, now)
     if failed.status != "FAILED":
         raise DomainError("REFUND_NOT_RETRYABLE")
     attempt = db.get(PaymentAttempt, failed.payment_attempt_id)

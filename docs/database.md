@@ -50,7 +50,8 @@ cancellation deactivates the credential and clears the ciphertext.
 Refunds: one row per full refund of a payment attempt (REQUESTED -> PENDING -> PROCESSED, or
 FAILED), with reason (student/staff cancellation, duplicate payment, amount mismatch), who asked,
 an optional staff note and Razorpay's refund id. A partial unique index allows only one
-non-failed refund per payment attempt. The row id is sent to Razorpay as the refund `receipt`, so
+non-failed refund per payment attempt. `next_attempt_at` schedules automatic retries of refused
+or unsent refunds (index on status + next_attempt_at). The row id is sent to Razorpay as the refund `receipt`, so
 reconciliation adopts a refund Razorpay already made instead of creating a second one.
 orders.refund_status mirrors cancellation refunds (REQUESTED, PENDING, REFUNDED, FAILED); refunds
 of duplicate or wrong-amount captures do not change the order. Partial refunds are not supported

@@ -130,6 +130,7 @@ class Refund(Base):
             sqlite_where=text("status <> 'FAILED'"),
         ),
         Index("ix_refunds_canteen_status", "canteen_id", "status", "created_at"),
+        Index("ix_refunds_retry", "status", "next_attempt_at"),
     )
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=identifier)
     canteen_id: Mapped[str] = mapped_column(String(36))
@@ -148,3 +149,5 @@ class Refund(Base):
     processed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     submit_attempts: Mapped[int] = mapped_column(default=0)
     last_error: Mapped[str | None] = mapped_column(String(160))
+    # When reconciliation should try a REQUESTED refund again (set after a failed submission).
+    next_attempt_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))

@@ -50,3 +50,17 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+  android:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/student-android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+      # Debug build only: no signing keys, OAuth client or payment keys exist in CI.
+      - run: chmod +x gradlew && ./gradlew --no-daemon testDebugUnitTest assembleDebug

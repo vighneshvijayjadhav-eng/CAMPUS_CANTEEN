@@ -1,0 +1,7 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- Debug builds may talk plain HTTP to a local API; release builds require HTTPS. -->
+    <application
+        android:networkSecurityConfig="@xml/debug_network_security"
+        tools:ignore="UnusedAttribute" />
+</manifest>

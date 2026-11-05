@@ -446,3 +446,24 @@ def test_live_payments_flag_requires_production():
         **base,
     )
     assert parsed.razorpay_credentials[KEY_ID].key_secret.get_secret_value() == "a"
+
+
+def test_single_account_env_shorthand_is_merged():
+    settings = Settings(
+        _env_file=None,
+        database_url="postgresql+psycopg://u:p@localhost/db",
+        pickup_hmac_key="x" * 32,
+        razorpay_key_id=KEY_ID,
+        razorpay_key_secret="s",
+        razorpay_webhook_secret="w",
+    )
+    assert settings.razorpay_credentials[KEY_ID].webhook_secret.get_secret_value() == "w"
+    empty = Settings(
+        _env_file=None,
+        database_url="postgresql+psycopg://u:p@localhost/db",
+        pickup_hmac_key="x" * 32,
+        razorpay_key_id=KEY_ID,
+        razorpay_key_secret="",
+        razorpay_webhook_secret="",
+    )
+    assert empty.razorpay_credentials == {}

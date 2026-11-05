@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Debug only: allows plain HTTP to a development API (emulator 10.0.2.2 or a LAN address).
+     Release builds use the platform default, which requires HTTPS. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

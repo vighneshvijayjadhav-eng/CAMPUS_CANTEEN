@@ -104,6 +104,23 @@ prices in the workbook and draft on 5 Nov (Cut Cheese Dosa 70, Loni Spunj Dosa 7
 old workbook refuses to re-seed by design until source IDs are reviewed; set the prices there in
 the dashboard instead.
 
+## Student Android app — 5 November 2026
+
+Implemented (Phase 4): Kotlin/Compose app with Google sign-in (Credential Manager), rotating
+session stored encrypted with an Android Keystore key and refreshed automatically, server-side
+institute choice, canteen list with open/closed state, menu with per-size steppers and unavailable
+items, single-canteen cart with conflict prompt, idempotent checkout, Razorpay Checkout with
+server confirmation, order screen with large pickup code, per-station progress, five-minute
+cancel countdown, refund status and "pay again", active/history order lists and sign-out that
+revokes the device session. Release builds use R8 and optional keystore signing; CI builds debug.
+
+Verification: Android unit tests (API client refresh/sign-out/error handling, formatting, cancel
+window: 12 tests), `assembleDebug` and an unsigned R8 `assembleRelease` pass locally. Not yet run on a device or emulator, and not tested
+against real Google sign-in or the Razorpay sandbox. No instrumented UI tests yet.
+
+Not included yet (later phases): reviews and photos, in-app notifications, receipts screen,
+item detail page, menu search.
+
 ## Remaining implementation gates
 
 1. Native Android project, emulator/device tests and release-signing configuration.

@@ -54,7 +54,7 @@ Each phase ends with tests green, docs updated (`api.md`, `database.md`,
 - Admin-initiated refund for its own canteen only. Partial handover stays in the exception workflow;
   the partial-refund policy needs **owner sign-off** before financial resolution is enabled.
 
-### Phase 4: student Android app
+### Phase 4: student Android app — DONE 5 Nov 2026 (device testing pending)
 - Structure: Compose + Navigation, ViewModel, Retrofit/OkHttp + kotlinx.serialization, DataStore +
   Android Keystore (EncryptedSharedPreferences replacement) for tokens with a refresh interceptor.
 - Screens, using `design-references/student-app-mockup.jpg` as the visual target:

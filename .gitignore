@@ -22,3 +22,5 @@ uploads/
 .test-tmp/
 .test-*-run-*/
 *.tsbuildinfo
+keystore.properties
+.kotlin/

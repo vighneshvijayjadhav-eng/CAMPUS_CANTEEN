@@ -81,13 +81,37 @@ echo "sdk.dir=C:/Users/<you>/AppData/Local/Android/Sdk" > local.properties   # f
 ```
 
 The emulator default `API_BASE_URL` is `http://10.0.2.2:8000` (host machine's port 8000).
+Debug builds allow plain HTTP to any host (for a laptop API); release builds require HTTPS:
+
+```bash
+./gradlew assembleRelease -PapiBaseUrl=https://api.example.edu
+```
+
+Google sign-in: the app asks Credential Manager for an ID token using `googleServerClientId`
+(the **Web application** OAuth client id, set in `gradle.properties`). The API must have the same
+value in `GOOGLE_OAUTH_CLIENT_ID`. The Android OAuth client must list the package
+`in.ac.aissms.canteen` and the SHA-1 of the key that signed the APK (debug and release keys
+differ). Sign-in needs a device or emulator image with Google Play services.
+
+Razorpay Checkout opens with the canteen's public key id from the API; nothing secret is in the
+APK. Release signing reads `apps/student-android/keystore.properties` (gitignored):
+
+```
+storeFile=../release.jks
+storePassword=...
+keyAlias=canteen
+keyPassword=...
+```
+
+Without that file `assembleRelease` produces an unsigned APK. Unit tests: `./gradlew testDebugUnitTest`.
 
 ## Razorpay test-mode setup (per canteen)
 
 1. In the Razorpay Dashboard (Test Mode) for the canteen's merchant account, create API keys.
-2. Put them in server configuration only, keyed by key id:
-   `RAZORPAY_CREDENTIALS={"rzp_test_xxx": {"key_secret": "...", "webhook_secret": "..."}}`
-   (choose the webhook secret yourself; it is entered again in step 4).
+2. Put them in server configuration only. For one account, set `RAZORPAY_KEY_ID`,
+   `RAZORPAY_KEY_SECRET` and `RAZORPAY_WEBHOOK_SECRET`; for several (one per canteen) use
+   `RAZORPAY_CREDENTIALS={"rzp_test_xxx": {"key_secret": "...", "webhook_secret": "..."}}`.
+   Choose the webhook secret yourself; it is entered again in step 4.
 3. Register and activate the account:
 
 ```bash

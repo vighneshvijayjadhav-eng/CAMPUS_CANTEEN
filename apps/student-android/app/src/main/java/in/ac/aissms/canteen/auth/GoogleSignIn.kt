@@ -6,6 +6,7 @@ import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.credentials.exceptions.GetCredentialException
+import androidx.credentials.exceptions.NoCredentialException
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import `in`.ac.aissms.canteen.BuildConfig
@@ -36,8 +37,12 @@ object GoogleSignIn {
             }
         } catch (_: GetCredentialCancellationException) {
             GoogleResult.Cancelled
-        } catch (error: GetCredentialException) {
-            GoogleResult.Failed(error.message ?: "Google sign-in failed.")
+        } catch (_: NoCredentialException) {
+            GoogleResult.Failed(
+                "No Google account on this phone. Add one in Settings › Passwords & accounts, then try again.",
+            )
+        } catch (_: GetCredentialException) {
+            GoogleResult.Failed("Google sign-in didn't work. Check your connection and try again.")
         }
     }
 }

@@ -118,6 +118,12 @@ Verification: Android unit tests (API client refresh/sign-out/error handling, fo
 window: 12 tests), `assembleDebug` and an unsigned R8 `assembleRelease` pass locally. Not yet run on a device or emulator, and not tested
 against real Google sign-in or the Razorpay sandbox. No instrumented UI tests yet.
 
+Emulator check (5 Nov, API 37 Play image on a 6 GB RAM PC): the app launched and the sign-in
+screen rendered. Two fixes followed: Razorpay `Checkout.preload()` at startup blocked the main
+thread long enough to trigger an ANR, so it was removed; the "no Google account" error now tells
+the student to add an account. Signed-in screens were not reached (no Google account on the
+emulator, then the emulator ran out of memory).
+
 Not included yet (later phases): reviews and photos, in-app notifications, receipts screen,
 item detail page, menu search.
 

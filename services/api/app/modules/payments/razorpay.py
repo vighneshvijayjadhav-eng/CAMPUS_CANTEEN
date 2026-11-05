@@ -44,6 +44,15 @@ def refund_from(entity):
     )
 
 
+def provider_message(response):
+    """Razorpay's own error description, kept for admins (it contains no secrets)."""
+    try:
+        error = response.json().get("error", {})
+    except ValueError:
+        return f"HTTP {response.status_code}"
+    return f"{error.get('code', 'ERROR')}: {error.get('description', '')}".strip()[:120]
+
+
 def signature(secret, message):
     return hmac.new(secret.encode(), message, hashlib.sha256).hexdigest()
 
@@ -84,7 +93,7 @@ class RazorpayProvider:
         if response.status_code >= 500:
             raise DomainError("PAYMENT_PROVIDER_UNAVAILABLE", 503)
         if response.status_code >= 400:
-            raise DomainError("PAYMENT_PROVIDER_REJECTED", 502)
+            raise DomainError("PAYMENT_PROVIDER_REJECTED", 502, detail=provider_message(response))
         return response.json()
 
     def create_order(self, amount_paise, receipt, notes):

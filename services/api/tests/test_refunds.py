@@ -137,6 +137,10 @@ def test_rejected_refund_fails_visibly_and_admin_can_retry(pay_setup):
     detail = cancel(s, order_id).json()
     assert detail["refund_status"] == "FAILED"
     failed_id = detail["refunds"][0]["id"]
+    # Razorpay's own explanation is kept for the admin (seen in the 5 Nov sandbox run).
+    assert detail["refunds"][0]["last_error"] == (
+        "PAYMENT_PROVIDER_REJECTED: BAD_REQUEST_ERROR: invalid request sent"
+    )
     s.fake.refund_mode = "pending"
     staff_login(s, "juice")
     denied = s.client.post(f"/api/v1/staff/refunds/{failed_id}/retry", headers={"Origin": ORIGIN})

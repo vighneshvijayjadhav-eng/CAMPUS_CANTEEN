@@ -171,6 +171,28 @@ identical counts, both images built and ran together (headers, deep links, /api 
 health), 30-user load smoke with 0 errors. Full backend suite including PostgreSQL tests:
 107 passed. See the status table in docs/PRODUCTION_READINESS.md for what is still open.
 
+## Razorpay sandbox run — 5 November 2026
+
+Real Razorpay TEST mode with the owner's test keys, real app code, throwaway PostgreSQL 18:
+- Cart, checkout and Razorpay order creation worked (`order_TwUAx1O5zOdc9c`, ₹20).
+- Payment by test netbanking in Razorpay Checkout; the app's confirm call verified the
+  signature, fetched the payment from Razorpay (`captured`) and activated the order with a
+  pickup code and a PAYMENT_CONFIRMED notification. Abandoned and failed attempts left their
+  orders unpaid, as designed.
+- Student cancellation within five minutes cancelled the order and withdrew the code, but
+  **Razorpay refused the refund** ("BAD_REQUEST_ERROR: invalid request sent"). A bare refund
+  request with only the amount was refused the same way, while probe requests showed every
+  field of the app's request is accepted, so the block is on the test account/payment side.
+  The app marked the refund FAILED, notified the student and allows an admin retry. The
+  provider's message is now stored with the refund for admins.
+- Not covered: webhooks (need a public HTTPS URL); cards and UPI were rejected by Checkout
+  ("Please use another method"), likely not enabled on this test account; netbanking and wallet
+  need pop-up windows, which the in-app browser does not open (Chrome worked).
+
+Open: check in the Razorpay Dashboard (Test Mode) why refunds are refused for this account
+(try a manual refund of `pay_TwUBIMvnWcWSS1`), then retry the refund from the dashboard's
+Refunds page.
+
 ## Remaining implementation gates
 
 1. Native Android project, emulator/device tests and release-signing configuration.

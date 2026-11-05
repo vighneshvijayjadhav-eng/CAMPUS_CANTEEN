@@ -160,7 +160,7 @@ def submit_refund(db, providers, refund_id, now):
             notes={"order_id": refund.order_id, "reason": refund.reason},
         )
     except DomainError as error:
-        refund.last_error = error.code
+        refund.last_error = f"{error.code}: {error.detail}"[:160] if error.detail else error.code
         if error.code == "PAYMENT_PROVIDER_REJECTED":
             refund.status = "FAILED"
             sync_order(db, refund)

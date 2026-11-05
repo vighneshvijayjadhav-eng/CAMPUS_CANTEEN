@@ -55,7 +55,15 @@ class FakeRazorpay:
             if self.refund_mode == "down":
                 return httpx.Response(503)
             if self.refund_mode == "reject":
-                return httpx.Response(400, json={"error": {"code": "BAD_REQUEST_ERROR"}})
+                return httpx.Response(
+                    400,
+                    json={
+                        "error": {
+                            "code": "BAD_REQUEST_ERROR",
+                            "description": "invalid request sent",
+                        }
+                    },
+                )
             body = json.loads(request.content)
             payment_id = path.split("/")[2]
             refunded = sum(

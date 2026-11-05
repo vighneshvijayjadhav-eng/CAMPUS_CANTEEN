@@ -1,7 +1,12 @@
 from typing import Literal
 
-from pydantic import SecretStr, model_validator
+from pydantic import BaseModel, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class RazorpayCredential(BaseModel):
+    key_secret: SecretStr
+    webhook_secret: SecretStr
 
 
 class Settings(BaseSettings):
@@ -11,6 +16,10 @@ class Settings(BaseSettings):
     web_origin: str = "http://localhost:5173"
     google_oauth_client_id: str | None = None
     environment: Literal["local", "staging", "production"] = "local"
+    # JSON keyed by Razorpay key_id: {"rzp_test_x": {"key_secret": "...", "webhook_secret": "..."}}
+    razorpay_credentials: dict[str, RazorpayCredential] = {}
+    # Separate explicit approval is required before any live charge.
+    allow_live_payments: bool = False
 
     @model_validator(mode="after")
     def validate_security(self):
@@ -20,4 +29,6 @@ class Settings(BaseSettings):
             raise ValueError("PICKUP_HMAC_KEY must contain at least 32 random characters")
         if self.environment != "local" and not self.web_origin.startswith("https://"):
             raise ValueError("HTTPS is required outside local development")
+        if self.allow_live_payments and self.environment != "production":
+            raise ValueError("Live payments may only be enabled in production")
         return self

@@ -37,7 +37,7 @@ Each phase ends with tests green, docs updated (`api.md`, `database.md`,
 - Student order history/detail endpoints showing per-line, per-station collection state.
 - Tests: price changed mid-checkout, item disabled, closed canteen, duplicate submit.
 
-### Phase 2: payments (sandbox only)
+### Phase 2: payments (sandbox only) — Razorpay, DONE 5 Nov 2026 (real sandbox run pending keys)
 - Choose the gateway (Razorpay, Cashfree or PhonePe PG; **owner decision**). Build a `PaymentProvider`
   interface with a fake adapter for tests and one real sandbox adapter.
 - Merchant config per canteen (non-secret metadata in DB, secrets in env/secret store, never shown).

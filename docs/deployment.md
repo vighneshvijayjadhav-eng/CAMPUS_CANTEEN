@@ -81,3 +81,27 @@ echo "sdk.dir=C:/Users/<you>/AppData/Local/Android/Sdk" > local.properties   # f
 ```
 
 The emulator default `API_BASE_URL` is `http://10.0.2.2:8000` (host machine's port 8000).
+
+## Razorpay test-mode setup (per canteen)
+
+1. In the Razorpay Dashboard (Test Mode) for the canteen's merchant account, create API keys.
+2. Put them in server configuration only, keyed by key id:
+   `RAZORPAY_CREDENTIALS={"rzp_test_xxx": {"key_secret": "...", "webhook_secret": "..."}}`
+   (choose the webhook secret yourself; it is entered again in step 4).
+3. Register and activate the account:
+
+```bash
+uv run python -m app.modules.payments.admin add-merchant coe rzp_test_xxx "COE Canteen" --activate
+```
+
+4. In Dashboard > Webhooks add `https://<api-host>/api/v1/payments/razorpay/webhooks/<id printed
+   above>` with the same secret and events `payment.captured`, `payment.failed`, `order.paid`.
+   Razorpay needs a public HTTPS URL; for local tests use a tunnel you control.
+5. Schedule reconciliation every few minutes to recover missed webhooks:
+
+```bash
+uv run python -m app.modules.payments.admin reconcile
+```
+
+Live keys (`rzp_live_`) are refused unless `ENVIRONMENT=production` and `ALLOW_LIVE_PAYMENTS=true`,
+which require the college/canteen approvals listed in PRODUCTION_READINESS.md.

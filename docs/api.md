@@ -21,7 +21,22 @@ Run `uvicorn app.main:create_app --factory` from services/api. OpenAPI is served
   request_id, different total). No payment is started and no pickup code is issued yet.
 - Student orders: GET /api/v1/student/orders (newest first, 50 max) and
   /student/orders/{id} (own orders only; others return 404). Detail includes charged line
-  snapshots, remaining quantity per station and `pickup_code` (null until payment exists).
+  snapshots, remaining quantity per station, `payment` (latest attempt status) and
+  `pickup_code` (the six-digit code while the order is paid and not fully collected).
+- Student payment (Razorpay): POST /api/v1/student/orders/{id}/payment returns Checkout
+  parameters (`key_id`, `provider_order_id`, `amount_paise`, `currency`, `merchant_name`,
+  `mode`); repeated calls reuse the open attempt. After Razorpay Checkout succeeds the app POSTs
+  /student/orders/{id}/payment/confirm with `provider_order_id`, `provider_payment_id` and
+  `signature`. The server checks the signature, then fetches the payment from Razorpay; the order
+  becomes PAID_ACTIVE only for a captured payment of the exact amount. `payment_status`
+  CREATED means still processing (poll the order). Errors: ORDER_NOT_PAYABLE,
+  PAYMENTS_NOT_CONFIGURED (503), PAYMENT_SIGNATURE_INVALID (400), PAYMENT_PROVIDER_* (502/503).
+- Razorpay webhook: POST /api/v1/payments/razorpay/webhooks/{merchant_account_id}, verified with
+  that account's webhook secret over the raw body (`X-Razorpay-Signature`). Handles
+  payment.captured, order.paid and payment.failed; replays (same `X-Razorpay-Event-Id`, or same
+  body) return DUPLICATE. Other events are recorded and IGNORED.
+- Merchant metadata: admin GET /api/v1/staff/merchant (key id, mode, active, webhook path; never
+  secrets). Accounts are added by the owner CLI, not through the API.
 - Canteen settings: admin GET/PATCH /api/v1/staff/canteen. PATCH accepts `operating` (master
   switch) and/or `hours` (replaces all windows): `[{weekday 0=Mon..6, opens "HH:MM",
   closes "HH:MM"|"24:00"}]` in India time, one window per weekday. With no hours configured
@@ -45,9 +60,9 @@ writes may omit Origin, but a supplied nonmatching Origin is denied. Staff cooki
 and SameSite Strict, Secure outside local mode. Never send a role/canteen/station claim from
 the UI to authorize an action; the server resolves them from the persisted session and account.
 
-There is intentionally no payment-success or simulator endpoint. Checkout only creates an unpaid
-order, which never reaches a station queue. Paid orders in tests are fixtures, not merchant
-evidence. Student cancellation currently exists as a tested domain
+There is intentionally no payment-success or simulator endpoint: only Razorpay-verified captures
+activate orders. Unpaid orders never reach a station queue. Tests use a fake Razorpay API, which
+is not merchant evidence. Student cancellation currently exists as a tested domain
 service, not a public endpoint until paid-order lifecycle APIs are implemented.
 
 SSE uses committed queue events as refetch hints and checks session validity every two

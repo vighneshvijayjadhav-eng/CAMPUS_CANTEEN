@@ -1,7 +1,7 @@
 # Database baseline
 
-Alembic revisions `6ee6efb5339d`, `c4e95a58b9ea` and `2520dc960e74` add tables, nullable
-columns and defaulted columns only; no
+Alembic revisions `6ee6efb5339d`, `c4e95a58b9ea` and `2520dc960e74`, `a824997c8e58` add tables,
+nullable columns and defaulted columns only; no
 existing user table is dropped.
 Apply with DATABASE_URL configured: `uv run alembic upgrade head` from services/api.
 The application requires PostgreSQL. SQLite is used only by fast local behavior tests.
@@ -34,12 +34,20 @@ and queue_events. Lines snapshot station name/ID, product, size and charged unit
 Order-changing services lock the same parent row before reading/modifying lines. Quantity
 checks, expected counts and idempotency keys prevent stale/replayed handovers.
 
-Refund request intent is not a payment ledger or a confirmed refund. No gateway/payment
-activation is implemented in this milestone. Existing tables will be extended through new
-migrations when checkout, merchant and provider integration are implemented.
+Payments: merchant_accounts holds per-canteen Razorpay metadata (key id, test/live mode, at
+most one active per canteen); secrets stay in RAZORPAY_CREDENTIALS. Accounts are never repointed,
+so payment_attempts (one Razorpay order each, tenant-scoped foreign keys to order and merchant)
+keep the account they used. Attempt states: CREATED, CAPTURED, AMOUNT_MISMATCH, FAILED and
+CAPTURED_UNAPPLIED (money received for an already-paid order; must be refunded in Phase 3).
+payment_webhook_events is the replay guard (account + event id). Capture locks the order, then
+the attempt, so a webhook, app callback and reconciliation racing each other activate once.
 
-No pickup expiry field or expiry job exists. Full collection/cancellation deactivates the
-credential and clears recoverable ciphertext. Key rotation/issuance is a later payment gate.
+On capture a random six-digit pickup code is issued: the HMAC digest is stored for counter
+lookup, and an AES-GCM copy (key derived from PICKUP_HMAC_KEY via HKDF, order id as associated
+data) lets the student app show it again. No expiry field or job exists. Full collection or
+cancellation deactivates the credential and clears the ciphertext.
+
+Refund request intent is not a confirmed refund; provider refunds are Phase 3.
 
 Downgrade deliberately refuses destructive deletion. Before any deployed schema rollback,
 take a backup, verify restoration and obtain operational approval. For a failed additive

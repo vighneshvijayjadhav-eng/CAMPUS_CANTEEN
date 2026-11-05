@@ -24,8 +24,4 @@ def create_router(settings, engine):
     def orders(db: DB, scope: STUDENT):
         return student_orders(db, scope.actor_id)
 
-    @router.get("/api/v1/student/orders/{order_id}")
-    def order(order_id: UUID, db: DB, scope: STUDENT):
-        return student_order_detail(db, scope.actor_id, str(order_id))
-
     return router

@@ -77,6 +77,18 @@ double-checkout races, run only in CI with TEST_DATABASE_URL). Migration verifie
 Not included: payment, pickup-code issuance and expiry of abandoned PAYMENT_PENDING orders
 (Phase 2), student cancellation endpoint (Phase 3), web dashboard UI for hours (follow-up).
 
+## Razorpay payments — 5 November 2026
+
+Implemented (Phase 2): per-canteen merchant accounts (owner CLI, secrets in configuration),
+Razorpay order creation, signature-checked app callback followed by a server-side payment fetch,
+signature-verified replay-safe webhooks, reconciliation polling, amount checks, flagging of
+duplicate captures for refund, and pickup-code issuance (HMAC lookup + AES-GCM recoverable copy)
+with a PAID queue event. Live keys are blocked outside an explicitly approved production config.
+
+Verification: `pytest` 76 passed, 6 skipped locally. Payment tests run the real adapter against
+a fake Razorpay API (no network); the new PostgreSQL callback/webhook race test runs in CI only.
+Not yet exercised against the real Razorpay sandbox: that needs test keys and a public webhook URL.
+
 ## Remaining implementation gates
 
 1. Native Android project, emulator/device tests and release-signing configuration.

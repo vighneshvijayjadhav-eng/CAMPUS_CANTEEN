@@ -15,6 +15,7 @@ from app.core.errors import DomainError
 from app.modules.menu.models import Canteen, Station
 from app.modules.orders.models import FulfillmentEvent, Order, OrderLine, PickupCredential
 from app.modules.orders.service import StaffScope, cancel_order, confirm_line
+from app.modules.payments import models as payment_models  # noqa: F401  (register tables)
 
 pytestmark = pytest.mark.skipif(
     not os.getenv("TEST_DATABASE_URL"),
@@ -193,3 +194,60 @@ def test_two_different_checkouts_of_one_cart_create_one_order(pg_cart):
     assert sorted(results) == ["CART_EMPTY", "ok"]
     with Session(pg_cart) as db:
         assert len(db.scalars(select(Order).where(Order.student_id == "buyer")).all()) == 1
+
+
+def test_callback_and_webhook_racing_activate_once(pg):
+    from app.modules.payments.models import MerchantAccount, PaymentAttempt
+    from app.modules.payments.razorpay import ProviderPayment
+    from app.modules.payments.service import apply_capture
+
+    with Session(pg) as db, db.begin():
+        db.add(
+            MerchantAccount(
+                id="merchant",
+                canteen_id="coe",
+                provider="razorpay",
+                key_id="rzp_test_race",
+                mode="test",
+                display_name="COE",
+                active=True,
+                created_at=datetime.now(UTC),
+            )
+        )
+        db.add(Order(id="unpaid", canteen_id="coe", student_id="s", total_paise=5000))
+        db.flush()
+        db.add(
+            OrderLine(
+                id="unpaid-line",
+                canteen_id="coe",
+                order_id="unpaid",
+                station_id="juice",
+                station_name="Juice",
+                name="Juice",
+                variant_label="Small",
+                unit_price_paise=5000,
+                quantity=1,
+            )
+        )
+        db.add(
+            PaymentAttempt(
+                id="attempt",
+                canteen_id="coe",
+                order_id="unpaid",
+                merchant_account_id="merchant",
+                provider_order_id="order_Race",
+                amount_paise=5000,
+                created_at=datetime.now(UTC),
+            )
+        )
+    payment = ProviderPayment("pay_Race", "order_Race", 5000, "INR", "captured")
+
+    def capture(db):
+        attempt = db.get(PaymentAttempt, "attempt")
+        apply_capture(db, attempt, payment, datetime.now(UTC), "k" * 32)
+
+    assert race(pg, capture, capture) == ["ok", "ok"]
+    with Session(pg) as db:
+        assert db.get(Order, "unpaid").state == "PAID_ACTIVE"
+        assert db.get(PaymentAttempt, "attempt").status == "CAPTURED"
+        assert db.get(PickupCredential, "unpaid").active

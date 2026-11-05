@@ -189,9 +189,20 @@ Real Razorpay TEST mode with the owner's test keys, real app code, throwaway Pos
   ("Please use another method"), likely not enabled on this test account; netbanking and wallet
   need pop-up windows, which the in-app browser does not open (Chrome worked).
 
-Open: check in the Razorpay Dashboard (Test Mode) why refunds are refused for this account
-(try a manual refund of `pay_TwUBIMvnWcWSS1`), then retry the refund from the dashboard's
-Refunds page.
+Cause found: the account balance was ₹19.52 (₹20 minus Razorpay's ₹0.48 fee, unsettled until
+7 Nov), below the ₹20 refund. Razorpay keeps its fee on refunds and reports insufficient balance
+only as "invalid request sent". Funds cannot be added in Test Mode.
+
+Second run (balance raised by another ₹20 test payment): student cancellation within five
+minutes produced a Razorpay refund `rfnd_TwUi2qlWj1FHZd` (processed, ₹20, receipt = our refund
+id), the order showed REFUNDED and the student got ORDER_CANCELLED and REFUND_COMPLETED. An admin
+retry of the first refund failed again with the stored provider message (balance ₹19.04).
+`app.ops.verify` passed on the resulting data.
+
+Operational consequence: a refund fails whenever the canteen's Razorpay balance cannot cover it
+(e.g. the day's first payment cancelled before settlement). Canteens need a reserve balance;
+full refunds cost the merchant the gateway fee. Follow-up: retry balance-related rejections
+automatically for a while instead of marking them FAILED at once.
 
 ## Remaining implementation gates
 

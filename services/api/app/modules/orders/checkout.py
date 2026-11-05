@@ -7,6 +7,7 @@ from app.modules.menu.models import Canteen, MenuItem, Station
 from app.modules.menu.schedule import require_open
 from app.modules.orders.models import Order, OrderLine
 from app.modules.orders.service import instant, lines_for, server_now
+from app.modules.reviews.service import reviews_by_line
 
 
 def existing_checkout(db, student_id, request_id):
@@ -132,6 +133,7 @@ def student_order_detail(db, student_id, order_id):
         raise DomainError("ORDER_NOT_FOUND", 404)
     canteen = db.get(Canteen, order.canteen_id)
     lines = lines_for(db, order.id)
+    reviews = reviews_by_line(db, [line.id for line in lines])
     stations = {}
     for line in lines:
         remaining = line.quantity - line.fulfilled
@@ -166,6 +168,9 @@ def student_order_detail(db, student_id, order_id):
                 "line_total_paise": line.unit_price_paise * line.quantity,
                 "fulfilled": line.fulfilled,
                 "remaining": line.quantity - line.fulfilled,
+                # Reviewable once at least one unit was handed over.
+                "reviewable": line.fulfilled > 0 and line.variant_id is not None,
+                "review_id": reviews[line.id].id if line.id in reviews else None,
             }
             for line in lines
         ],

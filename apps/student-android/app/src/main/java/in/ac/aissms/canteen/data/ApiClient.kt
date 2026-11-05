@@ -18,6 +18,7 @@ import kotlinx.serialization.json.put
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -60,6 +61,8 @@ class ApiClient(
 
     fun currentSessionId(): String? = tokens.load()?.sessionId
 
+    fun absolute(path: String): String = baseUrl.trimEnd('/') + path
+
     suspend fun <T> get(path: String, strategy: DeserializationStrategy<T>): T =
         call("GET", path, null, strategy, authenticated = true)
 
@@ -69,12 +72,20 @@ class ApiClient(
         body: JsonElement?,
         strategy: DeserializationStrategy<T>,
         authenticated: Boolean = true,
-    ): T = call(method, path, body, strategy, authenticated)
+    ): T = call(method, path, body?.toString()?.toRequestBody(JSON_TYPE), strategy, authenticated)
+
+    /** Uploads raw bytes (e.g. a review photo) with the given content type. */
+    suspend fun <T> sendBytes(
+        path: String,
+        bytes: ByteArray,
+        contentType: String,
+        strategy: DeserializationStrategy<T>,
+    ): T = call("POST", path, bytes.toRequestBody(contentType.toMediaType()), strategy, authenticated = true)
 
     private suspend fun <T> call(
         method: String,
         path: String,
-        body: JsonElement?,
+        body: RequestBody?,
         strategy: DeserializationStrategy<T>,
         authenticated: Boolean,
     ): T {
@@ -97,7 +108,12 @@ class ApiClient(
         val current = tokens.load() ?: throw signedOut()
         if (current.accessToken != used.accessToken) return@withLock // another call refreshed
         val payload = buildJsonObject { put("refresh_token", current.refreshToken) }
-        val response = execute("POST", "/api/v1/auth/student/refresh", payload, null)
+        val response = execute(
+            "POST",
+            "/api/v1/auth/student/refresh",
+            payload.toString().toRequestBody(JSON_TYPE),
+            null,
+        )
         if (response.status in 200..299) {
             startSession(ApiJson.decodeFromString(TokenResponse.serializer(), response.body))
         } else if (response.status in 400..499 && response.status != 429) {
@@ -115,9 +131,9 @@ class ApiClient(
 
     private data class RawResponse(val status: Int, val body: String)
 
-    private suspend fun execute(method: String, path: String, body: JsonElement?, token: String?) =
+    private suspend fun execute(method: String, path: String, body: RequestBody?, token: String?) =
         withContext(Dispatchers.IO) {
-            val requestBody = body?.toString()?.toRequestBody(JSON_TYPE)
+            val requestBody = body
                 ?: if (method == "POST" || method == "PUT") ByteArray(0).toRequestBody(null) else null
             val request = Request.Builder()
                 .url(baseUrl.trimEnd('/') + path)

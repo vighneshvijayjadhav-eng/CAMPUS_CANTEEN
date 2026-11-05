@@ -27,6 +27,7 @@ from app.modules.orders.service import StaffScope, confirm_line, lines_for
 from app.modules.payments.models import MerchantAccount, PaymentAttempt
 from app.modules.payments.razorpay import RazorpayProvider, provider_factory, signature
 from app.modules.payments.service import reconcile_attempt, stale_attempts
+from app.modules.reviews.media import LocalMediaStorage
 
 KEY_ID = "rzp_test_fakeKey123"
 KEY_SECRET = "test-only-razorpay-key-secret"
@@ -196,12 +197,24 @@ def pay_setup(tmp_path):
     )
     claims = {"sub": "google-student", "email": "s@gmail.com", "name": "S", "picture": None}
     client = LocalClient(
-        create_app(settings, engine, google_verifier=lambda _: claims, payment_providers=providers)
+        create_app(
+            settings,
+            engine,
+            google_verifier=lambda _: claims,
+            payment_providers=providers,
+            media_storage=LocalMediaStorage(tmp_path / "media"),
+        )
     )
     login = client.post("/api/v1/auth/google", json={"id_token": "a" * 20, "device_name": "Phone"})
     client.headers["Authorization"] = f"Bearer {login.json()['access_token']}"
     yield SimpleNamespace(
-        client=client, engine=engine, ids=ids, fake=fake, providers=providers, settings=settings
+        client=client,
+        engine=engine,
+        ids=ids,
+        fake=fake,
+        providers=providers,
+        settings=settings,
+        media=tmp_path / "media",
     )
     engine.dispose()
 

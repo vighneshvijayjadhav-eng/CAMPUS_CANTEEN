@@ -127,6 +127,20 @@ emulator, then the emulator ran out of memory).
 Not included yet (later phases): reviews and photos, in-app notifications, receipts screen,
 item detail page, menu search.
 
+## Reviews and moderation — 5 November 2026
+
+Implemented (Phase 5): reviews limited to the buyer of a collected order line (one per line,
+editable), up to 3 photos per review decoded and re-encoded server-side (rejects non-images,
+files over 5 MB and decompression bombs; strips EXIF/GPS; random names; path-traversal safe),
+menu rating averages, public review lists showing first names only, validated abuse reports
+(buyers at that canteen only, one each, not your own) that auto-hide a review at the threshold,
+and admin restore/remove with an audit trail. Web dashboard: Reviews page for moderation.
+Android: ratings on the menu, item reviews page with report, write/edit review with the system
+photo picker and on-device downscaling.
+
+Verification: backend 92 passed, 6 skipped (PostgreSQL); web typecheck, tests and build pass.
+Android: 12 unit tests and `assembleDebug` pass. Not checked on a device.
+
 ## Remaining implementation gates
 
 1. Native Android project, emulator/device tests and release-signing configuration.

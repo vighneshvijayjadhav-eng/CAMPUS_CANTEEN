@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel, SecretStr, model_validator
+from pydantic import BaseModel, Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -22,6 +22,10 @@ class Settings(BaseSettings):
     razorpay_key_id: str | None = None
     razorpay_key_secret: SecretStr | None = None
     razorpay_webhook_secret: SecretStr | None = None
+    # Review photos (local storage); keep outside the web root and back it up with the DB.
+    media_dir: str = "uploads"
+    # Distinct validated reports that hide a review until moderated (provisional default).
+    review_report_threshold: int = Field(default=3, ge=2, le=50)
     # Separate explicit approval is required before any live charge.
     allow_live_payments: bool = False
 

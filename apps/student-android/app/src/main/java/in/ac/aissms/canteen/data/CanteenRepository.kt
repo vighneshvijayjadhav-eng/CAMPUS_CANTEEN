@@ -105,4 +105,49 @@ class CanteenRepository(private val api: ApiClient) {
 
     suspend fun cancelOrder(orderId: String): OrderDetail =
         api.send("POST", "/api/v1/student/orders/$orderId/cancel", null, OrderDetail.serializer())
+
+    // Reviews: only buyers of a collected line may write one; the server enforces it.
+    suspend fun itemReviews(itemId: String): List<Review> =
+        api.get("/api/v1/menu-items/$itemId/reviews", ListSerializer(Review.serializer()))
+
+    suspend fun myReviews(): List<Review> =
+        api.get("/api/v1/student/reviews", ListSerializer(Review.serializer()))
+
+    suspend fun writeReview(lineId: String, rating: Int, body: String?): Review = api.send(
+        "POST",
+        "/api/v1/student/order-lines/$lineId/review",
+        buildJsonObject {
+            put("rating", rating)
+            put("body", body)
+        },
+        Review.serializer(),
+    )
+
+    suspend fun editReview(reviewId: String, rating: Int, body: String?): Review = api.send(
+        "PATCH",
+        "/api/v1/student/reviews/$reviewId",
+        buildJsonObject {
+            put("rating", rating)
+            put("body", body.orEmpty())
+        },
+        Review.serializer(),
+    )
+
+    suspend fun uploadReviewPhoto(reviewId: String, jpeg: ByteArray): Review =
+        api.sendBytes("/api/v1/student/reviews/$reviewId/photos", jpeg, "image/jpeg", Review.serializer())
+
+    suspend fun deleteReviewPhoto(reviewId: String, photoId: String): Review =
+        api.send("DELETE", "/api/v1/student/reviews/$reviewId/photos/$photoId", null, Review.serializer())
+
+    suspend fun reportReview(reviewId: String, reason: String) {
+        api.send(
+            "POST",
+            "/api/v1/student/reviews/$reviewId/report",
+            buildJsonObject { put("reason", reason) },
+            JsonObject.serializer(),
+        )
+    }
+
+    /** Absolute URL for a server-relative media path such as /api/v1/media/reviews/x.jpg. */
+    fun mediaUrl(path: String): String = api.absolute(path)
 }

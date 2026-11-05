@@ -143,7 +143,11 @@ class OrderViewModel(private val repo: CanteenRepository, private val orderId: S
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OrderScreen(orderId: String, onBack: () -> Unit) {
+fun OrderScreen(
+    orderId: String,
+    onBack: () -> Unit,
+    onReview: (lineId: String, reviewId: String?, itemName: String) -> Unit,
+) {
     val vm = repoViewModel(key = "order-$orderId") { OrderViewModel(it, orderId) }
     val snackbar = remember { SnackbarHostState() }
     LaunchedEffect(vm.message) { vm.message?.let { snackbar.showSnackbar(it); vm.message = null } }
@@ -161,13 +165,17 @@ fun OrderScreen(orderId: String, onBack: () -> Unit) {
         snackbarHost = { SnackbarHost(snackbar) },
     ) { padding ->
         Box(Modifier.padding(padding).fillMaxSize()) {
-            LoadContent(vm.state, onRetry = vm::load) { order -> OrderBody(order, vm) }
+            LoadContent(vm.state, onRetry = vm::load) { order -> OrderBody(order, vm, onReview) }
         }
     }
 }
 
 @Composable
-private fun OrderBody(order: OrderDetail, vm: OrderViewModel) {
+private fun OrderBody(
+    order: OrderDetail,
+    vm: OrderViewModel,
+    onReview: (String, String?, String) -> Unit,
+) {
     val activity = LocalContext.current as Activity
     var confirmCancel by remember { mutableStateOf(false) }
     val secondsLeft = cancelSecondsLeft(order, vm.now)
@@ -238,6 +246,12 @@ private fun OrderBody(order: OrderDetail, vm: OrderViewModel) {
                                 else -> "Collect at ${line.station}"
                             }
                             Text(status, color = Muted, style = MaterialTheme.typography.bodySmall)
+                            if (line.reviewable) {
+                                TextButton(
+                                    onClick = { onReview(line.id, line.reviewId, line.name) },
+                                    contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp),
+                                ) { Text(if (line.reviewId == null) "★ Rate this item" else "Edit your review") }
+                            }
                         }
                         Text(rupees(line.lineTotalPaise))
                     }

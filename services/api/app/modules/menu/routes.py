@@ -9,6 +9,7 @@ from app.core.http import DB, STAFF, Input, admin
 from app.modules.menu.models import Canteen, Institute, MenuItem, MenuVariant, Station
 from app.modules.menu.schedule import canteen_settings_view, closed_reason, replace_hours
 from app.modules.orders.service import server_now
+from app.modules.reviews.service import rating_summary
 
 
 class StationInput(Input):
@@ -131,7 +132,16 @@ def create_router(settings, engine):
         institute = db.get(Institute, canteen.institute_id) if canteen else None
         if not canteen or not canteen.approved or not institute or not institute.approved:
             raise DomainError("CANTEEN_NOT_FOUND", 404)
-        return [item for item in menu_rows(db, str(canteen_id)) if not item["archived"]]
+        ratings = rating_summary(db, str(canteen_id))
+        return [
+            {
+                **item,
+                "rating_average": ratings.get(item["id"], (None, 0))[0],
+                "rating_count": ratings.get(item["id"], (None, 0))[1],
+            }
+            for item in menu_rows(db, str(canteen_id))
+            if not item["archived"]
+        ]
 
     @router.get("/api/v1/staff/canteen")
     def canteen_settings(db: DB, scope: STAFF):

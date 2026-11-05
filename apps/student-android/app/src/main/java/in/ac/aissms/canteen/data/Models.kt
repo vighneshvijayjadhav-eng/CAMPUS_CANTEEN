@@ -49,6 +49,8 @@ data class MenuItem(
     val name: String,
     val category: String,
     val variants: List<MenuVariant> = emptyList(),
+    val ratingAverage: Double? = null,
+    val ratingCount: Int = 0,
 )
 
 @Serializable
@@ -99,6 +101,8 @@ data class OrderLine(
     val lineTotalPaise: Int,
     val fulfilled: Int,
     val remaining: Int,
+    val reviewable: Boolean = false,
+    val reviewId: String? = null,
 )
 
 @Serializable
@@ -150,3 +154,20 @@ data class PaymentParams(
 
 @Serializable
 data class PaymentConfirmation(val paymentStatus: String, val order: OrderDetail)
+
+@Serializable
+data class ReviewPhoto(val id: String, val url: String, val width: Int, val height: Int)
+
+@Serializable
+data class Review(
+    val id: String,
+    val menuItemId: String,
+    val rating: Int,
+    val body: String? = null,
+    val status: String,
+    val createdAt: String,
+    val edited: Boolean = false,
+    val photos: List<ReviewPhoto> = emptyList(),
+    val author: String? = null,
+    val orderLineId: String? = null,
+)

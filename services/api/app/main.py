@@ -16,9 +16,13 @@ from app.modules.orders.routes import create_router as orders_router
 from app.modules.orders.student_routes import create_router as student_orders_router
 from app.modules.payments.razorpay import provider_factory
 from app.modules.payments.routes import create_router as payments_router
+from app.modules.reviews.media import LocalMediaStorage
+from app.modules.reviews.routes import create_router as reviews_router
 
 
-def create_app(settings=None, engine=None, google_verifier=None, payment_providers=None):
+def create_app(
+    settings=None, engine=None, google_verifier=None, payment_providers=None, media_storage=None
+):
     settings = settings or Settings()
     engine = engine or connect(settings.database_url)
     app = FastAPI(title="AISSMS Campus Canteen", version="0.1.0")
@@ -28,6 +32,9 @@ def create_app(settings=None, engine=None, google_verifier=None, payment_provide
         lambda token: verify_google_id_token(token, settings.google_oauth_client_id)
     )
     app.state.payment_providers = payment_providers or provider_factory(settings)
+    app.state.media_storage = media_storage or LocalMediaStorage(
+        getattr(settings, "media_dir", "uploads")
+    )
     app.add_middleware(
         CORSMiddleware,
         allow_origins=[settings.web_origin],
@@ -76,4 +83,5 @@ def create_app(settings=None, engine=None, google_verifier=None, payment_provide
     app.include_router(orders_router(settings, engine))
     app.include_router(student_orders_router(settings, engine))
     app.include_router(payments_router(settings, engine))
+    app.include_router(reviews_router(settings, engine))
     return app

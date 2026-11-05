@@ -118,7 +118,13 @@ class MenuViewModel(private val repo: CanteenRepository, private val canteenId: 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuScreen(canteenId: String, canteenName: String, onBack: () -> Unit, onOpenCart: () -> Unit) {
+fun MenuScreen(
+    canteenId: String,
+    canteenName: String,
+    onBack: () -> Unit,
+    onOpenCart: () -> Unit,
+    onOpenReviews: (String, String) -> Unit,
+) {
     val vm = repoViewModel(key = "menu-$canteenId") { MenuViewModel(it, canteenId) }
     val snackbar = remember { SnackbarHostState() }
     LaunchedEffect(vm.message) {
@@ -165,7 +171,7 @@ fun MenuScreen(canteenId: String, canteenName: String, onBack: () -> Unit, onOpe
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
                     items(items.filter { category == null || it.category == category }, key = { it.id }) { item ->
-                        MenuItemCard(item, vm)
+                        MenuItemCard(item, vm) { onOpenReviews(item.id, item.name) }
                     }
                 }
             }
@@ -183,10 +189,16 @@ fun MenuScreen(canteenId: String, canteenName: String, onBack: () -> Unit, onOpe
 }
 
 @Composable
-private fun MenuItemCard(item: MenuItem, vm: MenuViewModel) {
+private fun MenuItemCard(item: MenuItem, vm: MenuViewModel, onOpenReviews: () -> Unit) {
     Card(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(14.dp)) {
             Text(item.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            TextButton(onClick = onOpenReviews, contentPadding = PaddingValues(0.dp)) {
+                Text(
+                    item.ratingAverage?.let { "★ %.1f (%d) · Reviews".format(it, item.ratingCount) } ?: "No reviews yet",
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
             item.variants.forEach { variant -> VariantRow(item, variant, vm) }
         }
     }

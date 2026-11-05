@@ -64,7 +64,7 @@ Each phase ends with tests green, docs updated (`api.md`, `database.md`,
 - Release signing via `keystore.properties` (gitignored), R8 on, debug/release `apiBaseUrl`.
 - Unit tests (ViewModels, token refresh) and a Compose UI smoke test. Android build job in CI.
 
-### Phase 5: reviews and moderation
+### Phase 5: reviews and moderation — DONE 5 Nov 2026 (device testing pending)
 - Review allowed only on collected items, 1–5 stars with text and up to N photos.
 - Secure upload: type/size checks, re-encode, strip EXIF, random object keys, local disk in dev and S3-compatible storage in prod.
 - Abuse reports: distinct reporters; auto-hide after threshold (default 3, configurable); admin

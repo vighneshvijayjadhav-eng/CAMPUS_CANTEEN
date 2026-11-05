@@ -47,6 +47,22 @@ Run `uvicorn app.main:create_app --factory` from services/api. OpenAPI is served
 - Refunds: admin GET /api/v1/staff/refunds (own canteen, newest 200) and POST
   /staff/refunds/{id}/retry for a FAILED refund (creates a new refund row; the failed one stays).
   REFUNDED/PROCESSED is set only from Razorpay's own refund state.
+- Reviews (public): GET /api/v1/menu-items/{item_id}/reviews (visible reviews, newest first,
+  author first name only). The public canteen menu adds `rating_average` and `rating_count` per
+  item. Photos: GET /api/v1/media/reviews/{key} (only for visible reviews; the canteen admin can
+  also open photos of hidden reviews while moderating).
+- Reviews (student): POST /api/v1/student/order-lines/{line_id}/review with `rating` 1-5 and
+  optional `body` (max 1000), allowed once per order line after at least one unit was handed
+  over (REVIEW_REQUIRES_COLLECTION, REVIEW_EXISTS). PATCH /student/reviews/{id} edits;
+  GET /student/reviews lists your own. Order detail lines include `reviewable` and `review_id`.
+  Photos: POST /student/reviews/{id}/photos with the raw image as the body and
+  `Content-Type: image/jpeg|png|webp` (max 5 MB, 3 per review; INVALID_IMAGE 415,
+  IMAGE_TOO_LARGE 413, TOO_MANY_PHOTOS). DELETE /student/reviews/{id}/photos/{photo_id}.
+  Report: POST /student/reviews/{id}/report with `reason` (SPAM, OFFENSIVE, IRRELEVANT, PRIVACY,
+  OTHER) and optional `note`; only students who have collected food at that canteen, once per
+  review, never your own.
+- Review moderation: admin GET /api/v1/staff/reviews?status=HIDDEN|VISIBLE (with reports),
+  POST /staff/reviews/{id}/restore and /staff/reviews/{id}/remove with optional `note`.
 - Merchant metadata: admin GET /api/v1/staff/merchant (key id, mode, active, webhook path; never
   secrets). Accounts are added by the owner CLI, not through the API.
 - Canteen settings: admin GET/PATCH /api/v1/staff/canteen. PATCH accepts `operating` (master

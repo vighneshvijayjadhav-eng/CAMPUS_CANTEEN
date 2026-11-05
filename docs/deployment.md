@@ -105,6 +105,13 @@ keyPassword=...
 
 Without that file `assembleRelease` produces an unsigned APK. Unit tests: `./gradlew testDebugUnitTest`.
 
+## Review photos
+
+Uploaded review photos are re-encoded and stored under `MEDIA_DIR` (default `uploads/`,
+gitignored). Use a persistent volume outside the web root, include it in backups with the
+database, and keep at least a few GB free. `REVIEW_REPORT_THRESHOLD` (default 3) sets how many
+distinct validated reports hide a review.
+
 ## Razorpay test-mode setup (per canteen)
 
 1. In the Razorpay Dashboard (Test Mode) for the canteen's merchant account, create API keys.

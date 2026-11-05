@@ -9,6 +9,7 @@ from app.modules.identity import models as identity_models  # noqa: F401
 from app.modules.menu import models as menu_models  # noqa: F401
 from app.modules.orders import models as order_models  # noqa: F401
 from app.modules.payments import models as payment_models  # noqa: F401
+from app.modules.reviews import models as review_models  # noqa: F401
 
 url = os.environ["DATABASE_URL"]
 if context.is_offline_mode():

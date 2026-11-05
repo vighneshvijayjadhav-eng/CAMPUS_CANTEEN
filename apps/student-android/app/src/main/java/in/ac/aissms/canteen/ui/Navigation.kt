@@ -34,6 +34,8 @@ import `in`.ac.aissms.canteen.ui.screens.MenuScreen
 import `in`.ac.aissms.canteen.ui.screens.OrderScreen
 import `in`.ac.aissms.canteen.ui.screens.OrdersScreen
 import `in`.ac.aissms.canteen.ui.screens.ProfileScreen
+import `in`.ac.aissms.canteen.ui.screens.ReviewsScreen
+import `in`.ac.aissms.canteen.ui.screens.WriteReviewScreen
 import `in`.ac.aissms.canteen.ui.screens.SignInScreen
 
 @Composable
@@ -56,6 +58,9 @@ object Routes {
     const val CART = "cart"
     fun menu(canteenId: String, name: String) = "menu/$canteenId/${Uri.encode(name)}"
     fun order(orderId: String) = "order/$orderId"
+    fun reviews(itemId: String, name: String) = "reviews/$itemId/${Uri.encode(name)}"
+    fun writeReview(lineId: String, reviewId: String?, name: String) =
+        "write-review/$lineId/${Uri.encode(name)}?review=${reviewId.orEmpty()}"
 }
 
 private val tabs = listOf(
@@ -101,6 +106,7 @@ fun CanteenApp() {
                     canteenName = back.arguments?.getString("name").orEmpty(),
                     onBack = { nav.popBackStack() },
                     onOpenCart = { nav.navigate(Routes.CART) },
+                    onOpenReviews = { id, name -> nav.navigate(Routes.reviews(id, name)) },
                 )
             }
             composable(Routes.CART) {
@@ -115,6 +121,22 @@ fun CanteenApp() {
                 OrderScreen(
                     orderId = back.arguments?.getString("orderId").orEmpty(),
                     onBack = { if (!nav.popBackStack()) nav.switchTab(Routes.ORDERS) },
+                    onReview = { line, review, name -> nav.navigate(Routes.writeReview(line, review, name)) },
+                )
+            }
+            composable("reviews/{itemId}/{name}") { back ->
+                ReviewsScreen(
+                    itemId = back.arguments?.getString("itemId").orEmpty(),
+                    itemName = back.arguments?.getString("name").orEmpty(),
+                    onBack = { nav.popBackStack() },
+                )
+            }
+            composable("write-review/{lineId}/{name}?review={review}") { back ->
+                WriteReviewScreen(
+                    lineId = back.arguments?.getString("lineId").orEmpty(),
+                    reviewId = back.arguments?.getString("review")?.takeIf { it.isNotEmpty() },
+                    itemName = back.arguments?.getString("name").orEmpty(),
+                    onDone = { nav.popBackStack() },
                 )
             }
             composable(Routes.ORDERS) {

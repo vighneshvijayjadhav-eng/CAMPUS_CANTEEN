@@ -58,11 +58,30 @@ Implemented an additive student identity/catalog/cart increment:
 This is not checkout or payment: the cart is mutable, no order/payment/pickup code is created,
 and no live Google or merchant credential is present in the repository.
 
+## Checkout and orders — 5 November 2026
+
+Implemented (Phase 1 of `docs/COMPLETION_PLAN.md`):
+- Canteen operating schedule: admin master switch plus optional weekly India-time hours;
+  public listing shows whether a canteen is accepting orders.
+- Idempotent student checkout that freezes the cart into an immutable PAYMENT_PENDING order with
+  per-line price/name/size/station snapshots, rejecting a changed total, unavailable or archived
+  items, inactive stations, closed or unapproved canteens and empty carts.
+- Student order history and detail limited to the signed-in student.
+- Migration `2520dc960e74` (additive). Android scaffold now builds (`assembleDebug`) with a
+  Gradle wrapper.
+
+Verification: `pytest` 64 passed, 5 skipped locally (PostgreSQL race tests, including two new
+double-checkout races, run only in CI with TEST_DATABASE_URL). Migration verified by
+`alembic upgrade head` + `alembic check` on SQLite only; PostgreSQL migration runs in CI.
+
+Not included: payment, pickup-code issuance and expiry of abandoned PAYMENT_PENDING orders
+(Phase 2), student cancellation endpoint (Phase 3), web dashboard UI for hours (follow-up).
+
 ## Remaining implementation gates
 
 1. Native Android project, emulator/device tests and release-signing configuration.
 2. Native Android client, including secure token storage and actual Google Sign-In integration.
-3. Server checkout, operating schedules, immutable checkout/payment linkage and price checks.
+3. ~~Server checkout, operating schedules, price checks~~ (done 5 Nov); checkout/payment linkage.
 4. Merchant configurations, real gateway sandbox adapter, webhook verification, payment activation,
    encrypted recoverable code issuance, reconciliation and provider-confirmed refunds.
 5. Approved partial-refund/exception resolution policy and corresponding financial transitions.

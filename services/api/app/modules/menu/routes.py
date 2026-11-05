@@ -7,6 +7,8 @@ from sqlalchemy import select
 from app.core.errors import DomainError
 from app.core.http import DB, STAFF, Input, admin
 from app.modules.menu.models import Canteen, Institute, MenuItem, MenuVariant, Station
+from app.modules.menu.schedule import canteen_settings_view, closed_reason, replace_hours
+from app.modules.orders.service import server_now
 
 
 class StationInput(Input):
@@ -20,6 +22,17 @@ class VariantInput(Input):
     station_id: UUID | None = None
     verified: bool = False
     available: bool = False
+
+
+class HoursWindow(Input):
+    weekday: int = Field(ge=0, le=6, strict=True)  # 0 = Monday
+    opens: str = Field(pattern=r"^([01][0-9]|2[0-3]):[0-5][0-9]$")
+    closes: str = Field(pattern=r"^(([01][0-9]|2[0-3]):[0-5][0-9]|24:00)$")
+
+
+class CanteenSettingsInput(Input):
+    operating: bool | None = None
+    hours: list[HoursWindow] | None = Field(default=None, max_length=7)
 
 
 class ItemInput(Input):
@@ -63,12 +76,14 @@ def create_router(settings, engine):
         institute = db.get(Institute, str(institute_id))
         if not institute or not institute.approved:
             raise DomainError("INSTITUTE_NOT_FOUND", 404)
+        now = server_now(db)
         return [
             {
                 "id": canteen.id,
                 "slug": canteen.slug,
                 "name": canteen.name,
                 "operating": canteen.operating,
+                "accepting_orders": closed_reason(db, canteen, now) is None,
             }
             for canteen in db.scalars(
                 select(Canteen)
@@ -117,6 +132,22 @@ def create_router(settings, engine):
         if not canteen or not canteen.approved or not institute or not institute.approved:
             raise DomainError("CANTEEN_NOT_FOUND", 404)
         return [item for item in menu_rows(db, str(canteen_id)) if not item["archived"]]
+
+    @router.get("/api/v1/staff/canteen")
+    def canteen_settings(db: DB, scope: STAFF):
+        admin(scope)
+        return canteen_settings_view(db, db.get(Canteen, scope.canteen_id), server_now(db))
+
+    @router.patch("/api/v1/staff/canteen")
+    def update_canteen_settings(body: CanteenSettingsInput, db: DB, scope: STAFF):
+        admin(scope)
+        canteen = db.scalar(select(Canteen).where(Canteen.id == scope.canteen_id).with_for_update())
+        if body.operating is not None:
+            canteen.operating = body.operating
+        if body.hours is not None:
+            replace_hours(db, canteen.id, [window.model_dump() for window in body.hours])
+        db.flush()
+        return canteen_settings_view(db, canteen, server_now(db))
 
     @router.get("/api/v1/staff/menu")
     def staff_menu(db: DB, scope: STAFF):

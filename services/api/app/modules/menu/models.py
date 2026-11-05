@@ -91,3 +91,18 @@ class MenuVariant(Base):
     station_id: Mapped[str | None] = mapped_column(String(36))
     verified: Mapped[bool] = mapped_column(Boolean, default=False)
     available: Mapped[bool] = mapped_column(Boolean, default=False)
+
+
+class CanteenHours(Base):
+    """One opening window per weekday, in canteen local time (IST, minutes since midnight)."""
+
+    __tablename__ = "canteen_hours"
+    __table_args__ = (
+        CheckConstraint("weekday >= 0 AND weekday <= 6"),
+        CheckConstraint("opens_minute >= 0 AND opens_minute < closes_minute"),
+        CheckConstraint("closes_minute <= 1440"),
+    )
+    canteen_id: Mapped[str] = mapped_column(ForeignKey("canteens.id"), primary_key=True)
+    weekday: Mapped[int] = mapped_column(primary_key=True)
+    opens_minute: Mapped[int]
+    closes_minute: Mapped[int]

@@ -30,7 +30,7 @@ copy and test leftovers deleted (V: now 1.7 GB free). Original steps:
 Each phase ends with tests green, docs updated (`api.md`, `database.md`,
 `implementation-progress.md`) and its own commit.
 
-### Phase 1: checkout and orders (backend)
+### Phase 1: checkout and orders (backend) — DONE 5 Nov 2026 (dashboard hours UI pending)
 - Operating schedule per canteen (open/closed, hours); checkout refused when closed or unapproved.
 - `POST /student/checkout`: freeze the cart into an immutable order with price snapshots, revalidating
   price, availability and station. Order status `PENDING_PAYMENT`. Idempotency key.

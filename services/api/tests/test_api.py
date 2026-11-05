@@ -242,3 +242,64 @@ def test_student_google_login_preferences_and_cart_use_bearer_auth(setup):
         ).status_code
         == 403
     )
+
+
+def test_student_checkout_and_order_history_endpoints(setup):
+    client, _, ids = setup
+    client.headers.pop("Origin")
+    login = client.post(
+        "/api/v1/auth/google",
+        json={"id_token": "a" * 20, "device_name": "Android phone"},
+    )
+    headers = {"Authorization": f"Bearer {login.json()['access_token']}"}
+    client.request(
+        "PUT",
+        f"/api/v1/student/cart/lines/{ids['variant']}",
+        headers=headers,
+        json={"quantity": 2},
+    )
+    body = {"request_id": str(uuid4()), "expected_total_paise": 8000}
+    assert client.post("/api/v1/student/checkout", json=body).status_code == 401
+    created = client.post("/api/v1/student/checkout", headers=headers, json=body)
+    assert created.status_code == 201, created.text
+    order = created.json()
+    assert order["state"] == "PAYMENT_PENDING" and order["total_paise"] == 8000
+    retried = client.post("/api/v1/student/checkout", headers=headers, json=body)
+    assert retried.json()["id"] == order["id"]
+    history = client.get("/api/v1/student/orders", headers=headers).json()
+    assert [row["id"] for row in history] == [order["id"]]
+    detail = client.get(f"/api/v1/student/orders/{order['id']}", headers=headers)
+    assert detail.json()["lines"][0]["unit_price_paise"] == 4000
+    assert client.get(f"/api/v1/student/orders/{uuid4()}", headers=headers).status_code == 404
+    empty = client.post(
+        "/api/v1/student/checkout",
+        headers=headers,
+        json={"request_id": str(uuid4()), "expected_total_paise": 8000},
+    )
+    assert empty.json() == {"error": "CART_EMPTY"}
+
+
+def test_admin_controls_operating_switch_and_hours(setup):
+    client, _, ids = setup
+    sign_in(client, "juice")
+    assert client.get("/api/v1/staff/canteen").status_code == 403
+    client.cookies.clear()
+    sign_in(client)
+    settings = client.get("/api/v1/staff/canteen").json()
+    assert settings["operating"] is True and settings["hours"] == []
+    updated = client.patch(
+        "/api/v1/staff/canteen",
+        json={"operating": False, "hours": [{"weekday": 0, "opens": "08:30", "closes": "24:00"}]},
+    )
+    assert updated.status_code == 200, updated.text
+    assert updated.json()["accepting_orders"] is False
+    assert updated.json()["closed_reason"] == "CANTEEN_NOT_OPERATING"
+    assert updated.json()["hours"] == [{"weekday": 0, "opens": "08:30", "closes": "24:00"}]
+    bad = client.patch(
+        "/api/v1/staff/canteen",
+        json={"hours": [{"weekday": 7, "opens": "08:00", "closes": "09:00"}]},
+    )
+    assert bad.status_code == 422
+    listing = client.get(f"/api/v1/institutes/{ids['institute']}/canteens").json()
+    coe = next(row for row in listing if row["id"] == ids["coe"])
+    assert coe["accepting_orders"] is False

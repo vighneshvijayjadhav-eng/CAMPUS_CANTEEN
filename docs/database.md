@@ -1,6 +1,7 @@
 # Database baseline
 
-Alembic revisions `6ee6efb5339d` and `c4e95a58b9ea` add tables/nullable columns only; no
+Alembic revisions `6ee6efb5339d`, `c4e95a58b9ea` and `2520dc960e74` add tables, nullable
+columns and defaulted columns only; no
 existing user table is dropped.
 Apply with DATABASE_URL configured: `uv run alembic upgrade head` from services/api.
 The application requires PostgreSQL. SQLite is used only by fast local behavior tests.
@@ -20,6 +21,13 @@ Discovery/cart: institutes → canteens, with an approval gate at both levels. c
 student and one selected canteen; cart_lines use composite foreign keys to prevent a line from
 referencing a cart or menu variant in another canteen. Cart rows are mutable pre-payment only;
 they are never used as an order record or a source of charged prices.
+
+Checkout/schedule: canteen_hours holds at most one opening window per canteen and weekday
+(minutes since midnight, India time). Checkout locks the student's cart row, rechecks every
+line, compares the server total with the total the student confirmed, then writes an order
+plus line snapshots (including variant_id via a tenant-scoped composite foreign key) and
+deletes the cart lines in one transaction. orders.checkout_request_id is unique per student so
+retries return the existing order; orders.created_at orders student history.
 
 Fulfillment: orders → order_lines, pickup_credentials, fulfillment_events, order_exceptions
 and queue_events. Lines snapshot station name/ID, product, size and charged unit price.

@@ -13,6 +13,7 @@ from app.modules.identity.service import verify_google_id_token
 from app.modules.identity.student_routes import create_router as student_router
 from app.modules.menu.routes import create_router as menu_router
 from app.modules.orders.routes import create_router as orders_router
+from app.modules.orders.student_routes import create_router as student_orders_router
 
 
 def create_app(settings=None, engine=None, google_verifier=None):
@@ -70,4 +71,5 @@ def create_app(settings=None, engine=None, google_verifier=None):
     app.include_router(menu_router(settings, engine))
     app.include_router(cart_router(settings, engine))
     app.include_router(orders_router(settings, engine))
+    app.include_router(student_orders_router(settings, engine))
     return app

@@ -133,3 +133,63 @@ def test_cancel_racing_full_collection_has_one_winner(pg):
         assert not db.get(PickupCredential, "order").active
         assert db.get(OrderLine, "line").fulfilled == (2 if order.state == "COLLECTED" else 0)
         assert order.refund_status == ("REQUESTED" if order.state == "CANCELLED" else None)
+
+
+@pytest.fixture
+def pg_cart(pg):
+    from app.modules.carts.models import Cart, CartLine
+    from app.modules.identity.models import Student
+    from app.modules.menu.models import Institute, MenuItem, MenuVariant
+
+    with Session(pg) as db, db.begin():
+        db.add(Institute(id="institute", slug="coe-institute", name="COE", approved=True))
+        db.flush()
+        canteen = db.get(Canteen, "coe")
+        canteen.institute_id, canteen.approved, canteen.operating = "institute", True, True
+        db.add(Student(id="buyer", google_sub="sub", email="buyer@example.test", display_name="B"))
+        db.add(MenuItem(id="coffee", canteen_id="coe", name="Coffee", category="Beverages"))
+        db.flush()
+        db.add(
+            MenuVariant(
+                id="coffee-regular",
+                canteen_id="coe",
+                item_id="coffee",
+                label="Regular",
+                price_paise=4000,
+                station_id="juice",
+                verified=True,
+                available=True,
+            )
+        )
+        db.add(Cart(id="cart", student_id="buyer", canteen_id="coe"))
+        db.flush()
+        db.add(CartLine(cart_id="cart", canteen_id="coe", variant_id="coffee-regular", quantity=2))
+    return pg
+
+
+def test_double_submitted_checkout_creates_one_order(pg_cart):
+    from app.modules.orders.checkout import checkout
+
+    request_id = str(uuid4())
+    results = race(
+        pg_cart,
+        lambda db: checkout(db, "buyer", request_id, 8000),
+        lambda db: checkout(db, "buyer", request_id, 8000),
+    )
+    assert results == ["ok", "ok"]
+    with Session(pg_cart) as db:
+        orders = db.scalars(select(Order).where(Order.student_id == "buyer")).all()
+        assert len(orders) == 1 and orders[0].total_paise == 8000
+
+
+def test_two_different_checkouts_of_one_cart_create_one_order(pg_cart):
+    from app.modules.orders.checkout import checkout
+
+    results = race(
+        pg_cart,
+        lambda db: checkout(db, "buyer", str(uuid4()), 8000),
+        lambda db: checkout(db, "buyer", str(uuid4()), 8000),
+    )
+    assert sorted(results) == ["CART_EMPTY", "ok"]
+    with Session(pg_cart) as db:
+        assert len(db.scalars(select(Order).where(Order.student_id == "buyer")).all()) == 1

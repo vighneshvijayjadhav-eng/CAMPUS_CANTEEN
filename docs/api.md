@@ -13,6 +13,20 @@ Run `uvicorn app.main:create_app --factory` from services/api. OpenAPI is served
 - Student cart: GET/DELETE /api/v1/student/cart and PUT
   /student/cart/lines/{variant_id}. Bearer access tokens identify the student. A cart has
   one canteen; prices and orderability are always rechecked on the server.
+- Student checkout: POST /api/v1/student/checkout with `request_id` (UUID, generated once per
+  tap and reused on retry) and `expected_total_paise` (the total the student confirmed).
+  Returns 201 and the order detail in PAYMENT_PENDING; the cart is emptied. Errors:
+  CART_EMPTY, CART_ITEM_UNAVAILABLE, PRICE_CHANGED (refetch the cart and reconfirm),
+  CANTEEN_NOT_OPERATING, CANTEEN_CLOSED, CANTEEN_NOT_APPROVED, IDEMPOTENCY_CONFLICT (same
+  request_id, different total). No payment is started and no pickup code is issued yet.
+- Student orders: GET /api/v1/student/orders (newest first, 50 max) and
+  /student/orders/{id} (own orders only; others return 404). Detail includes charged line
+  snapshots, remaining quantity per station and `pickup_code` (null until payment exists).
+- Canteen settings: admin GET/PATCH /api/v1/staff/canteen. PATCH accepts `operating` (master
+  switch) and/or `hours` (replaces all windows): `[{weekday 0=Mon..6, opens "HH:MM",
+  closes "HH:MM"|"24:00"}]` in India time, one window per weekday. With no hours configured
+  only the switch applies; once any exist, a weekday without a window is closed. The public
+  institute canteen listing includes `accepting_orders`.
 - Staff identity: POST /api/v1/auth/staff/login, /auth/refresh, /auth/logout.
 - Staff: GET /api/v1/staff/me, /staff/sessions and POST /staff/sessions/{id}/revoke.
 - Admin menu: GET/POST /api/v1/staff/menu, PATCH /staff/menu/{id},
@@ -31,8 +45,9 @@ writes may omit Origin, but a supplied nonmatching Origin is denied. Staff cooki
 and SameSite Strict, Secure outside local mode. Never send a role/canteen/station claim from
 the UI to authorize an action; the server resolves them from the persisted session and account.
 
-There is intentionally no checkout, payment-success or simulator endpoint. Paid orders in tests
-are fixtures, not merchant evidence. Student cancellation currently exists as a tested domain
+There is intentionally no payment-success or simulator endpoint. Checkout only creates an unpaid
+order, which never reaches a station queue. Paid orders in tests are fixtures, not merchant
+evidence. Student cancellation currently exists as a tested domain
 service, not a public endpoint until paid-order lifecycle APIs are implemented.
 
 SSE uses committed queue events as refetch hints and checks session validity every two

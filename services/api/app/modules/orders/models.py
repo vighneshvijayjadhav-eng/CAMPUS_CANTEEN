@@ -9,6 +9,7 @@ from sqlalchemy import (
     Index,
     String,
     UniqueConstraint,
+    func,
     text,
 )
 from sqlalchemy.orm import Mapped, mapped_column
@@ -27,6 +28,8 @@ class Order(Base):
             "'COLLECTED','CANCELLED')"
         ),
         Index("ix_orders_queue", "canteen_id", "state"),
+        Index("ix_orders_student_history", "student_id", "created_at"),
+        UniqueConstraint("student_id", "checkout_request_id"),
     )
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=identifier)
     canteen_id: Mapped[str] = mapped_column(ForeignKey("canteens.id"))
@@ -36,6 +39,8 @@ class Order(Base):
     payment_verified_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     refund_status: Mapped[str | None] = mapped_column(String(40))
     exception_status: Mapped[str | None] = mapped_column(String(40))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    checkout_request_id: Mapped[str | None] = mapped_column(String(36))
 
 
 class OrderLine(Base):
@@ -44,6 +49,9 @@ class OrderLine(Base):
         ForeignKeyConstraint(["canteen_id", "order_id"], ["orders.canteen_id", "orders.id"]),
         ForeignKeyConstraint(
             ["canteen_id", "station_id"], ["canteen_stations.canteen_id", "canteen_stations.id"]
+        ),
+        ForeignKeyConstraint(
+            ["canteen_id", "variant_id"], ["menu_variants.canteen_id", "menu_variants.id"]
         ),
         CheckConstraint("quantity > 0 AND fulfilled >= 0 AND fulfilled <= quantity"),
         CheckConstraint("unit_price_paise > 0"),
@@ -54,6 +62,7 @@ class OrderLine(Base):
     order_id: Mapped[str] = mapped_column(String(36))
     station_id: Mapped[str] = mapped_column(String(36))
     station_name: Mapped[str] = mapped_column(String(80))
+    variant_id: Mapped[str | None] = mapped_column(String(36))
     name: Mapped[str] = mapped_column(String(160))
     variant_label: Mapped[str] = mapped_column(String(80))
     unit_price_paise: Mapped[int]

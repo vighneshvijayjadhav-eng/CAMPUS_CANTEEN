@@ -77,7 +77,7 @@ Each phase ends with tests green, docs updated (`api.md`, `database.md`,
 - Admin reports: daily/weekly/monthly and date range, item-wise sales, gross/refunds/net. Web pages.
 - Merchant-config request screen in the web dashboard (metadata only).
 
-### Phase 7: hardening and release
+### Phase 7: hardening and release — DONE in code 5 Nov 2026 (hosting, approvals open)
 - Accessibility pass (web and Android), load test of queue/pickup/webhook paths, rate limits review.
 - Production Docker image, `infra/compose.yml` for staging, Postgres backup plus a **restore drill**,
   structured logs, health and metrics, error alerting.

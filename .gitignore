@@ -5,6 +5,7 @@ __pycache__/
 .env
 .env.*
 !.env.example
+!.env.staging.example
 *.db
 node_modules/
 dist/
@@ -24,3 +25,4 @@ uploads/
 *.tsbuildinfo
 keystore.properties
 .kotlin/
+backups/

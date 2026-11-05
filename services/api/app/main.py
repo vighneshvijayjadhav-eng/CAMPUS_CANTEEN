@@ -7,6 +7,7 @@ from app.core.config import Settings
 from app.core.db import connect
 from app.core.errors import DomainError
 from app.core.http import DB
+from app.core.observability import install as install_observability
 from app.modules.carts.routes import create_router as cart_router
 from app.modules.identity.routes import create_router as identity_router
 from app.modules.identity.service import verify_google_id_token
@@ -69,7 +70,11 @@ def create_app(
         response.headers["X-Content-Type-Options"] = "nosniff"
         return response
 
-    @app.get("/health")
+    # Added last so it wraps everything above: every response, including rejections and
+    # unexpected errors, gets a request id, security headers and one access-log line.
+    install_observability(app, settings)
+
+    @app.api_route("/health", methods=["GET", "HEAD"])
     def health():
         return {"status": "ok", "release_ready": False}
 

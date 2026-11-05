@@ -1,0 +1,70 @@
+# Staging stack: PostgreSQL, one-off migrate+seed job, API, payment/refund reconciliation and
+# the staff dashboard. TLS is NOT terminated here: put an HTTPS reverse proxy in front of
+# 127.0.0.1:8080 (the dashboard, which also proxies /api). Public hosting needs approval.
+#
+#   cp .env.staging.example .env.staging   # fill in real values; never commit it
+#   docker compose --env-file .env.staging -f infra/compose.staging.yml up -d --build
+name: canteen-staging
+
+x-api: &api
+  image: canteen-api:staging
+  env_file: ../.env.staging
+  environment:
+    DATABASE_URL: postgresql+psycopg://canteen:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@db:5432/canteen
+  volumes:
+    - media:/data/media
+  restart: unless-stopped
+
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: canteen
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+      POSTGRES_DB: canteen
+    volumes:
+      - pg:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U canteen -d canteen"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  migrate:
+    <<: *api
+    build:
+      context: ..
+      dockerfile: services/api/Dockerfile
+    # Additive migrations, then the insert-only menu seed (never overwrites staff edits).
+    command: ["sh", "-c", "alembic upgrade head && python -m app.modules.menu.seed /seed/AISSMS_Canteen_Menu.xlsx --compare-draft /seed/menu_seed_draft.json"]
+    restart: "no"
+    depends_on:
+      db: { condition: service_healthy }
+
+  api:
+    <<: *api
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+
+  reconcile:
+    <<: *api
+    # Recovers missed Razorpay webhooks, sends queued refunds and polls pending ones.
+    command: ["sh", "-c", "while true; do python -m app.modules.payments.admin reconcile; sleep 180; done"]
+    healthcheck: { disable: true }
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+
+  web:
+    image: canteen-web:staging
+    build:
+      context: ..
+      dockerfile: apps/canteen-web/Dockerfile
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on: [api]
+    restart: unless-stopped
+
+volumes:
+  pg:
+  media:

@@ -64,3 +64,45 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       # Debug build only: no signing keys, OAuth client or payment keys exist in CI.
       - run: chmod +x gradlew && ./gradlew --no-daemon testDebugUnitTest assembleDebug
+  restore-drill:
+    # Backup/restore drill on every push: migrate, seed, insert consistent orders/payments/refund,
+    # pg_dump, restore into a separate database, and verify both copies agree.
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: drill
+          POSTGRES_PASSWORD: drill-only
+          POSTGRES_DB: canteen
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U drill -d canteen"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql+psycopg://drill:drill-only@localhost:5432/canteen
+    defaults:
+      run:
+        working-directory: services/api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.14'
+      - run: uv sync --locked
+      - run: uv run alembic upgrade head
+      - run: uv run python -m app.modules.menu.seed ../../data/AISSMS_Canteen_Menu.xlsx
+      - run: PYTHONPATH=. uv run python ../../infra/ci/drill_data.py
+      - run: uv run python -m app.ops.verify | tee source.txt
+      - name: Dump and restore into a separate database
+        run: |
+          docker exec ${{ job.services.postgres.id }} sh -c 'pg_dump -U drill -d canteen -Fc --no-owner -f /tmp/canteen.dump && createdb -U drill restored && pg_restore -U drill -d restored --no-owner --exit-on-error /tmp/canteen.dump'
+      - run: DATABASE_URL=postgresql+psycopg://drill:drill-only@localhost:5432/restored uv run python -m app.ops.verify | tee restored.txt
+      - run: diff source.txt restored.txt
+  images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -f services/api/Dockerfile -t canteen-api:ci .
+      - run: docker build -f apps/canteen-web/Dockerfile -t canteen-web:ci .
+      - run: cp .env.staging.example .env.staging && docker compose --env-file .env.staging -f infra/compose.staging.yml config --quiet

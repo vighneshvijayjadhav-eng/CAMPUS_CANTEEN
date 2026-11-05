@@ -156,6 +156,21 @@ Android: 12 unit tests and `assembleDebug` pass. Not checked on a device or in a
 Not included: CSV export (optional per decisions), staff cancel button in the web orders queue
 (API exists), merchant change requests through the UI (owner CLI only).
 
+## Hardening and release preparation — 5 November 2026
+
+Implemented (Phase 7): JSON access logs with request ids (no bodies, tokens or codes), generic
+500 responses, API security headers (HSTS outside local), HEAD on /health; production Dockerfiles
+(non-root API with health check; nginx dashboard with CSP and SSE-safe proxying); staging
+compose stack with migrate/seed job and reconciliation loop; backup and restore-drill scripts;
+read-only integrity check `app.ops.verify`; load-test script; CI jobs for the restore drill and
+image builds; empty Razorpay webhook secret no longer accepted.
+
+Verification on 5 Nov (local, PostgreSQL 18 in Docker): migrations + `alembic check` clean,
+seed idempotent, 6 PostgreSQL race tests passed (first local run), restore drill passed with
+identical counts, both images built and ran together (headers, deep links, /api proxy, HEAD
+health), 30-user load smoke with 0 errors. Full backend suite including PostgreSQL tests:
+107 passed. See the status table in docs/PRODUCTION_READINESS.md for what is still open.
+
 ## Remaining implementation gates
 
 1. Native Android project, emulator/device tests and release-signing configuration.

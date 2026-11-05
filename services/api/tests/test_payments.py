@@ -480,3 +480,12 @@ def test_single_account_env_shorthand_is_merged():
         razorpay_webhook_secret="",
     )
     assert empty.razorpay_credentials == {}
+    no_webhook_secret = Settings(
+        _env_file=None,
+        database_url="postgresql+psycopg://u:p@localhost/db",
+        pickup_hmac_key="x" * 32,
+        razorpay_key_id=KEY_ID,
+        razorpay_key_secret="s",
+        razorpay_webhook_secret="",
+    )
+    assert no_webhook_secret.razorpay_credentials == {}

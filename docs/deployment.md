@@ -65,7 +65,7 @@ trusting an unverified ID token.
 Before staging data exists, define retention, backup RPO/RTO and ownership. A restoration
 drill must restore a pg_dump archive into a separate disposable PostgreSQL database and
 verify migrations, order totals and fulfillment counts before any production go-live.
-Do not test restore over a live database. No restore drill has been performed yet.
+Do not test restore over a live database. A restore drill was performed on 5 Nov 2026 (local PostgreSQL 18) and runs in CI.
 
 ## Student Android app (local build)
 
@@ -104,6 +104,36 @@ keyPassword=...
 ```
 
 Without that file `assembleRelease` produces an unsigned APK. Unit tests: `./gradlew testDebugUnitTest`.
+
+## Staging stack (Docker)
+
+Images build from the repository root. `infra/compose.staging.yml` runs PostgreSQL, a one-off
+migrate + seed job, the API, the reconciliation loop (every 3 minutes) and the dashboard
+(nginx, which also proxies `/api`) on `127.0.0.1:8080`. Put an HTTPS reverse proxy in front;
+public hosting needs explicit approval.
+
+```bash
+cp .env.staging.example .env.staging      # then fill in real values; never commit it
+docker compose --env-file .env.staging -f infra/compose.staging.yml up -d --build
+docker compose --env-file .env.staging -f infra/compose.staging.yml run --rm api python -m app.modules.identity.provision coe coe-admin
+```
+
+Backups and restore drill (run the drill after every schema change and at least monthly):
+
+```bash
+infra/scripts/backup.sh                       # writes backups/<timestamp>/
+infra/scripts/restore-drill.sh backups/<timestamp>
+```
+
+The drill restores into a throwaway PostgreSQL container and runs `python -m app.ops.verify`
+(schema at head, order totals, collection state, pickup codes, payments, refunds). The same
+check can run on a schedule against production; it is read-only.
+
+Load test a staging URL only (read-only browsing traffic):
+
+```bash
+uv run --project services/api python infra/loadtest/loadtest.py https://canteen-staging.example.edu --users 50 --seconds 60
+```
 
 ## Review photos
 

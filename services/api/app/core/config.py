@@ -40,7 +40,12 @@ class Settings(BaseSettings):
         if self.allow_live_payments and self.environment != "production":
             raise ValueError("Live payments may only be enabled in production")
         single = (self.razorpay_key_id, self.razorpay_key_secret, self.razorpay_webhook_secret)
-        if all(single) and self.razorpay_key_secret.get_secret_value():
+        if (
+            all(single)
+            and self.razorpay_key_secret.get_secret_value()
+            # An empty webhook secret would make webhook signatures forgeable.
+            and self.razorpay_webhook_secret.get_secret_value()
+        ):
             self.razorpay_credentials = {
                 **self.razorpay_credentials,
                 self.razorpay_key_id: RazorpayCredential(

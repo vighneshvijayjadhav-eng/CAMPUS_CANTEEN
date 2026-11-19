@@ -1,0 +1,46 @@
+# Render Blueprint for the free DEMO API (Dashboard -> New -> Blueprint -> pick this repo).
+# Database: a free Neon PostgreSQL project; paste its connection string into DATABASE_URL.
+# Values marked sync: false are entered in Render's dashboard; never commit them.
+services:
+  - type: web
+    name: aissms-canteen-api
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./services/api/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL          # Neon connection string (postgresql://...?sslmode=require)
+        sync: false
+      - key: PICKUP_HMAC_KEY       # random, generated once by Render
+        generateValue: true
+      - key: DEMO_STAFF_PASSWORD   # password for all demo staff logins (14+ characters)
+        sync: false
+      - key: RAZORPAY_KEY_SECRET   # Razorpay TEST key secret
+        sync: false
+      - key: RAZORPAY_WEBHOOK_SECRET
+        sync: false
+      - key: RAZORPAY_KEY_ID
+        value: rzp_test_TwQNqlTSOdZrnq
+      - key: GOOGLE_OAUTH_CLIENT_ID  # Web client id; public, matches the Android app
+        value: 843116066974-77jb9r6g07hhkofhvobjtqfsln44a109.apps.googleusercontent.com
+      - key: ENVIRONMENT
+        value: staging
+      - key: WEB_ORIGIN            # the Vercel dashboard address, exactly
+        value: https://aissms-canteen.vercel.app
+      - key: FORWARDED_ALLOW_IPS   # Render's proxy sets X-Forwarded-For
+        value: "*"
+      - key: WEB_CONCURRENCY
+        value: "1"
+      - key: RUN_MIGRATIONS
+        value: "1"
+      - key: SEED_MENU
+        value: "1"
+      - key: DEMO_MODE
+        value: "1"
+      - key: RECONCILE_INTERVAL_SECONDS  # no cron on the free plan: reconcile in-process
+        value: "180"
+      - key: ALLOW_LIVE_PAYMENTS
+        value: "false"

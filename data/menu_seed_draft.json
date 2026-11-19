@@ -1,5 +1,5 @@
 {
-  "notice": "DRAFT IMPORT. All items initially disabled until staff confirms prices, availability and station mapping. Excel source is authoritative for transcription.",
+  "notice": "Transcription aid generated from data/AISSMS_Canteen_Menu.xlsx (demo edition, 20 Nov 2026). The workbook is authoritative; prices still need canteen confirmation.",
   "menus": {
     "ioit": [
       {
@@ -11,12 +11,9 @@
           {
             "label": "Regular",
             "price_paise": 4000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -27,12 +24,9 @@
           {
             "label": "Regular",
             "price_paise": 4000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -43,12 +37,9 @@
           {
             "label": "Regular",
             "price_paise": 4000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -59,12 +50,9 @@
           {
             "label": "Regular",
             "price_paise": 3000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -75,12 +63,9 @@
           {
             "label": "Regular",
             "price_paise": 5000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -91,12 +76,9 @@
           {
             "label": "Regular",
             "price_paise": 5500,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -107,12 +89,9 @@
           {
             "label": "Regular",
             "price_paise": 5000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -123,12 +102,9 @@
           {
             "label": "Regular",
             "price_paise": 3000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -139,12 +115,9 @@
           {
             "label": "Regular",
             "price_paise": 2000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -155,12 +128,9 @@
           {
             "label": "Regular",
             "price_paise": 2000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -171,12 +141,9 @@
           {
             "label": "Regular",
             "price_paise": 2000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -187,12 +154,9 @@
           {
             "label": "Regular",
             "price_paise": 1000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -203,12 +167,9 @@
           {
             "label": "Regular",
             "price_paise": 2000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -219,12 +180,9 @@
           {
             "label": "Regular",
             "price_paise": 2500,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -235,12 +193,9 @@
           {
             "label": "Regular",
             "price_paise": 3000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -251,12 +206,9 @@
           {
             "label": "Regular",
             "price_paise": 4000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -267,12 +219,9 @@
           {
             "label": "Regular",
             "price_paise": 5000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -283,76 +232,61 @@
           {
             "label": "Regular",
             "price_paise": 7000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
         "source_row": 21,
         "category": "Snacks",
-        "name": "Maggie",
+        "name": "Maggi",
         "variants": [
           {
             "label": "Regular",
             "price_paise": 4000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
         "source_row": 22,
         "category": "Snacks",
-        "name": "Masala Maggie",
+        "name": "Masala Maggi",
         "variants": [
           {
             "label": "Regular",
             "price_paise": 5000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
         "source_row": 23,
         "category": "Snacks",
-        "name": "Cheese Masala Maggie",
+        "name": "Cheese Masala Maggi",
         "variants": [
           {
             "label": "Regular",
             "price_paise": 5500,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
         "source_row": 24,
         "category": "Snacks",
-        "name": "Butter Maggie",
+        "name": "Butter Maggi",
         "variants": [
           {
             "label": "Regular",
             "price_paise": 5500,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -363,12 +297,9 @@
           {
             "label": "Regular",
             "price_paise": 7000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -379,12 +310,9 @@
           {
             "label": "Regular",
             "price_paise": 7000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -395,12 +323,9 @@
           {
             "label": "Regular",
             "price_paise": 6000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -411,12 +336,9 @@
           {
             "label": "Regular",
             "price_paise": 6000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -427,12 +349,9 @@
           {
             "label": "Regular",
             "price_paise": 6000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -443,12 +362,9 @@
           {
             "label": "Regular",
             "price_paise": 6000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -459,12 +375,9 @@
           {
             "label": "Regular",
             "price_paise": 6000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -475,12 +388,9 @@
           {
             "label": "Regular",
             "price_paise": 6500,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -491,12 +401,9 @@
           {
             "label": "Regular",
             "price_paise": 6500,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -507,12 +414,9 @@
           {
             "label": "Regular",
             "price_paise": 7500,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -523,12 +427,9 @@
           {
             "label": "Regular",
             "price_paise": 7000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -539,12 +440,9 @@
           {
             "label": "Regular",
             "price_paise": 8000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -555,12 +453,9 @@
           {
             "label": "Regular",
             "price_paise": 8000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -571,12 +466,9 @@
           {
             "label": "Regular",
             "price_paise": 8000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -586,13 +478,10 @@
         "variants": [
           {
             "label": "Regular",
-            "price_paise": 7000,
+            "price_paise": 9000,
             "verified": false
           }
-        ],
-        "needs_staff_verification": true,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -602,13 +491,10 @@
         "variants": [
           {
             "label": "Regular",
-            "price_paise": 7200,
+            "price_paise": 8000,
             "verified": false
           }
-        ],
-        "needs_staff_verification": true,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -618,13 +504,10 @@
         "variants": [
           {
             "label": "Regular",
-            "price_paise": 6000,
+            "price_paise": 7000,
             "verified": false
           }
-        ],
-        "needs_staff_verification": true,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -634,13 +517,10 @@
         "variants": [
           {
             "label": "Regular",
-            "price_paise": 7500,
+            "price_paise": 8000,
             "verified": false
           }
-        ],
-        "needs_staff_verification": true,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -651,12 +531,9 @@
           {
             "label": "Regular",
             "price_paise": 8000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -667,12 +544,9 @@
           {
             "label": "Regular",
             "price_paise": 7000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -683,12 +557,9 @@
           {
             "label": "Regular",
             "price_paise": 8000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -699,12 +570,9 @@
           {
             "label": "Regular",
             "price_paise": 7000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -715,12 +583,9 @@
           {
             "label": "Regular",
             "price_paise": 1500,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -731,12 +596,9 @@
           {
             "label": "Regular",
             "price_paise": 5000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -746,13 +608,10 @@
         "variants": [
           {
             "label": "Regular",
-            "price_paise": 6600,
+            "price_paise": 4000,
             "verified": false
           }
-        ],
-        "needs_staff_verification": true,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -763,12 +622,9 @@
           {
             "label": "Regular",
             "price_paise": 9000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -779,12 +635,9 @@
           {
             "label": "Regular",
             "price_paise": 5000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -795,12 +648,9 @@
           {
             "label": "Regular",
             "price_paise": 4000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -811,12 +661,9 @@
           {
             "label": "Regular",
             "price_paise": 5000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -827,12 +674,9 @@
           {
             "label": "Regular",
             "price_paise": 4000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -843,12 +687,9 @@
           {
             "label": "Regular",
             "price_paise": 7000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -859,12 +700,9 @@
           {
             "label": "Regular",
             "price_paise": 8000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -875,12 +713,9 @@
           {
             "label": "Regular",
             "price_paise": 9000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -891,12 +726,9 @@
           {
             "label": "Regular",
             "price_paise": 10000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -907,12 +739,9 @@
           {
             "label": "Regular",
             "price_paise": 10000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -923,12 +752,9 @@
           {
             "label": "Regular",
             "price_paise": 9000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -939,12 +765,9 @@
           {
             "label": "Regular",
             "price_paise": 9000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -955,12 +778,9 @@
           {
             "label": "Regular",
             "price_paise": 9000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -971,12 +791,9 @@
           {
             "label": "Regular",
             "price_paise": 10000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -987,12 +804,9 @@
           {
             "label": "Regular",
             "price_paise": 10000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -1003,12 +817,9 @@
           {
             "label": "Regular",
             "price_paise": 11000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -1019,12 +830,9 @@
           {
             "label": "Regular",
             "price_paise": 10000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -1035,12 +843,9 @@
           {
             "label": "Regular",
             "price_paise": 11000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -1051,12 +856,9 @@
           {
             "label": "Regular",
             "price_paise": 10000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -1067,12 +869,9 @@
           {
             "label": "Regular",
             "price_paise": 10000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -1083,12 +882,9 @@
           {
             "label": "Regular",
             "price_paise": 9000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -1099,12 +895,9 @@
           {
             "label": "Regular",
             "price_paise": 11000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -1115,12 +908,9 @@
           {
             "label": "Regular",
             "price_paise": 11000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -1131,12 +921,9 @@
           {
             "label": "Regular",
             "price_paise": 10000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -1147,12 +934,9 @@
           {
             "label": "Regular",
             "price_paise": 1000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -1163,12 +947,9 @@
           {
             "label": "Regular",
             "price_paise": 1000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -1179,12 +960,9 @@
           {
             "label": "Regular",
             "price_paise": 3000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -1195,12 +973,9 @@
           {
             "label": "Regular",
             "price_paise": 2000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -1211,12 +986,9 @@
           {
             "label": "Regular",
             "price_paise": 3000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -1227,12 +999,9 @@
           {
             "label": "Regular",
             "price_paise": 2000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
@@ -1243,124 +1012,74 @@
           {
             "label": "Regular",
             "price_paise": 2000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
         "source_row": 81,
         "category": "Extras",
-        "name": "Waffers",
+        "name": "Wafers",
         "variants": [
           {
             "label": "Regular",
             "price_paise": 2000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
         "source_row": 82,
-        "category": "Extras",
-        "name": "Rice Plate",
-        "variants": [
-          {
-            "label": "Regular",
-            "price_paise": 10000,
-            "verified": true
-          }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
-      },
-      {
-        "source_sheet": "IOIT Canteen",
-        "source_row": 83,
         "category": "Extras",
         "name": "Extra Bhaji",
         "variants": [
           {
             "label": "Regular",
             "price_paise": 3000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
-        "source_row": 84,
-        "category": "Extras",
-        "name": "Taam",
-        "variants": [
-          {
-            "label": "Regular",
-            "price_paise": 3000,
-            "verified": true
-          }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
-      },
-      {
-        "source_sheet": "IOIT Canteen",
-        "source_row": 85,
+        "source_row": 83,
         "category": "Extras",
         "name": "Lassi",
         "variants": [
           {
             "label": "Regular",
             "price_paise": 4000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
-        "source_row": 86,
-        "category": "Extras",
+        "source_row": 84,
+        "category": "Thali",
         "name": "Chicken Thali",
         "variants": [
           {
             "label": "Regular",
             "price_paise": 12000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "IOIT Canteen",
-        "source_row": 87,
-        "category": "Extras",
+        "source_row": 85,
+        "category": "Thali",
         "name": "Egg Thali",
         "variants": [
           {
             "label": "Regular",
             "price_paise": 11000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       }
     ],
     "coe": [
@@ -1371,14 +1090,11 @@
         "name": "Masala Dosa",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Regular",
             "price_paise": 7000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
@@ -1387,14 +1103,11 @@
         "name": "Fried Rice",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Regular",
             "price_paise": 9000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
@@ -1403,14 +1116,11 @@
         "name": "Schezwan Rice",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Regular",
             "price_paise": 10000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
@@ -1419,14 +1129,11 @@
         "name": "Pohe",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Regular",
             "price_paise": 2500,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
@@ -1435,14 +1142,11 @@
         "name": "Idli Wada",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Regular",
             "price_paise": 6000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
@@ -1451,14 +1155,11 @@
         "name": "Chapati Bhaji",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Regular",
             "price_paise": 6000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
@@ -1467,14 +1168,11 @@
         "name": "Plain Dosa",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Regular",
             "price_paise": 6000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
@@ -1483,14 +1181,11 @@
         "name": "Uttappa",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Regular",
             "price_paise": 7000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
@@ -1499,14 +1194,11 @@
         "name": "Coffee",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Regular",
             "price_paise": 2000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
@@ -1515,14 +1207,11 @@
         "name": "Chai",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Regular",
             "price_paise": 1000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
@@ -1531,14 +1220,11 @@
         "name": "Aloo Chaat",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Regular",
             "price_paise": 4000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
@@ -1547,14 +1233,11 @@
         "name": "Ragda Puri",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Regular",
             "price_paise": 4000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
@@ -1563,14 +1246,11 @@
         "name": "Papdi Chaat",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Regular",
             "price_paise": 4000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
@@ -1579,552 +1259,303 @@
         "name": "Bhel",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Regular",
             "price_paise": 4000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 17,
-        "category": "Juice & Beverages",
-        "name": "Pineapple Juice",
+        "category": "Fruit & Extras",
+        "name": "Fruit Plate",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 5000,
-            "verified": true
-          },
-          {
-            "label": "Small",
-            "price_paise": 4000,
-            "verified": true
+            "label": "Regular",
+            "price_paise": 6000,
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 18,
-        "category": "Juice & Beverages",
-        "name": "Watermelon Juice",
+        "category": "Rolls & Sandwiches",
+        "name": "Paneer Roll",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 5000,
-            "verified": true
-          },
-          {
-            "label": "Small",
-            "price_paise": 4000,
-            "verified": true
+            "label": "Regular",
+            "price_paise": 7500,
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 19,
-        "category": "Juice & Beverages",
-        "name": "Grapes Juice",
+        "category": "Rolls & Sandwiches",
+        "name": "Paneer Sandwich",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 5000,
-            "verified": true
-          },
-          {
-            "label": "Small",
-            "price_paise": 4000,
-            "verified": true
+            "label": "Regular",
+            "price_paise": 8000,
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 20,
-        "category": "Juice & Beverages",
-        "name": "Cocktail Juice",
+        "category": "Rolls & Sandwiches",
+        "name": "Veg Cheese Grill Sandwich",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 5000,
-            "verified": true
-          },
-          {
-            "label": "Small",
-            "price_paise": 4000,
-            "verified": true
+            "label": "Regular",
+            "price_paise": 6500,
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 21,
-        "category": "Juice & Beverages",
-        "name": "Mosambi Juice",
+        "category": "Rolls & Sandwiches",
+        "name": "Anda Roll",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 5000,
-            "verified": true
-          },
-          {
-            "label": "Small",
-            "price_paise": 4000,
-            "verified": true
+            "label": "Regular",
+            "price_paise": 7000,
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 22,
-        "category": "Juice & Beverages",
-        "name": "Orange Juice",
+        "category": "Rolls & Sandwiches",
+        "name": "Chicken Roll",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 5000,
-            "verified": true
-          },
-          {
-            "label": "Small",
-            "price_paise": 4000,
-            "verified": true
+            "label": "Regular",
+            "price_paise": 8500,
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 23,
-        "category": "Juice & Beverages",
-        "name": "Gangajamuna",
+        "category": "Rolls & Sandwiches",
+        "name": "Chicken Sandwich",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 5000,
-            "verified": true
-          },
-          {
-            "label": "Small",
-            "price_paise": 4000,
-            "verified": true
+            "label": "Regular",
+            "price_paise": 9000,
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 24,
-        "category": "Juice & Beverages",
-        "name": "Maramari",
+        "category": "Rolls & Sandwiches",
+        "name": "Club Sandwich",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 5000,
-            "verified": true
-          },
-          {
-            "label": "Small",
-            "price_paise": 4000,
-            "verified": true
+            "label": "Regular",
+            "price_paise": 7500,
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 25,
-        "category": "Juice & Beverages",
-        "name": "Annar (Pomegranate) Juice",
+        "category": "Rolls & Sandwiches",
+        "name": "Plain Sandwich",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 7000,
-            "verified": true
-          },
-          {
-            "label": "Small",
+            "label": "Regular",
             "price_paise": 5000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 26,
-        "category": "Juice & Beverages",
-        "name": "Gajar (Carrot) Juice",
+        "category": "Rolls & Sandwiches",
+        "name": "Veg Roll",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Regular",
             "price_paise": 6000,
-            "verified": true
-          },
-          {
-            "label": "Small",
-            "price_paise": 4000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 27,
         "category": "Juice & Beverages",
-        "name": "Beet Juice",
+        "name": "Gajar (Carrot) Juice",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Jumbo",
             "price_paise": 6000,
-            "verified": true
+            "verified": false
           },
           {
             "label": "Small",
             "price_paise": 4000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 28,
         "category": "Juice & Beverages",
-        "name": "ABC Juice",
+        "name": "Beet Juice",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Jumbo",
             "price_paise": 6000,
-            "verified": true
+            "verified": false
           },
           {
             "label": "Small",
             "price_paise": 4000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 29,
         "category": "Juice & Beverages",
-        "name": "Awala (Amla) Juice",
+        "name": "ABC Juice",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 7000,
-            "verified": true
+            "label": "Jumbo",
+            "price_paise": 6000,
+            "verified": false
           },
           {
             "label": "Small",
-            "price_paise": 5000,
-            "verified": true
+            "price_paise": 4000,
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 30,
         "category": "Juice & Beverages",
-        "name": "Jeera Soda",
+        "name": "Awala (Amla) Juice",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 4000,
-            "verified": true
+            "label": "Jumbo",
+            "price_paise": 7000,
+            "verified": false
           },
           {
             "label": "Small",
-            "price_paise": 3000,
-            "verified": true
+            "price_paise": 5000,
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 31,
         "category": "Juice & Beverages",
-        "name": "Limbu Sarbat",
+        "name": "Jeera Soda",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 3000,
-            "verified": true
+            "label": "Jumbo",
+            "price_paise": 4000,
+            "verified": false
           },
           {
             "label": "Small",
-            "price_paise": 2000,
-            "verified": true
+            "price_paise": 3000,
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 32,
         "category": "Juice & Beverages",
-        "name": "Limbu Soda",
+        "name": "Limbu Sarbat",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 4000,
-            "verified": true
+            "label": "Jumbo",
+            "price_paise": 3000,
+            "verified": false
           },
           {
             "label": "Small",
-            "price_paise": 3000,
-            "verified": true
+            "price_paise": 2000,
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 33,
         "category": "Juice & Beverages",
-        "name": "Mocktail Mojito",
+        "name": "Limbu Soda",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 5000,
-            "verified": true
+            "label": "Jumbo",
+            "price_paise": 4000,
+            "verified": false
           },
           {
             "label": "Small",
-            "price_paise": 4000,
-            "verified": true
+            "price_paise": 3000,
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 34,
         "category": "Juice & Beverages",
-        "name": "Blue Lagoon Mojito",
+        "name": "Mocktail Mojito",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Jumbo",
             "price_paise": 5000,
-            "verified": true
+            "verified": false
           },
           {
             "label": "Small",
             "price_paise": 4000,
-            "verified": true
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       },
       {
         "source_sheet": "COE Canteen",
         "source_row": 35,
-        "category": "Fruit & Extras",
-        "name": "Fruit Plate",
+        "category": "Juice & Beverages",
+        "name": "Blue Lagoon Mojito",
         "variants": [
           {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 6000,
-            "verified": true
-          }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
-      },
-      {
-        "source_sheet": "COE Canteen",
-        "source_row": 36,
-        "category": "Rolls & Sandwiches",
-        "name": "Paneer Roll",
-        "variants": [
-          {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 7500,
-            "verified": true
-          }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
-      },
-      {
-        "source_sheet": "COE Canteen",
-        "source_row": 37,
-        "category": "Rolls & Sandwiches",
-        "name": "Paneer Sandwich",
-        "variants": [
-          {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 8000,
-            "verified": true
-          }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
-      },
-      {
-        "source_sheet": "COE Canteen",
-        "source_row": 38,
-        "category": "Rolls & Sandwiches",
-        "name": "Veg Cheese Grill Sandwich",
-        "variants": [
-          {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 6500,
-            "verified": true
-          }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
-      },
-      {
-        "source_sheet": "COE Canteen",
-        "source_row": 39,
-        "category": "Rolls & Sandwiches",
-        "name": "Anda Roll",
-        "variants": [
-          {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 7000,
-            "verified": true
-          }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
-      },
-      {
-        "source_sheet": "COE Canteen",
-        "source_row": 40,
-        "category": "Rolls & Sandwiches",
-        "name": "Chicken Roll",
-        "variants": [
-          {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 8500,
-            "verified": true
-          }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
-      },
-      {
-        "source_sheet": "COE Canteen",
-        "source_row": 41,
-        "category": "Rolls & Sandwiches",
-        "name": "Chicken Sandwich",
-        "variants": [
-          {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 9000,
-            "verified": true
-          }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
-      },
-      {
-        "source_sheet": "COE Canteen",
-        "source_row": 42,
-        "category": "Rolls & Sandwiches",
-        "name": "Club Sandwich",
-        "variants": [
-          {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 7500,
-            "verified": true
-          }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
-      },
-      {
-        "source_sheet": "COE Canteen",
-        "source_row": 43,
-        "category": "Rolls & Sandwiches",
-        "name": "Plain Sandwich",
-        "variants": [
-          {
-            "label": "Jumbo / standard (confirm label)",
+            "label": "Jumbo",
             "price_paise": 5000,
-            "verified": true
-          }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
-      },
-      {
-        "source_sheet": "COE Canteen",
-        "source_row": 44,
-        "category": "Rolls & Sandwiches",
-        "name": "Veg Roll",
-        "variants": [
+            "verified": false
+          },
           {
-            "label": "Jumbo / standard (confirm label)",
-            "price_paise": 6000,
-            "verified": true
+            "label": "Small",
+            "price_paise": 4000,
+            "verified": false
           }
-        ],
-        "needs_staff_verification": false,
-        "initially_orderable": false,
-        "station_assignment": null
+        ]
       }
     ]
   }

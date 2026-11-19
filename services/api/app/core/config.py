@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel, Field, SecretStr, model_validator
+from pydantic import BaseModel, Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -12,6 +12,9 @@ class RazorpayCredential(BaseModel):
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
     database_url: str
+    # Run payment/refund reconciliation inside the API every N seconds (0 = off). For hosts
+    # without scheduled jobs (e.g. free tiers); with a cron/worker, leave it at 0.
+    reconcile_interval_seconds: int = Field(default=0, ge=0)
     pickup_hmac_key: SecretStr
     web_origin: str = "http://localhost:5173"
     google_oauth_client_id: str | None = None
@@ -28,6 +31,16 @@ class Settings(BaseSettings):
     review_report_threshold: int = Field(default=3, ge=2, le=50)
     # Separate explicit approval is required before any live charge.
     allow_live_payments: bool = False
+
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def psycopg_driver(cls, value):
+        # Hosted Postgres (Neon, Render, Supabase) hands out postgres:// or postgresql:// URLs.
+        if isinstance(value, str):
+            for prefix in ("postgres://", "postgresql://"):
+                if value.startswith(prefix):
+                    return "postgresql+psycopg://" + value[len(prefix) :]
+        return value
 
     @model_validator(mode="after")
     def validate_security(self):

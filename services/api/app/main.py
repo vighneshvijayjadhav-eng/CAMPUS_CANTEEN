@@ -1,3 +1,6 @@
+import asyncio
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -23,12 +26,41 @@ from app.modules.reviews.media import LocalMediaStorage
 from app.modules.reviews.routes import create_router as reviews_router
 
 
+async def reconcile_loop(settings, engine, interval):
+    """In-process reconciliation for hosts without scheduled jobs. Every step is idempotent and
+    row-locked, so running it in several workers at once is safe, just redundant."""
+    import logging
+
+    from app.modules.payments.admin import reconcile_all
+
+    log = logging.getLogger("canteen")
+    while True:
+        await asyncio.sleep(interval)
+        try:
+            payments, refunds = await asyncio.to_thread(reconcile_all, settings, engine)
+            if payments or refunds:
+                log.info(
+                    "reconcile", extra={"fields": {"payments": payments, "refunds": len(refunds)}}
+                )
+        except Exception:
+            log.exception("reconcile failed")
+
+
 def create_app(
     settings=None, engine=None, google_verifier=None, payment_providers=None, media_storage=None
 ):
     settings = settings or Settings()
     engine = engine or connect(settings.database_url)
-    app = FastAPI(title="AISSMS Campus Canteen", version="0.1.0")
+    interval = getattr(settings, "reconcile_interval_seconds", 0)
+
+    @asynccontextmanager
+    async def lifespan(app):
+        task = asyncio.create_task(reconcile_loop(settings, engine, interval)) if interval else None
+        yield
+        if task:
+            task.cancel()
+
+    app = FastAPI(title="AISSMS Campus Canteen", version="0.1.0", lifespan=lifespan)
     app.state.engine = engine
     app.state.settings = settings
     app.state.google_verifier = google_verifier or (

@@ -60,7 +60,11 @@ def add_merchant(settings, args):
 
 
 def reconcile(settings, _args):
-    engine = connect(settings.database_url)
+    reconcile_all(settings, connect(settings.database_url), log=print)
+
+
+def reconcile_all(settings, engine, log=lambda message: None):
+    """Recover missed payment webhooks, send due refunds and poll pending ones."""
     providers = provider_factory(settings)
     key = settings.pickup_hmac_key.get_secret_value()
     with session_for(engine) as db:
@@ -72,13 +76,14 @@ def reconcile(settings, _args):
                 status = reconcile_attempt(db, providers, attempt, server_now(db), key)
             except DomainError as error:
                 status = f"error {error.code}"
-        print(f"{attempt_id}: {status}")
-    print(f"Checked {len(ids)} open payment attempts")
+        log(f"{attempt_id}: {status}")
+    log(f"Checked {len(ids)} open payment attempts")
     with session_for(engine) as db, db.begin():
         results = reconcile_refunds(db, providers, server_now(db))
     for refund_id, status in results.items():
-        print(f"refund {refund_id}: {status}")
-    print(f"Checked {len(results)} open refunds")
+        log(f"refund {refund_id}: {status}")
+    log(f"Checked {len(results)} open refunds")
+    return len(ids), results
 
 
 def main(argv=None):

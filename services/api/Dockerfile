@@ -15,10 +15,11 @@ RUN uv sync --locked --no-dev --no-install-project
 COPY services/api/alembic.ini ./
 COPY services/api/migrations ./migrations
 COPY services/api/app ./app
+COPY services/api/start.sh ./start.sh
 # Authoritative menu workbook for the one-time seed job.
 COPY data/AISSMS_Canteen_Menu.xlsx data/menu_seed_draft.json /seed/
 
-RUN useradd --uid 10001 --no-create-home canteen && mkdir -p /data/media && chown canteen /data/media
+RUN chmod 755 /app/start.sh && useradd --uid 10001 --no-create-home canteen && mkdir -p /data/media && chown canteen /data/media
 USER canteen
 ENV PATH=/app/.venv/bin:$PATH \
     MEDIA_DIR=/data/media \
@@ -26,7 +27,8 @@ ENV PATH=/app/.venv/bin:$PATH \
     WEB_CONCURRENCY=2
 EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-  CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=4)"
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:' + __import__('os').environ.get('PORT', '8000') + '/health', timeout=4)"
+# start.sh: optional migrate/seed/demo steps, then uvicorn on $PORT (default 8000).
 # --proxy-headers + FORWARDED_ALLOW_IPS: trust X-Forwarded-For only from the reverse proxy, so
 # rate limits see real client addresses instead of the proxy's.
-CMD ["sh", "-c", "exec uvicorn app.main:create_app --factory --host 0.0.0.0 --port 8000 --proxy-headers --forwarded-allow-ips \"$FORWARDED_ALLOW_IPS\" --workers \"$WEB_CONCURRENCY\" --no-server-header --no-access-log"]
+CMD ["./start.sh"]

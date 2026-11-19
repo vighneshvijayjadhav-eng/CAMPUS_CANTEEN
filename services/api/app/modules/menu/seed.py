@@ -47,6 +47,8 @@ def read_menu(path: Path):
                 if not isinstance(category, str) or not isinstance(name, str):
                     raise ValueError(f"Missing category/name: {sheet_name}:{row_number}")
                 variants = []
+                # Two prices = Jumbo/Small sizes; one price is the item's normal price.
+                sized = len(prices) > 1 and prices[1] not in (None, "", "-", "—")
                 for index, raw in enumerate(prices):
                     # A dash means that size is not offered, never a free product.
                     if index == 1 and raw in (None, "", "-", "—"):
@@ -55,7 +57,7 @@ def read_menu(path: Path):
                         {
                             "label": "Regular"
                             if slug == "ioit"
-                            else ("Jumbo / standard (confirm label)" if index == 0 else "Small"),
+                            else ("Small" if index else ("Jumbo" if sized else "Regular")),
                             "price_paise": price_paise(raw),
                             "source_column": chr(ord("C") + index),
                             "source_value": str(raw) if raw is not None else None,

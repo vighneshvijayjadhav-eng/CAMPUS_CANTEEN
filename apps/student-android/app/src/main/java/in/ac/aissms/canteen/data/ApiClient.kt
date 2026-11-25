@@ -23,7 +23,8 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
-/** A backend error code (e.g. PRICE_CHANGED) or NETWORK_ERROR when the API is unreachable. */
+/** A backend error code (e.g. PRICE_CHANGED), SERVER_STARTING when the API is still waking up,
+ *  or NETWORK_ERROR when it is unreachable. */
 class ApiException(val status: Int, val code: String) : Exception(code)
 
 @OptIn(ExperimentalSerializationApi::class)
@@ -41,8 +42,11 @@ class ApiClient(
     private val baseUrl: String,
     private val tokens: TokenStorage,
     private val http: OkHttpClient = OkHttpClient.Builder()
-        .connectTimeout(15, TimeUnit.SECONDS)
-        .readTimeout(30, TimeUnit.SECONDS)
+        // Free hosting sleeps when idle and takes up to about a minute to wake on the first
+        // request, so allow that long before giving up.
+        .connectTimeout(20, TimeUnit.SECONDS)
+        .readTimeout(75, TimeUnit.SECONDS)
+        .callTimeout(90, TimeUnit.SECONDS)
         .build(),
 ) {
     private val refreshLock = Mutex()
@@ -62,6 +66,16 @@ class ApiClient(
     fun currentSessionId(): String? = tokens.load()?.sessionId
 
     fun absolute(path: String): String = baseUrl.trimEnd('/') + path
+
+    /** Fire-and-forget request that wakes a sleeping server while the student is still on the
+     *  sign-in screen. Errors are ignored. */
+    fun wakeUp() {
+        val request = Request.Builder().url(absolute("/health")).build()
+        http.newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) = Unit
+            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) = response.close()
+        })
+    }
 
     suspend fun <T> get(path: String, strategy: DeserializationStrategy<T>): T =
         call("GET", path, null, strategy, authenticated = true)
@@ -143,6 +157,8 @@ class ApiClient(
                 .build()
             try {
                 http.newCall(request).execute().use { RawResponse(it.code, it.body?.string().orEmpty()) }
+            } catch (error: java.io.InterruptedIOException) {
+                throw ApiException(0, "SERVER_STARTING") // timed out: server still waking up
             } catch (error: IOException) {
                 throw ApiException(0, "NETWORK_ERROR")
             }

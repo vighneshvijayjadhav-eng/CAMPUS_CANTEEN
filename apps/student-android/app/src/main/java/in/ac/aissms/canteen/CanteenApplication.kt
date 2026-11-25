@@ -14,5 +14,7 @@ class CanteenApplication : Application() {
         // No Razorpay Checkout.preload() here: it initializes a WebView on the main thread and
         // froze startup (ANR) on a slow device. Checkout initializes itself when it opens.
         repository = CanteenRepository(ApiClient(BuildConfig.API_BASE_URL, KeystoreTokenStorage(this)))
+        // Start waking the server now, so it is usually up by the time the student signs in.
+        repository.wakeUpServer()
     }
 }

@@ -51,7 +51,8 @@ fun refundLabel(status: String?): String? = when (status) {
 
 /** Student-facing text for backend error codes. */
 fun friendlyError(error: Throwable): String = when ((error as? ApiException)?.code) {
-    "NETWORK_ERROR" -> "Can't reach the canteen server. Check your connection and try again."
+    "NETWORK_ERROR" -> "Can't reach the canteen server. Check your internet connection and try again."
+    "SERVER_STARTING" -> "The canteen server is starting up. Please wait a few seconds and try again."
     "AUTHENTICATION_REQUIRED" -> "Your session has ended. Please sign in again."
     "CART_CANTEEN_CONFLICT" -> "Your cart has items from another canteen."
     "MENU_VARIANT_UNAVAILABLE", "CART_ITEM_UNAVAILABLE" ->

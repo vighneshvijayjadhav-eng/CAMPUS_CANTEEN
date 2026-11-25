@@ -127,6 +127,19 @@ class ApiClientTest {
     }
 
     @Test
+    fun slowWakingServerIsReportedAsStarting() = runBlocking {
+        server.dispatcher = object : Dispatcher() {
+            override fun dispatch(request: RecordedRequest) =
+                MockResponse().setBody("{}").setHeadersDelay(3, java.util.concurrent.TimeUnit.SECONDS)
+        }
+        val impatient = okhttp3.OkHttpClient.Builder()
+            .readTimeout(1, java.util.concurrent.TimeUnit.SECONDS).build()
+        val api = ApiClient(server.url("/").toString(), storage(), impatient)
+        val error = runCatching { api.get("/api/v1/student/cart", Cart.serializer()) }.exceptionOrNull()
+        assertEquals("SERVER_STARTING", (error as ApiException).code)
+    }
+
+    @Test
     fun unreachableServerIsANetworkError() = runBlocking {
         val api = ApiClient("http://127.0.0.1:1", storage())
         val error = runCatching { api.get("/api/v1/student/cart", Cart.serializer()) }.exceptionOrNull()

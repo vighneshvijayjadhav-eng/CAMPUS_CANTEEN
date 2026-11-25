@@ -10,6 +10,8 @@ import kotlinx.serialization.json.put
 class CanteenRepository(private val api: ApiClient) {
     val signedIn = api.signedIn
 
+    fun wakeUpServer() = api.wakeUp()
+
     suspend fun signInWithGoogle(idToken: String, deviceName: String) {
         val body = buildJsonObject {
             put("id_token", idToken)

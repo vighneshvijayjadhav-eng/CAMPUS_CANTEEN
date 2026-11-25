@@ -1,4 +1,5 @@
 import hashlib
+import logging
 import secrets
 from dataclasses import dataclass
 from datetime import timedelta
@@ -140,12 +141,18 @@ def authenticate(db, token):
 def verify_google_id_token(token, client_id):
     if not client_id:
         raise DomainError("GOOGLE_AUTH_NOT_CONFIGURED", 503)
-    try:
-        from google.auth.transport.requests import Request
-        from google.oauth2.id_token import verify_oauth2_token
+    # Imported outside the try: a missing transport library is a server fault, not a bad token.
+    from google.auth.transport.requests import Request
+    from google.oauth2.id_token import verify_oauth2_token
 
+    try:
         claims = verify_oauth2_token(token, Request(), client_id)
     except Exception as error:
+        # Reason only (e.g. wrong audience, expired); the token itself is never logged.
+        logging.getLogger("canteen").warning(
+            "google token rejected",
+            extra={"fields": {"reason": f"{type(error).__name__}: {str(error)[:200]}"}},
+        )
         raise DomainError("INVALID_GOOGLE_TOKEN", 401) from error
     if claims.get("iss") not in {"accounts.google.com", "https://accounts.google.com"}:
         raise DomainError("INVALID_GOOGLE_TOKEN", 401)

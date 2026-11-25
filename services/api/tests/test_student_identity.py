@@ -27,6 +27,21 @@ def db(monkeypatch):
         yield db, now
 
 
+def test_google_verification_dependencies_are_installed():
+    # Regression: without the requests transport every real Google sign-in failed as an
+    # "invalid token" (tests used a stub verifier, so nothing caught it).
+    from google.auth.transport.requests import Request
+
+    assert Request() is not None
+
+
+def test_bad_google_token_is_rejected_not_crashed():
+    from app.modules.identity.service import verify_google_id_token
+
+    with pytest.raises(DomainError, match="INVALID_GOOGLE_TOKEN"):
+        verify_google_id_token("not-a-jwt", "client.apps.googleusercontent.com")
+
+
 def claims(email="student@example.test"):
     return {"sub": "google-subject", "email": email, "name": "Student", "picture": None}
 
